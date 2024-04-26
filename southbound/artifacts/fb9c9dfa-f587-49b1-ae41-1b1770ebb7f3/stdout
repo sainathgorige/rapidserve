@@ -1,0 +1,150 @@
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+
+PLAY [Deploy subnet Infrastructure with bridges and Veth Pairs] ****************
+
+TASK [Parse retrieved data] ****************************************************
+[0;32mok: [localhost][0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[0;32mok: [localhost] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "containers": [[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "AH_IN_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "AH_IN_S1",[0m
+[0;32m                    "AH_IN_S2"[0m
+[0;32m                ][0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "AH_JA_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "AH_JA_S1"[0m
+[0;32m                ][0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "AH_FR_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "AH_FR_S1"[0m
+[0;32m                ][0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "AH_IN_container2",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "AH_IN_S1"[0m
+[0;32m                ][0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "name": "aha",[0m
+[0;32m        "numberOfVpcs": "3",[0m
+[0;32m        "state": "requested",[0m
+[0;32m        "subnets": [[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.1.0/24",[0m
+[0;32m                "dhcp_end": "192.168.1.254",[0m
+[0;32m                "dhcp_start": "192.168.1.2",[0m
+[0;32m                "ip": "192.168.1.1",[0m
+[0;32m                "name": "AH_IN_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "AH_IN"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.2.0/24",[0m
+[0;32m                "dhcp_end": "192.168.2.254",[0m
+[0;32m                "dhcp_start": "192.168.2.2",[0m
+[0;32m                "ip": "192.168.2.1",[0m
+[0;32m                "name": "AH_JA_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "AH_JA"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.3.0/24",[0m
+[0;32m                "dhcp_end": "192.168.3.254",[0m
+[0;32m                "dhcp_start": "192.168.3.2",[0m
+[0;32m                "ip": "192.168.3.1",[0m
+[0;32m                "name": "AH_IN_S2",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "AH_IN"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.4.0/24",[0m
+[0;32m                "dhcp_end": "192.168.4.254",[0m
+[0;32m                "dhcp_start": "192.168.4.2",[0m
+[0;32m                "ip": "192.168.4.1",[0m
+[0;32m                "name": "AH_FR_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "AH_FR"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "vpcs": [[0m
+[0;32m            {[0m
+[0;32m                "name": "AH_IN",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "AH_JA",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "AH_FR",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            }[0m
+[0;32m        ][0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create bridges for each subnet] ******************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Activate bridges for each subnet] ****************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Create veth pair for each subnet] ****************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Bring up veth0 interface in the root namespace] **************************
+[0;33mchanged: [localhost][0m
+
+TASK [Move one end of the veth pair (veth1) to the corresponding namespace] ****
+[0;33mchanged: [localhost][0m
+
+TASK [Bring up veth1 interface in its respective namespace] ********************
+[0;33mchanged: [localhost][0m
+
+TASK [Attach veth0 to the bridge in default namespace] *************************
+[0;33mchanged: [localhost][0m
+
+TASK [Assign IP addresses to veth1 interfaces within namespaces] ***************
+[0;33mchanged: [localhost][0m
+
+TASK [Setup DHCP on veth1 interfaces within namespaces] ************************
+[0;33mchanged: [localhost][0m
+
+TASK [Fetch IP address for the interface based on location] ********************
+[0;32mok: [localhost][0m
+
+TASK [Set vpc_veth1_ip variable] ***********************************************
+[0;32mok: [localhost][0m
+
+TASK [Debug vpc_veth1_ip] ******************************************************
+[0;32mok: [localhost] => {[0m
+[0;32m    "vpc_veth1_ip": "192.168.100.190"[0m
+[0;32m}[0m
+
+TASK [Add route in root namespace to reach VPC subnet via vpc_veth1 IP] ********
+[0;33mchanged: [localhost][0m
+
+TASK [Set up forwarding rules for each subnet interface within the VPC] ********
+[0;33mchanged: [localhost][0m
+
+TASK [Set up forwarding rules for traffic from subnet interfaces to the VPC's external interface] ***
+[0;33mchanged: [localhost][0m
+
+PLAY RECAP *********************************************************************
+[0;33mlocalhost[0m                  : [0;32mok=17  [0m [0;33mchanged=12  [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

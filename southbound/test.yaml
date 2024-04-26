@@ -1,0 +1,10 @@
+- name: Get list of containers starting with user-defined prefix
+  hosts: localhost
+  tasks:
+    - name: Get list of containers and filter
+      shell: docker exec rs_ei_ir_container1 sh -c "ip addr show dev rs_ei_ir_r1 | awk '/inet / {print $2}' | cut -d'/' -f1 | sed 's/inet//g' | tr -d ' '"
+      register: rs_dj_containers
+
+    - debug:
+        var: rs_dj_containers.stdout_lines
+

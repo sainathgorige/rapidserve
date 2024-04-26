@@ -1,0 +1,18 @@
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+
+PLAY [Deploy Infrastructure with Docker Containers for Edge and Origin Servers] ***
+
+TASK [Extract parts of the container name] *************************************
+[0;32mok: [localhost] => {"ansible_facts": {"short_name": "ta_ir1"}, "changed": false}[0m
+
+TASK [Check if network namespace exists] ***************************************
+[0;33mchanged: [localhost] => {"changed": true, "cmd": ["ip", "netns", "list", "|", "grep", "-w", "ta_in"], "delta": "0:00:00.014558", "end": "2024-04-22 01:39:09.389938", "failed_when_result": false, "msg": "", "rc": 0, "start": "2024-04-22 01:39:09.375380", "stderr": "", "stderr_lines": [], "stdout": "ta_ge (id: 57)\ndns_ns (id: 56)\ndns_container1 (id: 55)\nLC2 (id: 23)\nLC1 (id: 22)\nCS5 (id: 32)\nCS4 (id: 27)\nCS3 (id: 26)\nCS2 (id: 25)\nCS1 (id: 24)\nbridge3_n\nbridge1_n (id: 53)\norigin_container1 (id: 52)\norigin_vpc (id: 15)\ncustomnginx-container (id: 51)\nne_in_edge_2 (id: 50)\norigin_origin_1 (id: 49)\nka_in_container2 (id: 47)\nka_in_container1 (id: 46)\nka_in (id: 45)\nho_in_container1 (id: 44)\nHO_IN (id: 43)\ndi_in_container1 (id: 42)\nDI_IN (id: 41)\nKI_FR (id: 40)\nKI_JA (id: 39)\nKI_IN (id: 38)\nne_in_container1 (id: 35)\nne_ja_container1 (id: 34)\nNE_IN (id: 37)\nNE_JA (id: 36)\nnf_in_edge_1\nAH_FR (id: 31)\nAH_JA (id: 30)\nAH_IN (id: 28)\ndns_vpc (id: 21)\nNSTransit (id: 6)\nNS3 (id: 5)\nNS2 (id: 4)\nNS1 (id: 3)\nblue (id: 1)\nred (id: 0)\nproviderns (id: 2)\nmynamespace", "stdout_lines": ["ta_ge (id: 57)", "dns_ns (id: 56)", "dns_container1 (id: 55)", "LC2 (id: 23)", "LC1 (id: 22)", "CS5 (id: 32)", "CS4 (id: 27)", "CS3 (id: 26)", "CS2 (id: 25)", "CS1 (id: 24)", "bridge3_n", "bridge1_n (id: 53)", "origin_container1 (id: 52)", "origin_vpc (id: 15)", "customnginx-container (id: 51)", "ne_in_edge_2 (id: 50)", "origin_origin_1 (id: 49)", "ka_in_container2 (id: 47)", "ka_in_container1 (id: 46)", "ka_in (id: 45)", "ho_in_container1 (id: 44)", "HO_IN (id: 43)", "di_in_container1 (id: 42)", "DI_IN (id: 41)", "KI_FR (id: 40)", "KI_JA (id: 39)", "KI_IN (id: 38)", "ne_in_container1 (id: 35)", "ne_ja_container1 (id: 34)", "NE_IN (id: 37)", "NE_JA (id: 36)", "nf_in_edge_1", "AH_FR (id: 31)", "AH_JA (id: 30)", "AH_IN (id: 28)", "dns_vpc (id: 21)", "NSTransit (id: 6)", "NS3 (id: 5)", "NS2 (id: 4)", "NS1 (id: 3)", "blue (id: 1)", "red (id: 0)", "providerns (id: 2)", "mynamespace"]}[0m
+
+TASK [Fail if network namespace does not exist] ********************************
+[0;36mskipping: [localhost] => {"changed": false, "skip_reason": "Conditional result was False"}[0m
+
+TASK [Create NGINX configuration file from template for edge servers] **********
+[0;31mfatal: [localhost]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'server_type' is undefined. 'server_type' is undefined\n\nThe error appears to be in '/home/vmadm/demo/RapidServe/southbound/deploy_con.yaml': line 34, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n    - name: Create NGINX configuration file from template for edge servers\n      ^ here\n"}[0m
+
+PLAY RECAP *********************************************************************
+[0;31mlocalhost[0m                  : [0;32mok=2   [0m [0;33mchanged=1   [0m unreachable=0    [0;31mfailed=1   [0m [0;36mskipped=1   [0m rescued=0    ignored=0   

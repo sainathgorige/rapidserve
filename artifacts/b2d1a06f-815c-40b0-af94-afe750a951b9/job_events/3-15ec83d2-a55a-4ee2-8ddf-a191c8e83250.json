@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "15ec83d2-a55a-4ee2-8ddf-a191c8e83250", "counter": 3, "stdout": "\u001b[0;34m  configured module search path = ['/home/vmadm/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']\u001b[0m", "start_line": 2, "end_line": 3, "runner_ident": "b2d1a06f-815c-40b0-af94-afe750a951b9", "created": "2024-04-21T06:53:52.382532"}

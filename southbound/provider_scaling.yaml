@@ -1,0 +1,67 @@
+---
+# Play for VM1
+- name: Process on VM1
+  hosts: host1
+  become: yes
+  tasks:
+    - name: List all Docker containers starting with 'rs'
+      command: "docker ps --filter 'name=rs*' --format '{''{.Names}}'"
+      register: docker_list
+
+    - name: Extract unique container prefixes
+      set_fact:
+        unique_prefixes: "{{ unique_prefixes | default([]) + [item.split('_')[:3] | join('_')] }}"
+      loop: "{{ docker_list.stdout_lines }}"
+      when: item.startswith('rs')
+      
+
+    - name: Remove duplicates from list
+      set_fact:
+        list: "{{ unique_prefixes | default([]) | unique }}"
+
+
+    - name: Add customer-specific cron jobs on VM1
+      cron:
+        name: "Monitor script for {{ item }}"
+        user: vmadm
+        job: "for i in {1..6}; do /home/vmadm/demo/RapidServe/southbound/monitor.sh {{ item }} 10 30 0.75 1.0 >> /tmp/{{ item }}_scaling_monitor.log 2>&1; sleep 10; done"
+        minute: "*"
+        hour: "*"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        state: present
+      loop: "{{ list }}"
+
+# Play for VM2
+- name: Process on VM2
+  hosts: host2
+  become: yes
+  tasks:
+    - name: List all Docker containers starting with 'rs'
+      command: "docker ps --filter 'name=rs*' --format '{''{.Names}}'"
+      register: docker_list
+
+    - name: Extract unique container prefixes
+      set_fact:
+        unique_prefixes: "{{ unique_prefixes | default([]) + [item.split('_')[:3] | join('_')] }}"
+      loop: "{{ docker_list.stdout_lines }}"
+      when: item.startswith('rs')
+
+    - name: Remove duplicates from list
+      set_fact:
+        list: "{{ unique_prefixes | default([]) | unique }}"
+    
+
+    - name: Add customer-specific cron jobs on VM2
+      cron:
+        name: "Monitor script for {{ item }}"
+        user: vmadm
+        job: "for i in {1..6}; do /home/vmadm/demo/RapidServe/southbound/monitor.sh {{ item }} 10 30 0.75 1.0 >> /tmp/{{ item }}_scaling_monitor.log 2>&1; sleep 10; done"
+        minute: "*"
+        hour: "*"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        state: present
+      loop: "{{ list }}"

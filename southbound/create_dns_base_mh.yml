@@ -1,0 +1,245 @@
+- name: Deploy Origin Server with Network Setup
+  hosts: localhost
+  gather_facts: no
+  become: true
+  vars:
+    vpc_name: dns_ns
+    vm_ip: 192.168.254.2
+    ns_bridge_ip: 192.168.254.1
+    ns_ip: 192.168.253.2
+    root_ip: 192.168.253.1
+    bridge_name: dns
+    veth_ns_to_root: "dns_ns"
+    veth_root_to_ns: "dns_root"
+    veth_ns_to_bridge: "dns_nsbr"
+    veth_bridge_to_ns: "dns_brins"
+
+  tasks:
+    - name: Create namespaces for each VPC
+      command: ip netns add {{ vpc_name }}
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Create bridge in root namespace
+      command: ip link add name {{ bridge_name }}_br type bridge
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Set bridge up
+      command: ip link set {{  bridge_name }}_br up
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Create veth pair for NS to root connectivity
+      command: ip link add {{ veth_root_to_ns }} type veth peer name {{ veth_ns_to_root }}
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Attach one end of veth to the network namespace
+      command: ip link set {{ veth_ns_to_root }} netns {{ vpc_name }}
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Assign IP to veth in root namespace
+      command: ip addr add {{ root_ip }}/24 dev {{ veth_root_to_ns }}
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Bring up veth in root namespace
+      command: ip link set {{ veth_root_to_ns }} up
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Assign IP to veth in network namespace
+      command: ip netns exec {{ vpc_name }} ip addr add {{ ns_ip }}/24 dev {{ veth_ns_to_root }}
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Bring up veth in network namespace
+      command: ip netns exec {{ vpc_name }} ip link set {{ veth_ns_to_root }} up
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Create veth pair for NS to bridge connectivity
+      command: ip link add {{ veth_ns_to_bridge }} type veth peer name {{ veth_bridge_to_ns }}
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Attach one end of the veth pair to the network namespace
+      command: ip link set {{ veth_ns_to_bridge }} netns {{ vpc_name }}
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Connect the other end to the bridge
+      command: ip link set {{ veth_bridge_to_ns }} master {{ bridge_name }}_br
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Assign IP to veth in network namespace for bridge connection
+      command: ip netns exec {{ vpc_name }} ip addr add {{ ns_bridge_ip }}/24 dev {{ veth_ns_to_bridge }}
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Bring up the veth in network namespace for bridge connection
+      command: ip netns exec {{ vpc_name }} ip link set {{ veth_ns_to_bridge }} up
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Bring up the veth on the bridge side
+      command: ip link set {{ veth_bridge_to_ns }} up
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Setup DHCP on origin_nsbridge within the origin_ns namespace
+      command: >
+        ip netns exec {{ vpc_name }} dnsmasq
+        --interface={{ veth_ns_to_bridge }}
+        --bind-interfaces
+        --dhcp-range=192.168.254.2,192.168.254.255,24h
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+    
+    - name: Activate loopback interface in the network namespace
+      command: ip netns exec {{ vpc_name }} ip link set lo up
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Enable IP forwarding in the root namespace
+      command: sysctl -w net.ipv4.ip_forward=1
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Setup NAT and IP masquerading for packets leaving origin_ns
+      command: ip netns exec {{ vpc_name }} iptables -t nat -A POSTROUTING -o {{ veth_ns_to_root }} -j MASQUERADE
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Allow forwarding from origin_ns to the bridge interface
+      command: ip netns exec {{ vpc_name }} iptables -A FORWARD -i {{ veth_ns_to_bridge }} -o {{ veth_ns_to_root }} -j ACCEPT
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Allow established and related connections back to the namespace
+      command: ip netns exec {{ vpc_name }} iptables -A FORWARD -i {{ veth_ns_to_root }} -o {{ veth_ns_to_bridge }} -m state --state RELATED,ESTABLISHED -j ACCEPT
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Add default route in dns_ns namespace
+      command: ip netns exec {{ vpc_name }} ip route add default via {{ root_ip }}
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Add route in root namespace to reach 10.10.20.0/24 subnet
+      command: ip route add 192.168.254.0/24 via {{ ns_ip }}
+      delegate_to: "{{ item }}"
+      with_items:
+        - "192.168.38.9"
+        - "192.168.38.8"
+
+    - name: Create DNS container in Host1
+      command: ansible-playbook -vvvv create_dns_containers_mh.yml --extra-vars 'tenant_name="test" server_type=dns container_name=dns_cont_host1 container_gateway_ip={{ ns_bridge_ip }} vpc_name=dns subnets=["{{ bridge_name }}"] wantlist=True' -i host_inventory_asia.ini
+
+    - name: Create DNS container in Host2
+      command: ansible-playbook -vvvv create_dns_containers_mh.yml --extra-vars 'tenant_name="test" server_type=dns container_name=dns_cont_host2 container_gateway_ip={{ ns_bridge_ip }} vpc_name=dns subnets=["{{ bridge_name }}"] wantlist=True' -i host_inventory_europe.ini
+
+    - name: Setup named.conf.options for DNS logging on Host1
+      command: >
+        docker exec dns_cont_host1 bash -c "echo '{{ block }}' >> /etc/bind/named.conf.options"
+      vars:
+        block: |
+          logging {
+
+              channel stdout {
+                  stderr;
+                  severity debug;
+                  print-category no;
+                  print-severity no;
+                  print-time yes;
+              };
+            category security { stdout; };
+            category dnssec   { stdout; };
+            category default  { stdout; };
+            category queries  { stdout; };
+          };
+      delegate_to: 192.168.38.8
+
+    - name: Setup named.conf.options for DNS logging on Host2
+      command: >
+        docker exec dns_cont_host2 bash -c "echo '{{ block }}' >> /etc/bind/named.conf.options"
+      vars:
+        block: |
+          logging {
+
+              channel stdout {
+                  stderr;
+                  severity debug;
+                  print-category no;
+                  print-severity no;
+                  print-time yes;
+              };
+            category security { stdout; };
+            category dnssec   { stdout; };
+            category default  { stdout; };
+            category queries  { stdout; };
+          };
+      delegate_to: 192.168.38.9
+
+    - name: Toggle query logging on DNS container on Host1
+      command: docker exec dns_cont_host1 bash -c "rndc querylog"
+      delegate_to: 192.168.38.8
+
+    - name: Toggle query logging on DNS container on Host2
+      command: docker exec dns_cont_host2 bash -c "rndc querylog"
+      delegate_to: 192.168.38.9
+
+    - name: Restart BIND9 to apply changes on Host1
+      command: docker exec dns_cont_host1 bash -c "kill -HUP $(cat /var/run/named/named.pid)"
+      delegate_to: 192.168.38.8
+
+    - name: Restart BIND9 to apply changes on Host2
+      command: docker exec dns_cont_host2 bash -c "kill -HUP $(cat /var/run/named/named.pid)"
+      delegate_to: 192.168.38.9

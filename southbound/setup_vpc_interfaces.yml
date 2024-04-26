@@ -1,0 +1,60 @@
+- name: Get /30 subnet for current VPC
+  command: python3 subnetting.py
+  register: subnet_output
+
+- name: Debug subnet output
+  debug:
+    msg: "Subnet for {{ vpc.name }}: {{ subnet_output.stdout }}"
+
+- name: Create veth pair for current VPC
+  command: >
+    ip link add {{ vpc.name }}_veth0 type veth peer name {{ vpc.name }}_veth1
+
+- name: Activate veth0 in default namespace
+  command: "ip link set {{ vpc.name }}_veth0 up"
+
+- name: Assign IP to veth0 in the default namespace
+  command: >
+    ip addr add {{ subnet_output.stdout | ipaddr('network') | ipmath(1) }}/30 dev {{ vpc.name }}_veth0
+
+- name: Move one end of the veth pair (veth1) to the corresponding namespace
+  command: ip link set {{ vpc.name }}_veth1 netns {{ vpc.name }}
+
+- name: Assign IP to veth1 in the corresponding namespace
+  command: >
+    ip netns exec {{ vpc.name }} ip addr add {{ subnet_output.stdout | ipaddr('network') | ipmath(2) }}/30 dev {{ vpc.name }}_veth1
+
+- name: Activate veth1 in corresponding namespace
+  command: "ip netns exec {{ vpc.name }} ip link set {{ vpc.name }}_veth1 up"
+
+# - name: Add route in root namespace to reach VPC subnet via vpc_veth1 IP
+#   ignore_errors: true
+#   command: >
+#     ip route add {{ item.CIDR }} via {{ subnet_output.stdout | ipaddr('network') | ipmath(2) }}
+#   loop: "{{ vpc.subnets }}"
+#   loop_control:
+#     loop_var: item
+
+- name: Activate loopback interface in the network namespace
+  command: ip netns exec {{ vpc.name }} ip link set lo up
+
+
+- name: Add default route in VPC namespace via vpc_veth0 IP
+  command: >
+    ip netns exec {{ vpc.name }} ip route add default via {{ subnet_output.stdout | ipaddr('network') | ipmath(1) }}
+
+- name: Set up NAT for the VPC's external interface
+  command: ip netns exec {{ vpc.name }} iptables -t nat -A POSTROUTING -o {{ vpc.name }}_veth1 -j MASQUERADE
+
+# - name: Set up forwarding rules for each subnet interface within the VPC
+#   command: ip netns exec {{ vpc.name }} iptables -A FORWARD -i {{ vpc.name }}_veth1 -o {{ item.name }}_veth1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+#   loop: "{{ vpc.subnets }}"
+#   loop_control:
+#     loop_var: item
+
+# - name: Set up forwarding rules for traffic from subnet interfaces to the VPC's external interface
+#   command: ip netns exec {{ vpc.name }} iptables -A FORWARD -i {{ item.name }}_veth1 -o {{ vpc.name }}_veth1 -j ACCEPT
+#   loop: "{{ vpc.subnets }}"
+#   loop_control:
+#     loop_var: item
+

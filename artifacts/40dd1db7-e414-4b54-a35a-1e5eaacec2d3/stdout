@@ -1,0 +1,15 @@
+[0;34mNo config file found; using defaults[0m
+
+PLAY [Configure VXLAN Tunnels between VPCs in namespaces] **********************
+
+TASK [Gathering Facts] *********************************************************
+[0;32mok: [localhost][0m
+
+TASK [Initialize VNI] **********************************************************
+[0;32mok: [localhost] => {"ansible_facts": {"vni_counter": 1100}, "changed": false}[0m
+
+TASK [Create VXLAN Tunnels for each host1_vpc to each host2_vpc] ***************
+[0;36mskipping: [localhost] => {"changed": false, "skipped_reason": "No items in the list"}[0m
+
+PLAY RECAP *********************************************************************
+[0;32mlocalhost[0m                  : [0;32mok=2   [0m changed=0    unreachable=0    failed=0    [0;36mskipped=1   [0m rescued=0    ignored=0   

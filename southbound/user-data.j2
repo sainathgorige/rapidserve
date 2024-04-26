@@ -1,0 +1,50 @@
+#cloud-config
+bootcmd:
+  - echo "nameserver 8.8.8.8" > /etc/resolv.conf
+disable_root: false
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3ttzAq6NSC/s43UaygR3DcaHIhUd6qMZTonB2NmVGUw6fM261+1i0VigfiJHYe5l6Nh6QtNLvBzI980n+qL/WJQkiJ1KL3+VAK7k3RBsnEBuEqmrErX2JHTrXdh0J+L2Ly3tiI0hVATFsaNGbyLU04EmUyz9j7adknuU26/cFqxMjddlrGaBcDW4d7T522twV7vm8z9MOO+AcfcaJLOcE4+jYlu72w2pQz5znE1RGj0pfGqlcc7YdM/+dmvaQb1pssoc5NedwrWJ510Cqp5jABVz10jbvIsouC2ao0o+l1jNOI8fsddT5skf19IIW5t6GCgfVbOJ5Vbik6j1PBWFJ vmadm@lnVM08
+users:
+  - default
+  - name: root
+    lock_passwd: false
+    plain_text_passwd: 'admin'
+  - name: ubuntu
+    lock_passwd: false
+    plain_text_passwd: 'admin'
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens4:
+      dhcp4: true
+packages:
+  - traceroute
+  - nginx
+write_files:
+  - content: |
+      events {
+          worker_connections 1024;
+      }
+      http {
+          proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=my_cache:10m max_size=10g inactive=20s use_temp_path=off;
+          server {
+              listen 80;
+              location / {
+                  proxy_cache my_cache;
+                  proxy_pass http://{{ origin_server_ip }};
+                  proxy_set_header Host $host;
+                  proxy_cache_valid 200 302 20s;
+                  proxy_cache_valid 404 1m;
+                  add_header X-Cache-Status $upstream_cache_status;
+              }
+          }
+      }
+    path: /etc/nginx/nginx.conf
+    owner: root:root
+    permissions: '0644'
+runcmd:
+  - "for i in /sys/class/net/*; do intf=$(basename $i); if [ \"$intf\" != \"lo\" ]; then ip link set $intf up; dhclient $intf; fi; done"
+  - systemctl enable nginx
+  - systemctl start nginx
+

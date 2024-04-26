@@ -1,0 +1,822 @@
+[0;34mansible-playbook [core 2.14.2][0m
+[0;34m  config file = None[0m
+[0;34m  configured module search path = ['/home/vmadm/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules'][0m
+[0;34m  ansible python module location = /usr/lib/python3/dist-packages/ansible[0m
+[0;34m  ansible collection location = /home/vmadm/.ansible/collections:/usr/share/ansible/collections[0m
+[0;34m  executable location = /usr/bin/ansible-playbook[0m
+[0;34m  python version = 3.11.4 (main, Dec  7 2023, 15:43:41) [GCC 12.3.0] (/usr/bin/python3)[0m
+[0;34m  jinja version = 3.1.2[0m
+[0;34m  libyaml = True[0m
+[0;34mNo config file found; using defaults[0m
+[0;34mhost_list declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mscript declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mauto declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34myaml declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mini declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mtoml declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+[0;34mSkipping callback 'awx_display', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'default', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'minimal', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'oneline', as we already have a stdout callback.[0m
+
+PLAYBOOK: deploy_subnet.yaml ***************************************************
+[0;34m1 plays in deploy_subnet.yaml[0m
+
+PLAY [Deploy subnet Infrastructure with bridges and Veth Pairs] ****************
+
+TASK [Parse retrieved data] ****************************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:8[0m
+[0;32mok: [localhost] => {[0m
+[0;32m    "ansible_facts": {[0m
+[0;32m        "tenant_data_parsed": {[0m
+[0;32m            "containers": [[0m
+[0;32m                {[0m
+[0;32m                    "container_state": "requested",[0m
+[0;32m                    "name": "ki_in_container1",[0m
+[0;32m                    "subnets": [[0m
+[0;32m                        "KI_IN_S1",[0m
+[0;32m                        "KI_IN_S2"[0m
+[0;32m                    ],[0m
+[0;32m                    "vpc": "KI_IN"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "container_state": "requested",[0m
+[0;32m                    "name": "ki_ja_container1",[0m
+[0;32m                    "subnets": [[0m
+[0;32m                        "KI_JA_S1"[0m
+[0;32m                    ],[0m
+[0;32m                    "vpc": "KI_JA"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "container_state": "requested",[0m
+[0;32m                    "name": "ki_ja_container2",[0m
+[0;32m                    "subnets": [[0m
+[0;32m                        "KI_JA_S1"[0m
+[0;32m                    ],[0m
+[0;32m                    "vpc": "KI_JA"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "name": "kiki",[0m
+[0;32m            "numberOfVpcs": "3",[0m
+[0;32m            "state": "requested",[0m
+[0;32m            "subnets": [[0m
+[0;32m                {[0m
+[0;32m                    "CIDR": "192.168.10.0/24",[0m
+[0;32m                    "dhcp_end": "192.168.10.254",[0m
+[0;32m                    "dhcp_start": "192.168.10.2",[0m
+[0;32m                    "ip": "192.168.10.1",[0m
+[0;32m                    "name": "KI_IN_S1",[0m
+[0;32m                    "subnet_state": "active",[0m
+[0;32m                    "vpc": "KI_IN"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "CIDR": "192.168.20.0/24",[0m
+[0;32m                    "dhcp_end": "192.168.20.254",[0m
+[0;32m                    "dhcp_start": "192.168.20.2",[0m
+[0;32m                    "ip": "192.168.20.1",[0m
+[0;32m                    "name": "KI_JA_S1",[0m
+[0;32m                    "subnet_state": "requested",[0m
+[0;32m                    "vpc": "KI_JA"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "CIDR": "192.168.30.0/24",[0m
+[0;32m                    "dhcp_end": "192.168.30.254",[0m
+[0;32m                    "dhcp_start": "192.168.30.2",[0m
+[0;32m                    "ip": "192.168.30.1",[0m
+[0;32m                    "name": "KI_IN_S2",[0m
+[0;32m                    "subnet_state": "requested",[0m
+[0;32m                    "vpc": "KI_IN"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "KI_IN",[0m
+[0;32m                    "vpc_state": "active"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "name": "KI_JA",[0m
+[0;32m                    "vpc_state": "active"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "name": "KI_FR",[0m
+[0;32m                    "vpc_state": "active"[0m
+[0;32m                }[0m
+[0;32m            ][0m
+[0;32m        }[0m
+[0;32m    },[0m
+[0;32m    "changed": false[0m
+[0;32m}[0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:12[0m
+[0;32mok: [localhost] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "containers": [[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ki_in_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "KI_IN_S1",[0m
+[0;32m                    "KI_IN_S2"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "KI_IN"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ki_ja_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "KI_JA_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "KI_JA"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ki_ja_container2",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "KI_JA_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "KI_JA"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "name": "kiki",[0m
+[0;32m        "numberOfVpcs": "3",[0m
+[0;32m        "state": "requested",[0m
+[0;32m        "subnets": [[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.10.0/24",[0m
+[0;32m                "dhcp_end": "192.168.10.254",[0m
+[0;32m                "dhcp_start": "192.168.10.2",[0m
+[0;32m                "ip": "192.168.10.1",[0m
+[0;32m                "name": "KI_IN_S1",[0m
+[0;32m                "subnet_state": "active",[0m
+[0;32m                "vpc": "KI_IN"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.20.0/24",[0m
+[0;32m                "dhcp_end": "192.168.20.254",[0m
+[0;32m                "dhcp_start": "192.168.20.2",[0m
+[0;32m                "ip": "192.168.20.1",[0m
+[0;32m                "name": "KI_JA_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "KI_JA"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.30.0/24",[0m
+[0;32m                "dhcp_end": "192.168.30.254",[0m
+[0;32m                "dhcp_start": "192.168.30.2",[0m
+[0;32m                "ip": "192.168.30.1",[0m
+[0;32m                "name": "KI_IN_S2",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "KI_IN"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "vpcs": [[0m
+[0;32m            {[0m
+[0;32m                "name": "KI_IN",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "KI_JA",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "KI_FR",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            }[0m
+[0;32m        ][0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create bridges for each subnet] ******************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:16[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675156.5332181-3401360-268939911378414 `" && echo ansible-tmp-1713675156.5332181-3401360-268939911378414="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675156.5332181-3401360-268939911378414 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmpyiqwsnqn TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675156.5332181-3401360-268939911378414/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675156.5332181-3401360-268939911378414/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675156.5332181-3401360-268939911378414/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-fnyrgiwrwqfsdykvlzsirndnlkghafjt ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675156.5332181-3401360-268939911378414/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675156.5332181-3401360-268939911378414/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "add",[0m
+[0;33m        "KI_JA_S1_br",[0m
+[0;33m        "type",[0m
+[0;33m        "bridge"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.020258",[0m
+[0;33m    "end": "2024-04-21 04:52:36.968251",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip link add KI_JA_S1_br type bridge",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:36.947993",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Activate bridges for each subnet] ****************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:22[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.1248415-3401414-170952934685877 `" && echo ansible-tmp-1713675157.1248415-3401414-170952934685877="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.1248415-3401414-170952934685877 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmpayk8_rfd TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.1248415-3401414-170952934685877/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.1248415-3401414-170952934685877/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.1248415-3401414-170952934685877/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-bmeffvrpdrpkfkbkslwtorezbwfnkzsw ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.1248415-3401414-170952934685877/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.1248415-3401414-170952934685877/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "set",[0m
+[0;33m        "KI_JA_S1_br",[0m
+[0;33m        "up"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.016237",[0m
+[0;33m    "end": "2024-04-21 04:52:37.443272",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip link set KI_JA_S1_br up",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:37.427035",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Create veth pair for each subnet] ****************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:30[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.5766416-3401534-169418606164848 `" && echo ansible-tmp-1713675157.5766416-3401534-169418606164848="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.5766416-3401534-169418606164848 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmp29n5n269 TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.5766416-3401534-169418606164848/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.5766416-3401534-169418606164848/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.5766416-3401534-169418606164848/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-pprpirgebzrkxhqrrgxqbqlyxhkubpwl ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.5766416-3401534-169418606164848/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675157.5766416-3401534-169418606164848/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "add",[0m
+[0;33m        "KI_JA_S1_veth0",[0m
+[0;33m        "type",[0m
+[0;33m        "veth",[0m
+[0;33m        "peer",[0m
+[0;33m        "name",[0m
+[0;33m        "KI_JA_S1_veth1"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.021280",[0m
+[0;33m    "end": "2024-04-21 04:52:37.891784",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip link add KI_JA_S1_veth0 type veth peer name KI_JA_S1_veth1\n",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:37.870504",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Bring up veth0 interface in the root namespace] **************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:45[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.0367937-3401628-66279109930638 `" && echo ansible-tmp-1713675158.0367937-3401628-66279109930638="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.0367937-3401628-66279109930638 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmp1qbpbjwa TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.0367937-3401628-66279109930638/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.0367937-3401628-66279109930638/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.0367937-3401628-66279109930638/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-imsbfbhjstxlnndoxhepkkajandoyvcj ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.0367937-3401628-66279109930638/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.0367937-3401628-66279109930638/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "set",[0m
+[0;33m        "KI_JA_S1_veth0",[0m
+[0;33m        "up"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.010027",[0m
+[0;33m    "end": "2024-04-21 04:52:38.295999",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip link set KI_JA_S1_veth0 up",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:38.285972",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Move one end of the veth pair (veth1) to the corresponding namespace] ****
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:59[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.4244351-3401734-91403017390007 `" && echo ansible-tmp-1713675158.4244351-3401734-91403017390007="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.4244351-3401734-91403017390007 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmp7se_rvja TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.4244351-3401734-91403017390007/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.4244351-3401734-91403017390007/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.4244351-3401734-91403017390007/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-ywexydpmzqgtkydbhkudzstrmjyfldru ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.4244351-3401734-91403017390007/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.4244351-3401734-91403017390007/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "set",[0m
+[0;33m        "KI_JA_S1_veth1",[0m
+[0;33m        "netns",[0m
+[0;33m        "KI_JA"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.034959",[0m
+[0;33m    "end": "2024-04-21 04:52:38.752442",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip link set KI_JA_S1_veth1 netns KI_JA",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:38.717483",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Bring up veth1 interface in its respective namespace] ********************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:73[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.8918161-3401811-163137248322482 `" && echo ansible-tmp-1713675158.8918161-3401811-163137248322482="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.8918161-3401811-163137248322482 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmp9akai_sx TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.8918161-3401811-163137248322482/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.8918161-3401811-163137248322482/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.8918161-3401811-163137248322482/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-ysqvkcujmynxddsnawayitmlxqdlndmv ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.8918161-3401811-163137248322482/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675158.8918161-3401811-163137248322482/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "exec",[0m
+[0;33m        "KI_JA",[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "set",[0m
+[0;33m        "KI_JA_S1_veth1",[0m
+[0;33m        "up"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.020799",[0m
+[0;33m    "end": "2024-04-21 04:52:39.213074",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns exec KI_JA ip link set KI_JA_S1_veth1 up",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:39.192275",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Attach veth0 to the bridge in default namespace] *************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:87[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.3405275-3401882-154433636906869 `" && echo ansible-tmp-1713675159.3405275-3401882-154433636906869="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.3405275-3401882-154433636906869 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmpwkivczmm TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.3405275-3401882-154433636906869/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.3405275-3401882-154433636906869/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.3405275-3401882-154433636906869/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-srgvyuqprobhbnresqkxpyjvdmfkyvej ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.3405275-3401882-154433636906869/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.3405275-3401882-154433636906869/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "set",[0m
+[0;33m        "KI_JA_S1_veth0",[0m
+[0;33m        "master",[0m
+[0;33m        "KI_JA_S1_br"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.017284",[0m
+[0;33m    "end": "2024-04-21 04:52:39.687323",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip link set KI_JA_S1_veth0 master KI_JA_S1_br\n",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:39.670039",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Assign IP addresses to veth1 interfaces within namespaces] ***************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:102[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.812531-3401950-121115152315454 `" && echo ansible-tmp-1713675159.812531-3401950-121115152315454="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.812531-3401950-121115152315454 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmpip1nftn7 TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.812531-3401950-121115152315454/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.812531-3401950-121115152315454/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.812531-3401950-121115152315454/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-ihirjutotmjhbnchlrhudajaxwshujce ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.812531-3401950-121115152315454/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675159.812531-3401950-121115152315454/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "exec",[0m
+[0;33m        "KI_JA",[0m
+[0;33m        "ip",[0m
+[0;33m        "addr",[0m
+[0;33m        "add",[0m
+[0;33m        "192.168.20.1/24",[0m
+[0;33m        "dev",[0m
+[0;33m        "KI_JA_S1_veth1"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.019325",[0m
+[0;33m    "end": "2024-04-21 04:52:40.141377",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns exec KI_JA ip addr add 192.168.20.1/24 dev KI_JA_S1_veth1\n",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:40.122052",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Setup DHCP on veth1 interfaces within namespaces] ************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:117[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.2645347-3402042-253627274082098 `" && echo ansible-tmp-1713675160.2645347-3402042-253627274082098="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.2645347-3402042-253627274082098 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmprnx91aue TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.2645347-3402042-253627274082098/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.2645347-3402042-253627274082098/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.2645347-3402042-253627274082098/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-mtmeshwvmyzgudetkbyjbgeapcswthbw ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.2645347-3402042-253627274082098/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.2645347-3402042-253627274082098/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "exec",[0m
+[0;33m        "KI_JA",[0m
+[0;33m        "dnsmasq",[0m
+[0;33m        "--interface=KI_JA_S1_veth1",[0m
+[0;33m        "--bind-interfaces",[0m
+[0;33m        "--dhcp-range=192.168.20.2,192.168.20.254,24h",[0m
+[0;33m        "--except-interface=lo"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.022922",[0m
+[0;33m    "end": "2024-04-21 04:52:40.581700",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns exec KI_JA dnsmasq --interface=KI_JA_S1_veth1 --bind-interfaces --dhcp-range=192.168.20.2,192.168.20.254,24h --except-interface=lo\n",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:40.558778",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Fetch IP address for the interface based on location] ********************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:141[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.705947-3402074-198648788898328 `" && echo ansible-tmp-1713675160.705947-3402074-198648788898328="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.705947-3402074-198648788898328 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmpjdsm67lo TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.705947-3402074-198648788898328/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.705947-3402074-198648788898328/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.705947-3402074-198648788898328/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-ognmvwohpwmyoppakkrlihxowrwtpifb ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.705947-3402074-198648788898328/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675160.705947-3402074-198648788898328/ > /dev/null 2>&1 && sleep 0'[0m
+[0;32mok: [localhost] => {[0m
+[0;32m    "changed": false,[0m
+[0;32m    "cmd": "ip netns exec KI_JA ip -o -4 addr show KI_JA_veth1 | awk '{print $4}' | cut -d/ -f1\n",[0m
+[0;32m    "delta": "0:00:00.017990",[0m
+[0;32m    "end": "2024-04-21 04:52:41.026808",[0m
+[0;32m    "invocation": {[0m
+[0;32m        "module_args": {[0m
+[0;32m            "_raw_params": "ip netns exec KI_JA ip -o -4 addr show KI_JA_veth1 | awk '{print $4}' | cut -d/ -f1\n",[0m
+[0;32m            "_uses_shell": true,[0m
+[0;32m            "argv": null,[0m
+[0;32m            "chdir": null,[0m
+[0;32m            "creates": null,[0m
+[0;32m            "executable": null,[0m
+[0;32m            "removes": null,[0m
+[0;32m            "stdin": null,[0m
+[0;32m            "stdin_add_newline": true,[0m
+[0;32m            "strip_empty_ends": true[0m
+[0;32m        }[0m
+[0;32m    },[0m
+[0;32m    "msg": "",[0m
+[0;32m    "rc": 0,[0m
+[0;32m    "start": "2024-04-21 04:52:41.008818",[0m
+[0;32m    "stderr": "",[0m
+[0;32m    "stderr_lines": [],[0m
+[0;32m    "stdout": "192.168.100.222",[0m
+[0;32m    "stdout_lines": [[0m
+[0;32m        "192.168.100.222"[0m
+[0;32m    ][0m
+[0;32m}[0m
+
+TASK [Set vpc_veth1_ip variable] ***********************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:147[0m
+[0;32mok: [localhost] => {[0m
+[0;32m    "ansible_facts": {[0m
+[0;32m        "vpc_veth1_ip": "192.168.100.222"[0m
+[0;32m    },[0m
+[0;32m    "changed": false[0m
+[0;32m}[0m
+
+TASK [Debug vpc_veth1_ip] ******************************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:151[0m
+[0;32mok: [localhost] => {[0m
+[0;32m    "vpc_veth1_ip": "192.168.100.222"[0m
+[0;32m}[0m
+
+TASK [Add route in root namespace to reach VPC subnet via vpc_veth1 IP] ********
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:155[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.243939-3402111-20525229291970 `" && echo ansible-tmp-1713675161.243939-3402111-20525229291970="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.243939-3402111-20525229291970 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmprffs9wm8 TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.243939-3402111-20525229291970/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.243939-3402111-20525229291970/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.243939-3402111-20525229291970/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-fxlcyxgnslensspilqgzkibdowimpdfh ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.243939-3402111-20525229291970/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.243939-3402111-20525229291970/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "route",[0m
+[0;33m        "add",[0m
+[0;33m        "192.168.20.0/24",[0m
+[0;33m        "via",[0m
+[0;33m        "192.168.100.222"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.021557",[0m
+[0;33m    "end": "2024-04-21 04:52:41.546556",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip route add 192.168.20.0/24 via 192.168.100.222\n",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:41.524999",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Set up forwarding rules for each subnet interface within the VPC] ********
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:163[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.6805422-3402141-185535404179052 `" && echo ansible-tmp-1713675161.6805422-3402141-185535404179052="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.6805422-3402141-185535404179052 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmp5lt5t8zc TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.6805422-3402141-185535404179052/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.6805422-3402141-185535404179052/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.6805422-3402141-185535404179052/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-xbnvdstqazpipjcmntyntwjpzjyjvjue ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.6805422-3402141-185535404179052/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675161.6805422-3402141-185535404179052/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "exec",[0m
+[0;33m        "KI_JA",[0m
+[0;33m        "iptables",[0m
+[0;33m        "-A",[0m
+[0;33m        "FORWARD",[0m
+[0;33m        "-i",[0m
+[0;33m        "KI_JA_veth1",[0m
+[0;33m        "-o",[0m
+[0;33m        "KI_JA_S1_veth1",[0m
+[0;33m        "-m",[0m
+[0;33m        "state",[0m
+[0;33m        "--state",[0m
+[0;33m        "RELATED,ESTABLISHED",[0m
+[0;33m        "-j",[0m
+[0;33m        "ACCEPT"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.015285",[0m
+[0;33m    "end": "2024-04-21 04:52:42.005769",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns exec KI_JA iptables -A FORWARD -i KI_JA_veth1 -o KI_JA_S1_veth1 -m state --state RELATED,ESTABLISHED -j ACCEPT",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:41.990484",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Set up forwarding rules for traffic from subnet interfaces to the VPC's external interface] ***
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_subnet.yaml:176[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675162.1188412-3402171-148800912402042 `" && echo ansible-tmp-1713675162.1188412-3402171-148800912402042="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713675162.1188412-3402171-148800912402042 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3401352oj0g4c2w/tmpheexeoz7 TO /home/vmadm/.ansible/tmp/ansible-tmp-1713675162.1188412-3402171-148800912402042/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713675162.1188412-3402171-148800912402042/ /home/vmadm/.ansible/tmp/ansible-tmp-1713675162.1188412-3402171-148800912402042/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-eapolisqxusmsustwyxdkmnledrdgbjo ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713675162.1188412-3402171-148800912402042/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713675162.1188412-3402171-148800912402042/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "exec",[0m
+[0;33m        "KI_JA",[0m
+[0;33m        "iptables",[0m
+[0;33m        "-A",[0m
+[0;33m        "FORWARD",[0m
+[0;33m        "-i",[0m
+[0;33m        "KI_JA_S1_veth1",[0m
+[0;33m        "-o",[0m
+[0;33m        "KI_JA_veth1",[0m
+[0;33m        "-j",[0m
+[0;33m        "ACCEPT"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.013681",[0m
+[0;33m    "end": "2024-04-21 04:52:42.426397",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns exec KI_JA iptables -A FORWARD -i KI_JA_S1_veth1 -o KI_JA_veth1 -j ACCEPT",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 04:52:42.412716",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+PLAY RECAP *********************************************************************
+[0;33mlocalhost[0m                  : [0;32mok=17  [0m [0;33mchanged=12  [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

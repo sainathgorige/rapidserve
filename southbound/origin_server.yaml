@@ -1,0 +1,23 @@
+---
+- name: Cleanup Cache on Edge Servers
+  hosts: edge_vm # Define or dynamically create this group based on your script's output
+  become: yes # Use sudo for the following tasks
+
+  tasks:
+    - name: Remove Nginx cache directory
+      ansible.builtin.file:
+        path: /var/cache/nginx
+        state: absent
+    
+    - name: Reload Nginx to apply changes
+      ansible.builtin.systemd:
+        name: nginx
+        state: reloaded
+
+    - name: Run curl on localhost
+      ansible.builtin.shell: curl localhost
+      register: curl_response
+
+    - name: Print curl response
+      ansible.builtin.debug:
+        msg: "{{ curl_response.stdout }}"

@@ -1,0 +1,135 @@
+[0;34mNo config file found; using defaults[0m
+
+PLAY [Deploy subnet Infrastructure with bridges and Veth Pairs] ****************
+
+TASK [Parse retrieved data] ****************************************************
+[0;32mok: [192.168.38.8] => {"ansible_facts": {"tenant_data_parsed": {"containers": [{"container_state": "requested", "name": "rs_gr_sw_container1", "subnets": ["rs_gr_sw_S1", "rs_gr_sw_S2"], "vpc": "rs_gr"}, {"container_state": "requested", "name": "rs_ir_sw_container1", "subnets": ["rs_ir_sw_S1"], "vpc": "rs_ir"}, {"container_state": "requested", "name": "rs_ba_sw_container1", "subnets": ["rs_ba_sw_S1"], "vpc": "rs_ba"}, {"container_state": "requested", "name": "rs_th_sw_container1", "subnets": ["rs_th_sw_S1"], "vpc": "rs_th"}], "domain_name": "swathi.cdn.com", "existing_containers": [{"public_ips": "192.168.100.110", "region": "india"}, {"public_ips": "192.168.100.122", "region": "france"}], "name": "swathi", "numberOfVpcs": "4", "origin_ip": "1.1.1.1", "origin_replication_region": "ireland", "origin_url": "sw_in_cont1", "subnets": [{"CIDR": "192.168.91.0/24", "dhcp_end": "192.168.91.254", "dhcp_start": "192.168.91.2", "ip": "192.168.91.1", "name": "rs_gr_sw_S1", "subnet_state": "requested", "vpc": "rs_ba"}, {"CIDR": "192.168.92.0/24", "dhcp_end": "192.168.92.254", "dhcp_start": "192.168.92.2", "ip": "192.168.92.1", "name": "rs_ir_sw_S1", "subnet_state": "requested", "vpc": "rs_ir"}, {"CIDR": "192.168.93.0/24", "dhcp_end": "192.168.93.254", "dhcp_start": "192.168.93.2", "ip": "192.168.93.1", "name": "rs_ba_sw_S1", "subnet_state": "requested", "vpc": "rs_gr"}, {"CIDR": "192.168.94.0/24", "dhcp_end": "192.168.94.254", "dhcp_start": "192.168.94.2", "ip": "192.168.94.1", "name": "rs_th_sw_S1", "subnet_state": "requested", "vpc": "rs_th"}, {"CIDR": "192.168.95.0/24", "dhcp_end": "192.168.95.254", "dhcp_start": "192.168.95.2", "ip": "192.168.95.1", "name": "rs_gr_sw_S2", "subnet_state": "requested", "vpc": "rs_gr"}], "tunnel_state": "requested", "vpcs": [{"name": "rs_gr", "vpc_state": "active"}, {"name": "rs_ir", "vpc_state": "active"}, {"name": "rs_ba", "vpc_state": "active"}, {"name": "rs_th", "vpc_state": "active"}]}}, "changed": false}[0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[0;32mok: [192.168.38.8] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "containers": [[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "rs_gr_sw_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "rs_gr_sw_S1",[0m
+[0;32m                    "rs_gr_sw_S2"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "rs_gr"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "rs_ir_sw_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "rs_ir_sw_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "rs_ir"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "rs_ba_sw_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "rs_ba_sw_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "rs_ba"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "rs_th_sw_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "rs_th_sw_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "rs_th"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "domain_name": "swathi.cdn.com",[0m
+[0;32m        "existing_containers": [[0m
+[0;32m            {[0m
+[0;32m                "public_ips": "192.168.100.110",[0m
+[0;32m                "region": "india"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "public_ips": "192.168.100.122",[0m
+[0;32m                "region": "france"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "name": "swathi",[0m
+[0;32m        "numberOfVpcs": "4",[0m
+[0;32m        "origin_ip": "1.1.1.1",[0m
+[0;32m        "origin_replication_region": "ireland",[0m
+[0;32m        "origin_url": "sw_in_cont1",[0m
+[0;32m        "subnets": [[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.91.0/24",[0m
+[0;32m                "dhcp_end": "192.168.91.254",[0m
+[0;32m                "dhcp_start": "192.168.91.2",[0m
+[0;32m                "ip": "192.168.91.1",[0m
+[0;32m                "name": "rs_gr_sw_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "rs_ba"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.92.0/24",[0m
+[0;32m                "dhcp_end": "192.168.92.254",[0m
+[0;32m                "dhcp_start": "192.168.92.2",[0m
+[0;32m                "ip": "192.168.92.1",[0m
+[0;32m                "name": "rs_ir_sw_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "rs_ir"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.93.0/24",[0m
+[0;32m                "dhcp_end": "192.168.93.254",[0m
+[0;32m                "dhcp_start": "192.168.93.2",[0m
+[0;32m                "ip": "192.168.93.1",[0m
+[0;32m                "name": "rs_ba_sw_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "rs_gr"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.94.0/24",[0m
+[0;32m                "dhcp_end": "192.168.94.254",[0m
+[0;32m                "dhcp_start": "192.168.94.2",[0m
+[0;32m                "ip": "192.168.94.1",[0m
+[0;32m                "name": "rs_th_sw_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "rs_th"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.95.0/24",[0m
+[0;32m                "dhcp_end": "192.168.95.254",[0m
+[0;32m                "dhcp_start": "192.168.95.2",[0m
+[0;32m                "ip": "192.168.95.1",[0m
+[0;32m                "name": "rs_gr_sw_S2",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "rs_gr"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "tunnel_state": "requested",[0m
+[0;32m        "vpcs": [[0m
+[0;32m            {[0m
+[0;32m                "name": "rs_gr",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "rs_ir",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "rs_ba",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "rs_th",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            }[0m
+[0;32m        ][0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create bridges for each subnet] ******************************************
+[0;31mfatal: [192.168.38.8]: FAILED! => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["ip", "link", "add", "rs_gr_sw_S1_br", "type", "bridge"], "delta": "0:00:00.013092", "end": "2024-04-24 19:09:20.808694", "msg": "non-zero return code", "rc": 2, "start": "2024-04-24 19:09:20.795602", "stderr": "RTNETLINK answers: File exists", "stderr_lines": ["RTNETLINK answers: File exists"], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;31m192.168.38.8[0m               : [0;32mok=2   [0m changed=0    unreachable=0    [0;31mfailed=1   [0m skipped=0    rescued=0    ignored=0   

@@ -1,0 +1,38 @@
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+[0;31mERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:[0m
+[0;31mJSON: Expecting value: line 1 column 1 (char 0)[0m
+[0;31m[0m
+[0;31mSyntax Error while loading YAML.[0m
+[0;31m  did not find expected key[0m
+[0;31m[0m
+[0;31mThe error appears to be in '/home/vmadm/demo/RapidServe/southbound/deploy_con.yaml': line 10, column 5, but may[0m
+[0;31mbe elsewhere in the file depending on the exact syntax problem.[0m
+[0;31m[0m
+[0;31mThe offending line appears to be:[0m
+[0;31m[0m
+[0;31m    # container_num: 1  # Base number for the container[0m
+[0;31m    server_type: "edge"  # 'edge' or 'origin'[0m
+[0;31m    ^ here[0m
+[0;31mThis one looks easy to fix. It seems that there is a value started[0m
+[0;31mwith a quote, and the YAML parser is expecting to see the line ended[0m
+[0;31mwith the same kind of quote. For instance:[0m
+[0;31m[0m
+[0;31m    when: "ok" in result.stdout[0m
+[0;31m[0m
+[0;31mCould be written as:[0m
+[0;31m[0m
+[0;31m   when: '"ok" in result.stdout'[0m
+[0;31m[0m
+[0;31mOr equivalently:[0m
+[0;31m[0m
+[0;31m   when: "'ok' in result.stdout"[0m
+[0;31mWe could be wrong, but this one looks like it might be an issue with[0m
+[0;31munbalanced quotes. If starting a value with a quote, make sure the[0m
+[0;31mline ends with the same set of quotes. For instance this arbitrary[0m
+[0;31mexample:[0m
+[0;31m[0m
+[0;31m    foo: "bad" "wolf"[0m
+[0;31m[0m
+[0;31mCould be written as:[0m
+[0;31m[0m
+[0;31m    foo: '"bad" "wolf"'[0m

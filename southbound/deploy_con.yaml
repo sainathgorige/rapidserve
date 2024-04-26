@@ -1,0 +1,117 @@
+---
+- name: Deploy Infrastructure with Docker Containers for Edge and Origin Servers
+  hosts: hostvms
+  gather_facts: no
+  become: True  # Enable privilege escalation
+  become_method: sudo  # Use sudo for privilege escalation
+
+  vars:
+    #container_num: 1  # Base number for the container
+    server_type: "edge"  # 'edge' or 'origin'
+    # vpc_name: "nf_in"
+    vm_ip: 10.10.10.10
+    # container_name: "rs_mo_gr_container1"  # Combined name for simplified use
+    # subnets: ["rs_mo_gr_S1"]  # List of bridge names
+    # hash_name: "{{ container_name | hash('sha1') }}"
+    # short_name: "{{ container_name }}"
+    # container_ip: 
+
+
+  tasks:
+    # - name: Extract parts of the container name
+    #   set_fact:
+    #     short_name: "{{ container_name[:4] + container_name[-2:] }}"
+    # - name: Check if network namespace exists
+    #   command: ip netns list | grep -w {{ vpc_name }}
+    #   register: ns_check
+    #   failed_when: ns_check.stdout == ""
+
+    # - name: Fail if network namespace does not exist
+    #   fail:
+    #     msg: "Namespace {{ vpc_name }} does not exist. Please run 'deploy_infra' to create the namespace first."
+    #   when: ns_check.stdout == ""
+
+    - name: Create NGINX configuration file from template for edge servers
+      template:
+        src: "nginx-{{ server_type }}.conf.j2"
+        dest: "{{ playbook_dir }}/nginx-{{ container_name }}.conf"
+
+    - name: Conditionally create index.html for origin servers
+      template:
+        src: "index.html.j2"
+        dest: "{{ playbook_dir }}/index.html"
+      when: server_type == 'origin'
+
+    - name: Build Docker image with custom NGINX config
+      community.docker.docker_image:
+        name: "{{ container_name }}"
+        tag: "latest"
+        build:
+          path: "{{ playbook_dir }}"
+          dockerfile: "Dockerfile-{{ server_type }}"
+          args:
+            NGINX_CONF: "nginx-{{ container_name }}.conf"
+          nocache: true
+          rm: true
+        state: present
+        source: build
+
+    - name: Create and start Docker container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ container_name }}:latest"
+        state: started
+        network_mode: none
+        tty: true
+        restart_policy: unless-stopped
+        capabilities:
+          - NET_ADMIN
+
+    - name: Get container PID
+      command: docker inspect --format '{''{.State.Pid}}' "{{ container_name }}"
+      register: docker_pid
+
+    - name: Link network namespace of container
+      command: ln -sf /proc/{{ docker_pid.stdout }}/ns/net /var/run/netns/{{ container_name }}
+    
+    - name: Configure network interfaces and veth pairs
+      shell: |
+        set -x
+        short_name_prefix="$(echo '{{ container_name }}' | cut -c1-8)"
+        short_name_suffix="$(echo '{{ container_name }}' | rev | cut -c1-2 | rev)"
+        short_name="${short_name_prefix}_${short_name_suffix}"
+        #short_name="$(echo '{{ container_name }}' | cut -c1-8)_$(echo '{{ container_name }}' | rev | cut -c1-2 | rev)"
+        # Create veth pair for bridge
+        ip link add ${short_name} type veth peer name v_${short_name}
+        # Bring up veth peer in host namespace for bridge
+        ip link set v_${short_name} up
+        # Attach veth interface to the bridge
+        ip link set v_${short_name} master {{item}}_br
+        # Assign container network interface to veth
+        ip link set ${short_name} netns '{{ container_name }}'
+        # Bring up container network interface in container namespace for bridge
+        ip netns exec '{{ container_name }}' ip link set ${short_name} up
+        # Start dhclient on container interface (Optional based on setup)
+        docker exec '{{ container_name }}' dhclient ${short_name}
+            # Check and add default route if not exists
+        IP_ADDR=$(docker exec '{{ container_name }}' ip addr show ${short_name} | grep 'inet ' | awk '{print $2}' | cut -d'/' -f1)
+        if [ -n "$IP_ADDR" ]; then
+          GATEWAY=$(echo $IP_ADDR | awk -F '.' '{printf "%d.%d.%d.1", $1, $2, $3}')
+          DEFAULT_ROUTE=$(docker exec '{{ container_name }}' ip route | grep default)
+          if [ -z "$DEFAULT_ROUTE" ]; then
+            docker exec '{{ container_name }}' ip route add default via $GATEWAY
+          fi
+        fi
+      loop: "{{ subnets }}"
+      register: network_setup
+      failed_when: "'Failed' in network_setup.stderr"
+
+
+    # - name: Assign IP address to the interface in container namespace for bridge {{ item }}
+    #   command: ip netns exec {{ container_name }} ip addr add {{ container_ip }}/24 dev {{ short_name }}
+    #   loop: "{{ subnets }}"
+    # - name: Add default route in container
+    #   command: "ip netns exec {{ container_name }} ip route add default via {{ container_gateway_ip }}"
+    #   loop: "{{ subnets }}"
+      
+        

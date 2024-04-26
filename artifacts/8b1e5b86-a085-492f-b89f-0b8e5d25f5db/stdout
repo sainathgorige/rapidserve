@@ -1,0 +1,11 @@
+[0;34mansible-playbook [core 2.14.2][0m
+[0;34m  config file = None[0m
+[0;34m  configured module search path = ['/home/vmadm/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules'][0m
+[0;34m  ansible python module location = /usr/lib/python3/dist-packages/ansible[0m
+[0;34m  ansible collection location = /home/vmadm/.ansible/collections:/usr/share/ansible/collections[0m
+[0;34m  executable location = /usr/bin/ansible-playbook[0m
+[0;34m  python version = 3.11.4 (main, Dec  7 2023, 15:43:41) [GCC 12.3.0] (/usr/bin/python3)[0m
+[0;34m  jinja version = 3.1.2[0m
+[0;34m  libyaml = True[0m
+[0;34mNo config file found; using defaults[0m
+[0;31mERROR! the playbook: deploy_vpc.yaml could not be found[0m

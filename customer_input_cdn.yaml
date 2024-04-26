@@ -1,0 +1,6 @@
+name: 'netflix' #Org name
+cdn: 
+  domainName: 'netflix.cdn.com'
+  location: 'NC'
+  originServerIP: '1.1.1.1'
+  originPort: '3060'

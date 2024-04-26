@@ -1,0 +1,820 @@
+[0;34mansible-playbook [core 2.14.2][0m
+[0;34m  config file = None[0m
+[0;34m  configured module search path = ['/home/vmadm/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules'][0m
+[0;34m  ansible python module location = /usr/lib/python3/dist-packages/ansible[0m
+[0;34m  ansible collection location = /home/vmadm/.ansible/collections:/usr/share/ansible/collections[0m
+[0;34m  executable location = /usr/bin/ansible-playbook[0m
+[0;34m  python version = 3.11.4 (main, Dec  7 2023, 15:43:41) [GCC 12.3.0] (/usr/bin/python3)[0m
+[0;34m  jinja version = 3.1.2[0m
+[0;34m  libyaml = True[0m
+[0;34mNo config file found; using defaults[0m
+[0;34mhost_list declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mscript declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mauto declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34myaml declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mini declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mtoml declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+[0;34mSkipping callback 'awx_display', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'default', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'minimal', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'oneline', as we already have a stdout callback.[0m
+
+PLAYBOOK: deploy_con.yaml ******************************************************
+[0;34m1 plays in deploy_con.yaml[0m
+
+PLAY [Deploy Infrastructure with Docker Containers for Edge and Origin Servers] ***
+
+TASK [Check if network namespace exists] ***************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:19[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.080502-3377395-119238851917125 `" && echo ansible-tmp-1713670702.080502-3377395-119238851917125="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.080502-3377395-119238851917125 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3377377x5bmp94n/tmpb9j0v463 TO /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.080502-3377395-119238851917125/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.080502-3377395-119238851917125/ /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.080502-3377395-119238851917125/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-rkudxptlormlwiabvndwknxvigduched ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.080502-3377395-119238851917125/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.080502-3377395-119238851917125/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "list",[0m
+[0;33m        "|",[0m
+[0;33m        "grep",[0m
+[0;33m        "-w",[0m
+[0;33m        "NE_JA"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.014398",[0m
+[0;33m    "end": "2024-04-21 03:38:22.636619",[0m
+[0;33m    "failed_when_result": false,[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns list | grep -w NE_JA",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 03:38:22.622221",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "nf_in_edge_1\nNE_IN (id: 33)\nNE_JA (id: 32)\nAH_FR (id: 31)\nAH_JA (id: 30)\nAH_IN (id: 28)\ndns_vpc (id: 21)\norigin_vpc (id: 20)\nNSTransit (id: 6)\nNS3 (id: 5)\nNS2 (id: 4)\nNS1 (id: 3)\nblue (id: 1)\nred (id: 0)\nproviderns (id: 2)\nmynamespace",[0m
+[0;33m    "stdout_lines": [[0m
+[0;33m        "nf_in_edge_1",[0m
+[0;33m        "NE_IN (id: 33)",[0m
+[0;33m        "NE_JA (id: 32)",[0m
+[0;33m        "AH_FR (id: 31)",[0m
+[0;33m        "AH_JA (id: 30)",[0m
+[0;33m        "AH_IN (id: 28)",[0m
+[0;33m        "dns_vpc (id: 21)",[0m
+[0;33m        "origin_vpc (id: 20)",[0m
+[0;33m        "NSTransit (id: 6)",[0m
+[0;33m        "NS3 (id: 5)",[0m
+[0;33m        "NS2 (id: 4)",[0m
+[0;33m        "NS1 (id: 3)",[0m
+[0;33m        "blue (id: 1)",[0m
+[0;33m        "red (id: 0)",[0m
+[0;33m        "providerns (id: 2)",[0m
+[0;33m        "mynamespace"[0m
+[0;33m    ][0m
+[0;33m}[0m
+
+TASK [Fail if network namespace does not exist] ********************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:24[0m
+[0;36mskipping: [localhost] => {[0m
+[0;36m    "changed": false,[0m
+[0;36m    "skip_reason": "Conditional result was False"[0m
+[0;36m}[0m
+
+TASK [Create NGINX configuration file from template for edge servers] **********
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:29[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811 `" && echo ansible-tmp-1713670702.7960513-3377428-64465680503811="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/stat.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3377377x5bmp94n/tmp5aoamme5 TO /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/AnsiballZ_stat.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/ /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/AnsiballZ_stat.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-lzwynanumgmmtxldhutntkkprkxmpiel ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/AnsiballZ_stat.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3377377x5bmp94n/tmp7ghy67t8/nginx.conf.j2 TO /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/source[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/ /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/source && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/copy.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3377377x5bmp94n/tmpqmi5vsm0 TO /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/AnsiballZ_copy.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/ /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/AnsiballZ_copy.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-uanwhfhmaknbylgllvdackshuhggdmax ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/AnsiballZ_copy.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "checksum": "217e957230bc6320243f911928353ae3042916be",[0m
+[0;33m    "dest": "/home/vmadm/demo/RapidServe/southbound/nginx-ne_ja_container1.conf",[0m
+[0;33m    "diff": [],[0m
+[0;33m    "gid": 0,[0m
+[0;33m    "group": "root",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_original_basename": "nginx.conf.j2",[0m
+[0;33m            "attributes": null,[0m
+[0;33m            "backup": false,[0m
+[0;33m            "checksum": "217e957230bc6320243f911928353ae3042916be",[0m
+[0;33m            "content": null,[0m
+[0;33m            "dest": "/home/vmadm/demo/RapidServe/southbound/nginx-ne_ja_container1.conf",[0m
+[0;33m            "directory_mode": null,[0m
+[0;33m            "follow": false,[0m
+[0;33m            "force": true,[0m
+[0;33m            "group": null,[0m
+[0;33m            "local_follow": null,[0m
+[0;33m            "mode": null,[0m
+[0;33m            "owner": null,[0m
+[0;33m            "remote_src": null,[0m
+[0;33m            "selevel": null,[0m
+[0;33m            "serole": null,[0m
+[0;33m            "setype": null,[0m
+[0;33m            "seuser": null,[0m
+[0;33m            "src": "/home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/source",[0m
+[0;33m            "unsafe_writes": false,[0m
+[0;33m            "validate": null[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "md5sum": "37bde66ba30719fd476527371e75bbb5",[0m
+[0;33m    "mode": "0644",[0m
+[0;33m    "owner": "root",[0m
+[0;33m    "size": 532,[0m
+[0;33m    "src": "/home/vmadm/.ansible/tmp/ansible-tmp-1713670702.7960513-3377428-64465680503811/source",[0m
+[0;33m    "state": "file",[0m
+[0;33m    "uid": 0[0m
+[0;33m}[0m
+
+TASK [Conditionally create index.html for origin servers] **********************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:35[0m
+[0;36mskipping: [localhost] => {[0m
+[0;36m    "changed": false,[0m
+[0;36m    "skip_reason": "Conditional result was False"[0m
+[0;36m}[0m
+
+TASK [Build Docker image with custom NGINX config] *****************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:41[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670703.9451594-3377493-10846033891447 `" && echo ansible-tmp-1713670703.9451594-3377493-10846033891447="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670703.9451594-3377493-10846033891447 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible_collections/community/docker/plugins/modules/docker_image.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3377377x5bmp94n/tmpnyrzlw73 TO /home/vmadm/.ansible/tmp/ansible-tmp-1713670703.9451594-3377493-10846033891447/AnsiballZ_docker_image.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713670703.9451594-3377493-10846033891447/ /home/vmadm/.ansible/tmp/ansible-tmp-1713670703.9451594-3377493-10846033891447/AnsiballZ_docker_image.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-ihoxzhforifpxmosoixdkpesobzuktac ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713670703.9451594-3377493-10846033891447/AnsiballZ_docker_image.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713670703.9451594-3377493-10846033891447/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "actions": [[0m
+[0;33m        "Built image ne_ja_container1:latest from /home/vmadm/demo/RapidServe/southbound"[0m
+[0;33m    ],[0m
+[0;33m    "changed": true,[0m
+[0;33m    "image": {[0m
+[0;33m        "Architecture": "amd64",[0m
+[0;33m        "Author": "",[0m
+[0;33m        "Comment": "",[0m
+[0;33m        "Config": {[0m
+[0;33m            "AttachStderr": true,[0m
+[0;33m            "AttachStdin": false,[0m
+[0;33m            "AttachStdout": true,[0m
+[0;33m            "Cmd": [[0m
+[0;33m                "nginx",[0m
+[0;33m                "-g",[0m
+[0;33m                "daemon off;"[0m
+[0;33m            ],[0m
+[0;33m            "Domainname": "",[0m
+[0;33m            "Entrypoint": [[0m
+[0;33m                "/docker-entrypoint.sh"[0m
+[0;33m            ],[0m
+[0;33m            "Env": [[0m
+[0;33m                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",[0m
+[0;33m                "NGINX_VERSION=1.25.5",[0m
+[0;33m                "NJS_VERSION=0.8.4",[0m
+[0;33m                "PKG_RELEASE=1~bookworm"[0m
+[0;33m            ],[0m
+[0;33m            "ExposedPorts": {[0m
+[0;33m                "80/tcp": {}[0m
+[0;33m            },[0m
+[0;33m            "Hostname": "cf2b4c5a2932",[0m
+[0;33m            "Image": "sha256:07890c2e882cc8fefd5e6afde986dab936e820572ce6bee5dc74c5b9dc1bf909",[0m
+[0;33m            "Labels": {[0m
+[0;33m                "maintainer": "NGINX Docker Maintainers <docker-maint@nginx.com>"[0m
+[0;33m            },[0m
+[0;33m            "OnBuild": null,[0m
+[0;33m            "OpenStdin": false,[0m
+[0;33m            "StdinOnce": false,[0m
+[0;33m            "StopSignal": "SIGQUIT",[0m
+[0;33m            "Tty": false,[0m
+[0;33m            "User": "",[0m
+[0;33m            "Volumes": null,[0m
+[0;33m            "WorkingDir": ""[0m
+[0;33m        },[0m
+[0;33m        "Container": "76baf5bd29e5006134bbd269348194f1824ab2b8157977e6edce9ecd861855ed",[0m
+[0;33m        "ContainerConfig": {[0m
+[0;33m            "AttachStderr": true,[0m
+[0;33m            "AttachStdin": false,[0m
+[0;33m            "AttachStdout": true,[0m
+[0;33m            "Cmd": [[0m
+[0;33m                "/bin/sh",[0m
+[0;33m                "-c",[0m
+[0;33m                "#(nop) ",[0m
+[0;33m                "CMD [\"nginx\" \"-g\" \"daemon off;\"]"[0m
+[0;33m            ],[0m
+[0;33m            "Domainname": "",[0m
+[0;33m            "Entrypoint": [[0m
+[0;33m                "/docker-entrypoint.sh"[0m
+[0;33m            ],[0m
+[0;33m            "Env": [[0m
+[0;33m                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",[0m
+[0;33m                "NGINX_VERSION=1.25.5",[0m
+[0;33m                "NJS_VERSION=0.8.4",[0m
+[0;33m                "PKG_RELEASE=1~bookworm"[0m
+[0;33m            ],[0m
+[0;33m            "ExposedPorts": {[0m
+[0;33m                "80/tcp": {}[0m
+[0;33m            },[0m
+[0;33m            "Hostname": "cf2b4c5a2932",[0m
+[0;33m            "Image": "sha256:07890c2e882cc8fefd5e6afde986dab936e820572ce6bee5dc74c5b9dc1bf909",[0m
+[0;33m            "Labels": {[0m
+[0;33m                "maintainer": "NGINX Docker Maintainers <docker-maint@nginx.com>"[0m
+[0;33m            },[0m
+[0;33m            "OnBuild": null,[0m
+[0;33m            "OpenStdin": false,[0m
+[0;33m            "StdinOnce": false,[0m
+[0;33m            "StopSignal": "SIGQUIT",[0m
+[0;33m            "Tty": false,[0m
+[0;33m            "User": "",[0m
+[0;33m            "Volumes": null,[0m
+[0;33m            "WorkingDir": ""[0m
+[0;33m        },[0m
+[0;33m        "Created": "2024-04-21T03:38:30.335582898Z",[0m
+[0;33m        "DockerVersion": "24.0.5",[0m
+[0;33m        "GraphDriver": {[0m
+[0;33m            "Data": {[0m
+[0;33m                "LowerDir": "/var/lib/docker/overlay2/650495c38a323ae021436e3e35199ae894e88cf8c45af0514bc53bab5c89c449/diff:/var/lib/docker/overlay2/db6c07b41fbb451647216b17935a5dd0f4bfd923161d57868858bff9847af568/diff:/var/lib/docker/overlay2/5177247d9bbff4e427f7c843ceac7a3f6aee37dd394beb595b367aa8ab5a8558/diff:/var/lib/docker/overlay2/27001efe53df7a90f774aa21459eaf2aa833aaf018ff84f7bce57645180d014d/diff:/var/lib/docker/overlay2/91d409a72ab594878498808d79fec6815e0104a60122b5537ab5893a2a6ff34c/diff:/var/lib/docker/overlay2/8348b3ec0b0b5c2d67f6f0c62261176d7c0bda6e14a7a4b5755a5ce72f9779e2/diff:/var/lib/docker/overlay2/bf47e82a67414fd7f5a1b4ec4e1d1dc4546c9b64adbb8329f3d1e2cd307adf3f/diff:/var/lib/docker/overlay2/269021bd3e734f1889b06afe3902956ac38317b6c54390458b1d68c8de23bd7a/diff:/var/lib/docker/overlay2/5d00087b90c7d041713720c51c108fcb1b3e8708366f57e64f236fb6116d6273/diff:/var/lib/docker/overlay2/f83e4f4b1afe61b3f4b7325a85ffd30f8844c50105475dcb5e9796bb3c5741fa/diff:/var/lib/docker/overlay2/b6aa2efbd21779f5b483970da7c7590314123bdc7f614eca9b33395036390840/diff",[0m
+[0;33m                "MergedDir": "/var/lib/docker/overlay2/c0d335db3ac35fa0c8c54d6e58b7d28a8e0228c5ac40f1a89a62b0b969d4e884/merged",[0m
+[0;33m                "UpperDir": "/var/lib/docker/overlay2/c0d335db3ac35fa0c8c54d6e58b7d28a8e0228c5ac40f1a89a62b0b969d4e884/diff",[0m
+[0;33m                "WorkDir": "/var/lib/docker/overlay2/c0d335db3ac35fa0c8c54d6e58b7d28a8e0228c5ac40f1a89a62b0b969d4e884/work"[0m
+[0;33m            },[0m
+[0;33m            "Name": "overlay2"[0m
+[0;33m        },[0m
+[0;33m        "Id": "sha256:410146e5913e8c9d0815eed51ddff238717408474e82a124881e7b627c3d3688",[0m
+[0;33m        "Metadata": {[0m
+[0;33m            "LastTagTime": "2024-04-21T03:38:30.702179168Z"[0m
+[0;33m        },[0m
+[0;33m        "Os": "linux",[0m
+[0;33m        "Parent": "sha256:07890c2e882cc8fefd5e6afde986dab936e820572ce6bee5dc74c5b9dc1bf909",[0m
+[0;33m        "RepoDigests": [],[0m
+[0;33m        "RepoTags": [[0m
+[0;33m            "ne_ja_container1:latest"[0m
+[0;33m        ],[0m
+[0;33m        "RootFS": {[0m
+[0;33m            "Layers": [[0m
+[0;33m                "sha256:1f00ff20147800878a4ebc9c283f79149a1dde5cc11d659c69d3a9c0bfeb7d4f",[0m
+[0;33m                "sha256:9b87c194c4ddfbcbf8d9babdb4891b1f5d11e0dd1628b2e7cd00d3a307ac9118",[0m
+[0;33m                "sha256:0e87b211f7efbe2c2aa5ce61e879b32260d53ed18e7b585da190e8b89a8d8f63",[0m
+[0;33m                "sha256:25e1b6e594d0af606a1d89645fe89e44ff43cfb6f8bbb8c0512ba5341255de87",[0m
+[0;33m                "sha256:8789db06fb8310b1b52a09dff687e7e5b41ce5da3deb0d792276bb3d6dd152b3",[0m
+[0;33m                "sha256:3773452b6e4898fbaf52025182bef23343813b99de64833cfca599c2732dce59",[0m
+[0;33m                "sha256:7abfb0741b3d9c601068f392b97429d72dfeb365a3594cd350c12feec05ccb2c",[0m
+[0;33m                "sha256:140f1466b258febee9364812bf8b622b5fef20c17dd910553df7000d809fd646",[0m
+[0;33m                "sha256:537fe0581b6becd7a935650b2fd519058015cd3f5172894d6fcaa866fc2f8993",[0m
+[0;33m                "sha256:df143df153e3ca6c9cd39b3e6351154b30a9fdf4a133fbc7adcfb60a2f4d7241",[0m
+[0;33m                "sha256:23f29a34314b47114b1f4fd8ed5ee17fa1e543a65381ee9d0692e0a427104a57",[0m
+[0;33m                "sha256:8d46530888ffd0e4e3b3f52d732bbdc1d7118c9d66ec7803fd0ebac3170a13f9"[0m
+[0;33m            ],[0m
+[0;33m            "Type": "layers"[0m
+[0;33m        },[0m
+[0;33m        "Size": 305951120,[0m
+[0;33m        "VirtualSize": 305951120[0m
+[0;33m    },[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "api_version": "auto",[0m
+[0;33m            "archive_path": null,[0m
+[0;33m            "build": {[0m
+[0;33m                "args": {[0m
+[0;33m                    "NGINX_CONF": "nginx-ne_ja_container1.conf"[0m
+[0;33m                },[0m
+[0;33m                "cache_from": null,[0m
+[0;33m                "container_limits": null,[0m
+[0;33m                "dockerfile": "Dockerfile-edge",[0m
+[0;33m                "etc_hosts": null,[0m
+[0;33m                "http_timeout": null,[0m
+[0;33m                "network": null,[0m
+[0;33m                "nocache": true,[0m
+[0;33m                "path": "/home/vmadm/demo/RapidServe/southbound",[0m
+[0;33m                "platform": null,[0m
+[0;33m                "pull": false,[0m
+[0;33m                "rm": true,[0m
+[0;33m                "target": null,[0m
+[0;33m                "use_config_proxy": null[0m
+[0;33m            },[0m
+[0;33m            "ca_cert": null,[0m
+[0;33m            "client_cert": null,[0m
+[0;33m            "client_key": null,[0m
+[0;33m            "debug": false,[0m
+[0;33m            "docker_host": "unix://var/run/docker.sock",[0m
+[0;33m            "force_absent": false,[0m
+[0;33m            "force_source": false,[0m
+[0;33m            "force_tag": false,[0m
+[0;33m            "load_path": null,[0m
+[0;33m            "name": "ne_ja_container1",[0m
+[0;33m            "pull": null,[0m
+[0;33m            "push": false,[0m
+[0;33m            "repository": null,[0m
+[0;33m            "source": "build",[0m
+[0;33m            "ssl_version": null,[0m
+[0;33m            "state": "present",[0m
+[0;33m            "tag": "latest",[0m
+[0;33m            "timeout": 60,[0m
+[0;33m            "tls": false,[0m
+[0;33m            "tls_hostname": null,[0m
+[0;33m            "use_ssh_client": false,[0m
+[0;33m            "validate_certs": false[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "stdout": "Step 1/6 : FROM 100514735019/customnginx:latest\n\n ---> dc9e9a31cc21\nStep 2/6 : RUN rm /etc/nginx/conf.d/default.conf\n\n ---> Running in 0cc383778f44\nRemoving intermediate container 0cc383778f44\n ---> 9e4ea915616f\nStep 3/6 : ARG NGINX_CONF\n\n ---> Running in 1c18782f476c\nRemoving intermediate container 1c18782f476c\n ---> c86114b315b0\nStep 4/6 : COPY ${NGINX_CONF} /etc/nginx/nginx.conf\n\n ---> 0143865cf6d0\nStep 5/6 : EXPOSE 80\n\n ---> Running in eb3b97446a6c\nRemoving intermediate container eb3b97446a6c\n ---> 07890c2e882c\nStep 6/6 : CMD [\"nginx\", \"-g\", \"daemon off;\"]\n\n ---> Running in 76baf5bd29e5\nRemoving intermediate container 76baf5bd29e5\n ---> 410146e5913e\nSuccessfully built 410146e5913e\nSuccessfully tagged ne_ja_container1:latest",[0m
+[0;33m    "stdout_lines": [[0m
+[0;33m        "Step 1/6 : FROM 100514735019/customnginx:latest",[0m
+[0;33m        "",[0m
+[0;33m        " ---> dc9e9a31cc21",[0m
+[0;33m        "Step 2/6 : RUN rm /etc/nginx/conf.d/default.conf",[0m
+[0;33m        "",[0m
+[0;33m        " ---> Running in 0cc383778f44",[0m
+[0;33m        "Removing intermediate container 0cc383778f44",[0m
+[0;33m        " ---> 9e4ea915616f",[0m
+[0;33m        "Step 3/6 : ARG NGINX_CONF",[0m
+[0;33m        "",[0m
+[0;33m        " ---> Running in 1c18782f476c",[0m
+[0;33m        "Removing intermediate container 1c18782f476c",[0m
+[0;33m        " ---> c86114b315b0",[0m
+[0;33m        "Step 4/6 : COPY ${NGINX_CONF} /etc/nginx/nginx.conf",[0m
+[0;33m        "",[0m
+[0;33m        " ---> 0143865cf6d0",[0m
+[0;33m        "Step 5/6 : EXPOSE 80",[0m
+[0;33m        "",[0m
+[0;33m        " ---> Running in eb3b97446a6c",[0m
+[0;33m        "Removing intermediate container eb3b97446a6c",[0m
+[0;33m        " ---> 07890c2e882c",[0m
+[0;33m        "Step 6/6 : CMD [\"nginx\", \"-g\", \"daemon off;\"]",[0m
+[0;33m        "",[0m
+[0;33m        " ---> Running in 76baf5bd29e5",[0m
+[0;33m        "Removing intermediate container 76baf5bd29e5",[0m
+[0;33m        " ---> 410146e5913e",[0m
+[0;33m        "Successfully built 410146e5913e",[0m
+[0;33m        "Successfully tagged ne_ja_container1:latest"[0m
+[0;33m    ][0m
+[0;33m}[0m
+
+TASK [Create and start Docker container] ***************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:55[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670710.9324641-3377889-159719815176888 `" && echo ansible-tmp-1713670710.9324641-3377889-159719815176888="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670710.9324641-3377889-159719815176888 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible_collections/community/docker/plugins/modules/docker_container.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3377377x5bmp94n/tmp0a_7m4rw TO /home/vmadm/.ansible/tmp/ansible-tmp-1713670710.9324641-3377889-159719815176888/AnsiballZ_docker_container.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713670710.9324641-3377889-159719815176888/ /home/vmadm/.ansible/tmp/ansible-tmp-1713670710.9324641-3377889-159719815176888/AnsiballZ_docker_container.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-lmncwuwqaekytuyyknlvghwcoxracfph ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713670710.9324641-3377889-159719815176888/AnsiballZ_docker_container.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713670710.9324641-3377889-159719815176888/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "container": {[0m
+[0;33m        "AppArmorProfile": "docker-default",[0m
+[0;33m        "Args": [[0m
+[0;33m            "nginx",[0m
+[0;33m            "-g",[0m
+[0;33m            "daemon off;"[0m
+[0;33m        ],[0m
+[0;33m        "Config": {[0m
+[0;33m            "AttachStderr": true,[0m
+[0;33m            "AttachStdin": false,[0m
+[0;33m            "AttachStdout": true,[0m
+[0;33m            "Cmd": [[0m
+[0;33m                "nginx",[0m
+[0;33m                "-g",[0m
+[0;33m                "daemon off;"[0m
+[0;33m            ],[0m
+[0;33m            "Domainname": "",[0m
+[0;33m            "Entrypoint": [[0m
+[0;33m                "/docker-entrypoint.sh"[0m
+[0;33m            ],[0m
+[0;33m            "Env": [[0m
+[0;33m                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",[0m
+[0;33m                "NGINX_VERSION=1.25.5",[0m
+[0;33m                "NJS_VERSION=0.8.4",[0m
+[0;33m                "PKG_RELEASE=1~bookworm"[0m
+[0;33m            ],[0m
+[0;33m            "ExposedPorts": {[0m
+[0;33m                "80/tcp": {}[0m
+[0;33m            },[0m
+[0;33m            "Hostname": "9687ec6dbdbd",[0m
+[0;33m            "Image": "ne_ja_container1:latest",[0m
+[0;33m            "Labels": {[0m
+[0;33m                "maintainer": "NGINX Docker Maintainers <docker-maint@nginx.com>"[0m
+[0;33m            },[0m
+[0;33m            "OnBuild": null,[0m
+[0;33m            "OpenStdin": false,[0m
+[0;33m            "StdinOnce": false,[0m
+[0;33m            "StopSignal": "SIGQUIT",[0m
+[0;33m            "Tty": true,[0m
+[0;33m            "User": "",[0m
+[0;33m            "Volumes": null,[0m
+[0;33m            "WorkingDir": ""[0m
+[0;33m        },[0m
+[0;33m        "Created": "2024-04-21T03:38:31.90856939Z",[0m
+[0;33m        "Driver": "overlay2",[0m
+[0;33m        "ExecIDs": null,[0m
+[0;33m        "GraphDriver": {[0m
+[0;33m            "Data": {[0m
+[0;33m                "LowerDir": "/var/lib/docker/overlay2/a2aa4c1534ffe5556e653e1d8cfb8397c506ff51c812be29e16adfcdd174d3eb-init/diff:/var/lib/docker/overlay2/c0d335db3ac35fa0c8c54d6e58b7d28a8e0228c5ac40f1a89a62b0b969d4e884/diff:/var/lib/docker/overlay2/650495c38a323ae021436e3e35199ae894e88cf8c45af0514bc53bab5c89c449/diff:/var/lib/docker/overlay2/db6c07b41fbb451647216b17935a5dd0f4bfd923161d57868858bff9847af568/diff:/var/lib/docker/overlay2/5177247d9bbff4e427f7c843ceac7a3f6aee37dd394beb595b367aa8ab5a8558/diff:/var/lib/docker/overlay2/27001efe53df7a90f774aa21459eaf2aa833aaf018ff84f7bce57645180d014d/diff:/var/lib/docker/overlay2/91d409a72ab594878498808d79fec6815e0104a60122b5537ab5893a2a6ff34c/diff:/var/lib/docker/overlay2/8348b3ec0b0b5c2d67f6f0c62261176d7c0bda6e14a7a4b5755a5ce72f9779e2/diff:/var/lib/docker/overlay2/bf47e82a67414fd7f5a1b4ec4e1d1dc4546c9b64adbb8329f3d1e2cd307adf3f/diff:/var/lib/docker/overlay2/269021bd3e734f1889b06afe3902956ac38317b6c54390458b1d68c8de23bd7a/diff:/var/lib/docker/overlay2/5d00087b90c7d041713720c51c108fcb1b3e8708366f57e64f236fb6116d6273/diff:/var/lib/docker/overlay2/f83e4f4b1afe61b3f4b7325a85ffd30f8844c50105475dcb5e9796bb3c5741fa/diff:/var/lib/docker/overlay2/b6aa2efbd21779f5b483970da7c7590314123bdc7f614eca9b33395036390840/diff",[0m
+[0;33m                "MergedDir": "/var/lib/docker/overlay2/a2aa4c1534ffe5556e653e1d8cfb8397c506ff51c812be29e16adfcdd174d3eb/merged",[0m
+[0;33m                "UpperDir": "/var/lib/docker/overlay2/a2aa4c1534ffe5556e653e1d8cfb8397c506ff51c812be29e16adfcdd174d3eb/diff",[0m
+[0;33m                "WorkDir": "/var/lib/docker/overlay2/a2aa4c1534ffe5556e653e1d8cfb8397c506ff51c812be29e16adfcdd174d3eb/work"[0m
+[0;33m            },[0m
+[0;33m            "Name": "overlay2"[0m
+[0;33m        },[0m
+[0;33m        "HostConfig": {[0m
+[0;33m            "AutoRemove": false,[0m
+[0;33m            "Binds": null,[0m
+[0;33m            "BlkioDeviceReadBps": null,[0m
+[0;33m            "BlkioDeviceReadIOps": null,[0m
+[0;33m            "BlkioDeviceWriteBps": null,[0m
+[0;33m            "BlkioDeviceWriteIOps": null,[0m
+[0;33m            "BlkioWeight": 0,[0m
+[0;33m            "BlkioWeightDevice": null,[0m
+[0;33m            "CapAdd": [[0m
+[0;33m                "NET_ADMIN"[0m
+[0;33m            ],[0m
+[0;33m            "CapDrop": null,[0m
+[0;33m            "Cgroup": "",[0m
+[0;33m            "CgroupParent": "",[0m
+[0;33m            "CgroupnsMode": "private",[0m
+[0;33m            "ConsoleSize": [[0m
+[0;33m                0,[0m
+[0;33m                0[0m
+[0;33m            ],[0m
+[0;33m            "ContainerIDFile": "",[0m
+[0;33m            "CpuCount": 0,[0m
+[0;33m            "CpuPercent": 0,[0m
+[0;33m            "CpuPeriod": 0,[0m
+[0;33m            "CpuQuota": 0,[0m
+[0;33m            "CpuRealtimePeriod": 0,[0m
+[0;33m            "CpuRealtimeRuntime": 0,[0m
+[0;33m            "CpuShares": 0,[0m
+[0;33m            "CpusetCpus": "",[0m
+[0;33m            "CpusetMems": "",[0m
+[0;33m            "DeviceCgroupRules": null,[0m
+[0;33m            "DeviceRequests": null,[0m
+[0;33m            "Devices": null,[0m
+[0;33m            "Dns": null,[0m
+[0;33m            "DnsOptions": null,[0m
+[0;33m            "DnsSearch": null,[0m
+[0;33m            "ExtraHosts": null,[0m
+[0;33m            "GroupAdd": null,[0m
+[0;33m            "IOMaximumBandwidth": 0,[0m
+[0;33m            "IOMaximumIOps": 0,[0m
+[0;33m            "IpcMode": "private",[0m
+[0;33m            "Isolation": "",[0m
+[0;33m            "Links": null,[0m
+[0;33m            "LogConfig": {[0m
+[0;33m                "Config": {},[0m
+[0;33m                "Type": "json-file"[0m
+[0;33m            },[0m
+[0;33m            "MaskedPaths": [[0m
+[0;33m                "/proc/asound",[0m
+[0;33m                "/proc/acpi",[0m
+[0;33m                "/proc/kcore",[0m
+[0;33m                "/proc/keys",[0m
+[0;33m                "/proc/latency_stats",[0m
+[0;33m                "/proc/timer_list",[0m
+[0;33m                "/proc/timer_stats",[0m
+[0;33m                "/proc/sched_debug",[0m
+[0;33m                "/proc/scsi",[0m
+[0;33m                "/sys/firmware"[0m
+[0;33m            ],[0m
+[0;33m            "Memory": 0,[0m
+[0;33m            "MemoryReservation": 0,[0m
+[0;33m            "MemorySwap": 0,[0m
+[0;33m            "MemorySwappiness": null,[0m
+[0;33m            "NanoCpus": 0,[0m
+[0;33m            "NetworkMode": "none",[0m
+[0;33m            "OomKillDisable": null,[0m
+[0;33m            "OomScoreAdj": 0,[0m
+[0;33m            "PidMode": "",[0m
+[0;33m            "PidsLimit": null,[0m
+[0;33m            "PortBindings": null,[0m
+[0;33m            "Privileged": false,[0m
+[0;33m            "PublishAllPorts": false,[0m
+[0;33m            "ReadonlyPaths": [[0m
+[0;33m                "/proc/bus",[0m
+[0;33m                "/proc/fs",[0m
+[0;33m                "/proc/irq",[0m
+[0;33m                "/proc/sys",[0m
+[0;33m                "/proc/sysrq-trigger"[0m
+[0;33m            ],[0m
+[0;33m            "ReadonlyRootfs": false,[0m
+[0;33m            "RestartPolicy": {[0m
+[0;33m                "MaximumRetryCount": 0,[0m
+[0;33m                "Name": "unless-stopped"[0m
+[0;33m            },[0m
+[0;33m            "Runtime": "runc",[0m
+[0;33m            "SecurityOpt": null,[0m
+[0;33m            "ShmSize": 67108864,[0m
+[0;33m            "UTSMode": "",[0m
+[0;33m            "Ulimits": null,[0m
+[0;33m            "UsernsMode": "",[0m
+[0;33m            "VolumeDriver": "",[0m
+[0;33m            "VolumesFrom": null[0m
+[0;33m        },[0m
+[0;33m        "HostnamePath": "/var/lib/docker/containers/9687ec6dbdbd2269b653dcb15fa9c2d43c2febfb49cc65009bd728b5e4e2b686/hostname",[0m
+[0;33m        "HostsPath": "/var/lib/docker/containers/9687ec6dbdbd2269b653dcb15fa9c2d43c2febfb49cc65009bd728b5e4e2b686/hosts",[0m
+[0;33m        "Id": "9687ec6dbdbd2269b653dcb15fa9c2d43c2febfb49cc65009bd728b5e4e2b686",[0m
+[0;33m        "Image": "sha256:410146e5913e8c9d0815eed51ddff238717408474e82a124881e7b627c3d3688",[0m
+[0;33m        "LogPath": "/var/lib/docker/containers/9687ec6dbdbd2269b653dcb15fa9c2d43c2febfb49cc65009bd728b5e4e2b686/9687ec6dbdbd2269b653dcb15fa9c2d43c2febfb49cc65009bd728b5e4e2b686-json.log",[0m
+[0;33m        "MountLabel": "",[0m
+[0;33m        "Mounts": [],[0m
+[0;33m        "Name": "/ne_ja_container1",[0m
+[0;33m        "NetworkSettings": {[0m
+[0;33m            "Bridge": "",[0m
+[0;33m            "EndpointID": "",[0m
+[0;33m            "Gateway": "",[0m
+[0;33m            "GlobalIPv6Address": "",[0m
+[0;33m            "GlobalIPv6PrefixLen": 0,[0m
+[0;33m            "HairpinMode": false,[0m
+[0;33m            "IPAddress": "",[0m
+[0;33m            "IPPrefixLen": 0,[0m
+[0;33m            "IPv6Gateway": "",[0m
+[0;33m            "LinkLocalIPv6Address": "",[0m
+[0;33m            "LinkLocalIPv6PrefixLen": 0,[0m
+[0;33m            "MacAddress": "",[0m
+[0;33m            "Networks": {[0m
+[0;33m                "none": {[0m
+[0;33m                    "Aliases": null,[0m
+[0;33m                    "DriverOpts": null,[0m
+[0;33m                    "EndpointID": "f6533ad274e6643addaf9b2b92aa886a32c12e81cc78333428f46db97daf0a4c",[0m
+[0;33m                    "Gateway": "",[0m
+[0;33m                    "GlobalIPv6Address": "",[0m
+[0;33m                    "GlobalIPv6PrefixLen": 0,[0m
+[0;33m                    "IPAMConfig": null,[0m
+[0;33m                    "IPAddress": "",[0m
+[0;33m                    "IPPrefixLen": 0,[0m
+[0;33m                    "IPv6Gateway": "",[0m
+[0;33m                    "Links": null,[0m
+[0;33m                    "MacAddress": "",[0m
+[0;33m                    "NetworkID": "a9beec8d283942dc68f20c5ad64502cb1000b82a661a4e5547157b7f4fe7f6bd"[0m
+[0;33m                }[0m
+[0;33m            },[0m
+[0;33m            "Ports": {},[0m
+[0;33m            "SandboxID": "1a3b7fb49a710c9945a698f17ea6d9c5aa7af09bed58b9885357cae2d763d2f9",[0m
+[0;33m            "SandboxKey": "/var/run/docker/netns/1a3b7fb49a71",[0m
+[0;33m            "SecondaryIPAddresses": null,[0m
+[0;33m            "SecondaryIPv6Addresses": null[0m
+[0;33m        },[0m
+[0;33m        "Path": "/docker-entrypoint.sh",[0m
+[0;33m        "Platform": "linux",[0m
+[0;33m        "ProcessLabel": "",[0m
+[0;33m        "ResolvConfPath": "/var/lib/docker/containers/9687ec6dbdbd2269b653dcb15fa9c2d43c2febfb49cc65009bd728b5e4e2b686/resolv.conf",[0m
+[0;33m        "RestartCount": 0,[0m
+[0;33m        "State": {[0m
+[0;33m            "Dead": false,[0m
+[0;33m            "Error": "",[0m
+[0;33m            "ExitCode": 0,[0m
+[0;33m            "FinishedAt": "0001-01-01T00:00:00Z",[0m
+[0;33m            "OOMKilled": false,[0m
+[0;33m            "Paused": false,[0m
+[0;33m            "Pid": 3377951,[0m
+[0;33m            "Restarting": false,[0m
+[0;33m            "Running": true,[0m
+[0;33m            "StartedAt": "2024-04-21T03:38:32.226015019Z",[0m
+[0;33m            "Status": "running"[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "api_version": "auto",[0m
+[0;33m            "auto_remove": null,[0m
+[0;33m            "blkio_weight": null,[0m
+[0;33m            "ca_cert": null,[0m
+[0;33m            "cap_drop": null,[0m
+[0;33m            "capabilities": [[0m
+[0;33m                "NET_ADMIN"[0m
+[0;33m            ],[0m
+[0;33m            "cgroup_parent": null,[0m
+[0;33m            "cgroupns_mode": null,[0m
+[0;33m            "cleanup": false,[0m
+[0;33m            "client_cert": null,[0m
+[0;33m            "client_key": null,[0m
+[0;33m            "command": null,[0m
+[0;33m            "command_handling": "correct",[0m
+[0;33m            "comparisons": null,[0m
+[0;33m            "container_default_behavior": "no_defaults",[0m
+[0;33m            "cpu_period": null,[0m
+[0;33m            "cpu_quota": null,[0m
+[0;33m            "cpu_shares": null,[0m
+[0;33m            "cpus": null,[0m
+[0;33m            "cpuset_cpus": null,[0m
+[0;33m            "cpuset_mems": null,[0m
+[0;33m            "debug": false,[0m
+[0;33m            "default_host_ip": null,[0m
+[0;33m            "detach": null,[0m
+[0;33m            "device_read_bps": null,[0m
+[0;33m            "device_read_iops": null,[0m
+[0;33m            "device_requests": null,[0m
+[0;33m            "device_write_bps": null,[0m
+[0;33m            "device_write_iops": null,[0m
+[0;33m            "devices": null,[0m
+[0;33m            "dns_opts": null,[0m
+[0;33m            "dns_search_domains": null,[0m
+[0;33m            "dns_servers": null,[0m
+[0;33m            "docker_host": "unix://var/run/docker.sock",[0m
+[0;33m            "domainname": null,[0m
+[0;33m            "entrypoint": null,[0m
+[0;33m            "env": null,[0m
+[0;33m            "env_file": null,[0m
+[0;33m            "etc_hosts": null,[0m
+[0;33m            "exposed_ports": null,[0m
+[0;33m            "force_kill": false,[0m
+[0;33m            "groups": null,[0m
+[0;33m            "healthcheck": null,[0m
+[0;33m            "hostname": null,[0m
+[0;33m            "ignore_image": false,[0m
+[0;33m            "image": "ne_ja_container1:latest",[0m
+[0;33m            "image_comparison": "desired-image",[0m
+[0;33m            "image_label_mismatch": "ignore",[0m
+[0;33m            "image_name_mismatch": "ignore",[0m
+[0;33m            "init": null,[0m
+[0;33m            "interactive": null,[0m
+[0;33m            "ipc_mode": null,[0m
+[0;33m            "keep_volumes": true,[0m
+[0;33m            "kernel_memory": null,[0m
+[0;33m            "kill_signal": null,[0m
+[0;33m            "labels": null,[0m
+[0;33m            "links": null,[0m
+[0;33m            "log_driver": null,[0m
+[0;33m            "log_options": null,[0m
+[0;33m            "mac_address": null,[0m
+[0;33m            "memory": null,[0m
+[0;33m            "memory_reservation": null,[0m
+[0;33m            "memory_swap": null,[0m
+[0;33m            "memory_swappiness": null,[0m
+[0;33m            "mounts": null,[0m
+[0;33m            "name": "ne_ja_container1",[0m
+[0;33m            "network_mode": "none",[0m
+[0;33m            "networks": null,[0m
+[0;33m            "networks_cli_compatible": true,[0m
+[0;33m            "oom_killer": null,[0m
+[0;33m            "oom_score_adj": null,[0m
+[0;33m            "output_logs": false,[0m
+[0;33m            "paused": null,[0m
+[0;33m            "pid_mode": null,[0m
+[0;33m            "pids_limit": null,[0m
+[0;33m            "platform": null,[0m
+[0;33m            "privileged": null,[0m
+[0;33m            "publish_all_ports": null,[0m
+[0;33m            "published_ports": null,[0m
+[0;33m            "pull": false,[0m
+[0;33m            "purge_networks": false,[0m
+[0;33m            "read_only": null,[0m
+[0;33m            "recreate": false,[0m
+[0;33m            "removal_wait_timeout": null,[0m
+[0;33m            "restart": false,[0m
+[0;33m            "restart_policy": "unless-stopped",[0m
+[0;33m            "restart_retries": null,[0m
+[0;33m            "runtime": null,[0m
+[0;33m            "security_opts": null,[0m
+[0;33m            "shm_size": null,[0m
+[0;33m            "ssl_version": null,[0m
+[0;33m            "state": "started",[0m
+[0;33m            "stop_signal": null,[0m
+[0;33m            "stop_timeout": null,[0m
+[0;33m            "storage_opts": null,[0m
+[0;33m            "sysctls": null,[0m
+[0;33m            "timeout": 60,[0m
+[0;33m            "tls": false,[0m
+[0;33m            "tls_hostname": null,[0m
+[0;33m            "tmpfs": null,[0m
+[0;33m            "tty": true,[0m
+[0;33m            "ulimits": null,[0m
+[0;33m            "use_ssh_client": false,[0m
+[0;33m            "user": null,[0m
+[0;33m            "userns_mode": null,[0m
+[0;33m            "uts": null,[0m
+[0;33m            "validate_certs": false,[0m
+[0;33m            "volume_driver": null,[0m
+[0;33m            "volumes": null,[0m
+[0;33m            "volumes_from": null,[0m
+[0;33m            "working_dir": null[0m
+[0;33m        }[0m
+[0;33m    }[0m
+[0;33m}[0m
+
+TASK [Get container PID] *******************************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:66[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.4046683-3377992-236181809326754 `" && echo ansible-tmp-1713670712.4046683-3377992-236181809326754="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.4046683-3377992-236181809326754 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3377377x5bmp94n/tmpjdvz356l TO /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.4046683-3377992-236181809326754/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.4046683-3377992-236181809326754/ /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.4046683-3377992-236181809326754/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-vjhyxpydgukymaucutxrpkllffpelwrv ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.4046683-3377992-236181809326754/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.4046683-3377992-236181809326754/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "docker",[0m
+[0;33m        "inspect",[0m
+[0;33m        "--format",[0m
+[0;33m        "{{.State.Pid}}",[0m
+[0;33m        "ne_ja_container1"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.078446",[0m
+[0;33m    "end": "2024-04-21 03:38:32.770115",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "docker inspect --format '{''{.State.Pid}}' \"ne_ja_container1\"",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 03:38:32.691669",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "3377951",[0m
+[0;33m    "stdout_lines": [[0m
+[0;33m        "3377951"[0m
+[0;33m    ][0m
+[0;33m}[0m
+
+TASK [Link network namespace of container] *************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:70[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.9006965-3378031-255076894801077 `" && echo ansible-tmp-1713670712.9006965-3378031-255076894801077="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.9006965-3378031-255076894801077 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-3377377x5bmp94n/tmpocvhbnxo TO /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.9006965-3378031-255076894801077/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.9006965-3378031-255076894801077/ /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.9006965-3378031-255076894801077/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-ulkrntzolkucthavqklilvwqdyebcjse ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.9006965-3378031-255076894801077/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713670712.9006965-3378031-255076894801077/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ln",[0m
+[0;33m        "-sf",[0m
+[0;33m        "/proc/3377951/ns/net",[0m
+[0;33m        "/var/run/netns/ne_ja_container1"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.008684",[0m
+[0;33m    "end": "2024-04-21 03:38:33.221383",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ln -sf /proc/3377951/ns/net /var/run/netns/ne_ja_container1",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 03:38:33.212699",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Create veth pair for bridge {{ item }}] **********************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:74[0m
+[0;31mfatal: [localhost]: FAILED! => {[0m
+[0;31m    "msg": "Invalid data passed to 'loop', it requires a list, got this instead: NE_JA_S1. Hint: If you passed a list/dict of just one element, try adding wantlist=True to your lookup invocation or use q/query instead of lookup."[0m
+[0;31m}[0m
+
+PLAY RECAP *********************************************************************
+[0;31mlocalhost[0m                  : [0;32mok=6   [0m [0;33mchanged=6   [0m unreachable=0    [0;31mfailed=1   [0m [0;36mskipped=2   [0m rescued=0    ignored=0   

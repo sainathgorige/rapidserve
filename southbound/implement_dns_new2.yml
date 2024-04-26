@@ -1,0 +1,276 @@
+---
+- name: Set variables and execute tasks on Docker containers
+  gather_facts: no
+  hosts: docker_hosts
+  become: false
+  vars:
+    bind_conf_path: "/etc/bind"
+    bind_zones_path: "{{ bind_conf_path }}/zones"
+    subnets:
+      - 192.168.100.90/32
+      - 192.168.253.1/32
+      - 172.16.1.0/24
+    regions: 
+      - india
+      - japan
+      - france
+      - germany
+    tenant_name: swathi
+    domainName: swathi.cdn.com
+    origin_vpc_public_subnet_ip: 192.168.100.1 
+
+  tasks:
+    - name: Set tenant abbreviation variable
+      set_fact:
+        tenant_abbreviation: "{{ tenant_name[:2] }}"
+
+    - name: Set abbreviated regions list
+      set_fact:
+        location: "{{ regions | map('regex_replace', '^(..).*$', '\\1') | list }}"
+
+    - name: Ensure BIND zones directory exists
+      file:
+        path: "{{ bind_zones_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Assign subnets sequentially to each location
+      set_fact:
+        subnet_mapping: "{{ dict(regions | zip(subnets)) }}"
+
+    - name: Comment out named.conf.default-zones include in named.conf
+      lineinfile:
+        path: "{{ bind_conf_path }}/named.conf"
+        regexp: '^include "/etc/bind/named.conf.default-zones";$'
+        line: '#include "/etc/bind/named.conf.default-zones";'
+        state: present
+
+    - name: Setup BIND named.conf with dynamic ACLs for each location
+      blockinfile:
+        path: "{{ bind_conf_path }}/named.conf"
+        block: |
+          acl "{{ location.lower() }}-users" {
+              {{ subnet_mapping[location] }};
+          };
+          view "{{ location }}" {
+              match-clients { {{ location.lower() }}-users; };
+              zone "{{ domainName }}" {
+                  type master;
+                  file "{{ bind_zones_path }}/db.{{ domainName }}.{{ location.lower() }}";
+              };
+          };
+        marker: "# {mark} ANSIBLE MANAGED BLOCK {{ location.upper() }}"
+        insertafter: EOF
+      loop: "{{ regions }}"
+      loop_control:
+        loop_var: location
+
+    - name: Fetch IP address for the interface based on location
+      shell: >
+        sudo ip netns exec {{tenant_abbreviation[tenant_name]}}_{{location}} ip -o -4 addr show {{tenant_abbreviation[tenant_name]}}_{{location}}_veth1 | 
+        awk '{print $4}' | cut -d/ -f1
+      register: ns_domain_ip_raw
+      changed_when: false
+      loop: "{{ regions }}"
+      delegate_to: >-
+        {{ '192.168.38.8' if item in ['india', 'japan'] else '192.168.38.9' }}
+      when: >-
+        (inventory_hostname == '192.168.38.8' and item in ['india', 'japan']) or
+        (inventory_hostname == '192.168.38.9' and item in ['france', 'germany'])
+
+    - name: Template DNS zone file for each location
+      template:
+        src: "db.domain.zone.j2"
+        dest: "{{ bind_zones_path }}/db.{{ domainName }}.{{ item.location.lower() }}"
+      loop: "{{ ns_domain_ip_raw.results }}"
+      loop_control:
+        loop_var: item
+      vars:
+        domain_name: "{{ domainName }}"
+        origin_vpc_public_subnet_ip: "{{ origin_vpc_public_subnet_ip }}"
+        ns_domain_ip: "{{ item.stdout }}"
+
+    - name: Restart BIND9 to apply changes
+      command: sudo docker exec {{ ansible_docker_container }} kill -HUP `cat /var/run/named/named.pid`
+
+# - name: Display network configuration based on region
+#   hosts: host1:host2
+#   gather_facts: no
+#   become: false
+#   vars:
+#     regions: 
+#       - bangladesh
+#       - thailand
+#       - greece
+#       - ireland
+
+#   tasks:
+#     - name: Execute 'ip addr' and display outputs on host machines
+#       command: ip addr
+#       register: ip_output
+#       loop: "{{ regions }}"
+#       delegate_to: >-
+#         {{ '192.168.38.8' if item in ['bangladesh', 'thailand'] else '192.168.38.9' }}
+#       when: >-
+#         (inventory_hostname == '192.168.38.8' and item in ['bangladesh', 'thailand']) or
+#         (inventory_hostname == '192.168.38.9' and item in ['greece', 'ireland'])
+
+#     - name: Display IP addresses for specific regions
+#       debug:
+#         msg: "Host: {{ inventory_hostname }}, Region: {{ item }}, IP Addresses: {{ ip_output }}"
+#       when: ip_output is defined
+#       loop: "{{ regions }}"
+#       delegate_to: >-
+#         {{ '192.168.38.8' if item in ['bangladesh', 'thailand'] else '192.168.38.9' }}
+#       when: >-
+#         (inventory_hostname == '192.168.38.8' and item in ['bangladesh', 'thailand']) or
+#         (inventory_hostname == '192.168.38.9' and item in ['greece', 'ireland'])
+
+
+
+
+# ---
+# - name: Configure BIND9 DNS Server for Dynamic Tenant-specific CDN
+#   hosts: docker_hosts
+#   gather_facts: no
+#   become: false
+#   vars:
+#     bind_conf_path: "/etc/bind"
+#     bind_zones_path: "{{ bind_conf_path }}/zones"
+#     subnets:
+#       - 192.168.253.1/32
+#       - 172.16.2.0/24
+#     regions: 
+#       - bangladesh
+#       - thailand
+#       - greece
+#       - ireland
+#     tenant_name: arista
+#     domainName: arista.cdn.com
+#     origin_vpc_public_subnet_ip: 192.168.100.1 
+
+#   tasks:
+#     - name: Set tenant abbreviation variable
+#       set_fact:
+#         tenant_abbreviation: "{{ tenant_name[:2] }}"
+
+#     - name: Set abbreviated regions list
+#       set_fact:
+#         abbreviated_regions: "{{ regions | map('regex_replace', '^(..).*$', '\\1') | list }}"
+
+#     - name: Display abbreviated regions and each region
+#       command: ip addr
+#       loop: "{{ regions }}"
+#       when: >-
+#         (inventory_hostname == 'dns_container1_host1' and item in ['bangladesh', 'thailand']) or
+#         (inventory_hostname == 'dns_container1_host2' and item in ['greece', 'ireland'])
+#       delegate_to: "{{ansible_host}}"
+
+
+
+
+
+
+
+
+
+
+# ---
+# - name: Configure BIND9 DNS Server for Dynamic Tenant-specific CDN
+#   hosts: dns_container1
+#   become: false
+#   vars:
+#     bind_conf_path: "/etc/bind"
+#     bind_zones_path: "{{ bind_conf_path }}/zones"
+#     subnets:
+#       - 192.168.253.1/32
+#       - 172.16.2.0/24
+#     regions: 
+#       - bangladesh
+#       - thailand
+#       - greece
+#       - ireland
+#     tenant_name: arista
+#     domainName: arista.cdn.com
+#     origin_vpc_public_subnet_ip: 192.168.100.1 
+
+#   tasks:
+#     - name: Set tenant abbreviation variable
+#       set_fact:
+#         tenant_abbreviation: "{{ tenant_name[:2] }}"
+
+#     - name: Set abbreviated regions list
+#       set_fact:
+#         abbreviated_regions: "{{ regions | map('regex_replace', '^(..).*$', '\\1') | list }}"
+
+#     - name: Display abbreviated regions and each region
+#       debug:
+#         msg: "Abbreviated regions list: {{ abbreviated_regions }}. Region: {{ item }}"
+#       loop: "{{ regions }}" 
+
+    # - name: Ensure BIND zones directory exists
+    #   file:
+    #     path: "{{ bind_zones_path }}"
+    #     state: directory
+    #     mode: '0755'
+
+    # - name: Assign subnets sequentially to each location
+    #   set_fact:
+    #     subnet_mapping: "{{ dict(regions | zip(subnets)) }}"
+
+    # - name: Comment out named.conf.default-zones include in named.conf
+    #   lineinfile:
+    #     path: "{{ bind_conf_path }}/named.conf"
+    #     regexp: '^include "/etc/bind/named.conf.default-zones";$'
+    #     line: '#include "/etc/bind/named.conf.default-zones";'
+    #     state: present
+
+    # - name: Setup BIND named.conf with dynamic ACLs for each location
+    #   blockinfile:
+    #     path: "{{ bind_conf_path }}/named.conf"
+    #     block: |
+    #       acl "{{ location.lower() }}-users" {
+    #           {{ subnet_mapping[location] }};
+    #       };
+    #       view "{{ location }}" {
+    #           match-clients { {{ location.lower() }}-users; };
+    #           zone "{{ domainName }}" {
+    #               type master;
+    #               file "{{ bind_zones_path }}/db.{{ domainName }}.{{ location.lower() }}";
+    #           };
+    #       };
+    #     marker: "# {mark} ANSIBLE MANAGED BLOCK {{ location.upper() }}"
+    #     insertafter: EOF
+    #   loop: "{{ regions }}"
+    #   loop_control:
+    #     loop_var: location
+
+    # - name: Fetch IP address for the interface based on location
+    #   shell: >
+    #     sudo ip netns exec {{tenant_abbreviation[tenant_name]}}_{{location}} ip -o -4 addr show {{tenant_abbreviation[tenant_name]}}_{{location}}_veth1 | 
+    #     awk '{print $4}' | cut -d/ -f1
+    #   register: ns_domain_ip_raw
+    #   loop: "{{ regions }}"
+    #   loop_control:
+    #     loop_var: location
+    #   changed_when: false
+    #   delegate_to: localhost
+
+    # - name: Template DNS zone file for each location
+    #   template:
+    #     src: "db.domain.zone.j2"
+    #     dest: "{{ bind_zones_path }}/db.{{ domainName }}.{{ item.location.lower() }}"
+    #   loop: "{{ ns_domain_ip_raw.results }}"
+    #   loop_control:
+    #     loop_var: item
+    #   vars:
+    #     domain_name: "{{ domainName }}"
+    #     origin_vpc_public_subnet_ip: "{{ origin_vpc_public_subnet_ip }}"
+    #     ns_domain_ip: "{{ item.stdout }}"
+
+    # - name: Restart BIND9 to apply changes
+    #   command: sudo docker exec dns_container1 kill -HUP `cat /var/run/named/named.pid`
+
+
+
+

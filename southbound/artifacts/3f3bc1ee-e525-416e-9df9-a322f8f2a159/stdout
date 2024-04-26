@@ -1,0 +1,42 @@
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+
+PLAY [Configure VXLAN Tunnels between VPCs in namespaces] **********************
+
+TASK [Gathering Facts] *********************************************************
+[0;32mok: [localhost][0m
+
+TASK [Initialize VNI] **********************************************************
+[0;32mok: [localhost] => {"ansible_facts": {"vni_counter": 1074}, "changed": false}[0m
+
+TASK [Create VXLAN Tunnels for each host1_vpc to each host2_vpc] ***************
+[0;36mincluded: /home/vmadm/demo/RapidServe/southbound/create_tunnel.yml for localhost => (item={'name': 'ne_in'})[0m
+[0;36mincluded: /home/vmadm/demo/RapidServe/southbound/create_tunnel.yml for localhost => (item={'name': 'ne_ja'})[0m
+
+TASK [Setup tunnels for each host1_vpc to each host2_vpc] **********************
+[0;36mincluded: /home/vmadm/demo/RapidServe/southbound/configure_tunnel.yml for localhost => (item={'name': 'ne_ge'})[0m
+
+TASK [Get /30 subnet for current VPC pair] *************************************
+[0;33mchanged: [localhost] => {"changed": true, "cmd": ["python3", "subnetting.py", "192.168.4.0/24"], "delta": "0:00:00.039612", "end": "2024-04-22 04:12:03.336641", "msg": "", "rc": 0, "start": "2024-04-22 04:12:03.297029", "stderr": "", "stderr_lines": [], "stdout": "192.168.4.32/30", "stdout_lines": ["192.168.4.32/30"]}[0m
+
+TASK [Debug subnet output] *****************************************************
+[0;32mok: [localhost] => {[0m
+[0;32m    "msg": "Subnet is 192.168.4.32/30"[0m
+[0;32m}[0m
+
+TASK [Fetch IP for veth interface inside ne_in] ********************************
+[0;32mok: [localhost -> 192.168.38.8] => {"changed": false, "cmd": "ip netns exec ne_in ip -o -4 addr show ne_in_veth1 | awk '{print $4}' | cut -d/ -f1", "delta": "0:00:00.019190", "end": "2024-04-22 04:12:04.157681", "msg": "", "rc": 0, "start": "2024-04-22 04:12:04.138491", "stderr": "Cannot open network namespace \"ne_in\": No such file or directory", "stderr_lines": ["Cannot open network namespace \"ne_in\": No such file or directory"], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Set IP for ne_in] ********************************************************
+[0;32mok: [localhost] => {"ansible_facts": {"host1_vpc_ip": ""}, "changed": false}[0m
+
+TASK [Fetch IP for veth interface inside host2_vpc] ****************************
+[0;32mok: [localhost -> 192.168.38.9] => {"changed": false, "cmd": "ip netns exec ne_ge ip -o -4 addr show ne_ge_veth1 | awk '{print $4}' | cut -d/ -f1", "delta": "0:00:00.020649", "end": "2024-04-22 04:12:05.386831", "msg": "", "rc": 0, "start": "2024-04-22 04:12:05.366182", "stderr": "", "stderr_lines": [], "stdout": "192.168.100.54", "stdout_lines": ["192.168.100.54"]}[0m
+
+TASK [Set IP for host2_vpc] ****************************************************
+[0;32mok: [localhost] => {"ansible_facts": {"host2_vpc_ip": "192.168.100.54"}, "changed": false}[0m
+
+TASK [Create tunnel interface inside host1_vpc] ********************************
+[0;31mfatal: [localhost -> 192.168.38.8]: FAILED! => {"changed": true, "cmd": ["ip", "netns", "exec", "ne_in", "ip", "link", "add", "name", "vxlan1074", "type", "vxlan", "id", "1074", "local", "remote", "192.168.100.54", "dstport", "4789"], "delta": "0:00:00.005893", "end": "2024-04-22 04:12:06.164303", "msg": "non-zero return code", "rc": 255, "start": "2024-04-22 04:12:06.158410", "stderr": "Cannot open network namespace \"ne_in\": No such file or directory", "stderr_lines": ["Cannot open network namespace \"ne_in\": No such file or directory"], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;31mlocalhost[0m                  : [0;32mok=11  [0m [0;33mchanged=1   [0m unreachable=0    [0;31mfailed=1   [0m skipped=0    rescued=0    ignored=0   

@@ -1,0 +1,81 @@
+---
+- name: Execute shell script and create dynamic inventory
+  hosts: localhost
+  gather_facts: no
+  vars:
+    region_tenant: "NF" # Adjust based on your needs
+    script_path: "{{ playbook_dir }}/get_ip_tenant.sh"
+    inventory_template_path: "{{ playbook_dir }}/dynamic_inventory.j2"
+    inventory_path: "{{ playbook_dir }}/dynamic_inventory.ini"
+
+  tasks:
+    - name: Run shell script to get VM IPs
+      command: "{{ script_path }} {{ region_tenant }}"
+      register: script_output
+
+    - name: Debug VM IPs
+      debug:
+        msg: "{{ script_output.stdout_lines }}"
+
+    - name: Create dynamic inventory from template
+      template:
+        src: "{{ inventory_template_path }}"
+        dest: "{{ inventory_path }}"
+      vars:
+        ips: "{{ script_output.stdout_lines }}"
+
+    - name: Debug inventory content
+      command: cat "{{ inventory_path }}"
+      register: inventory_content
+
+    - debug:
+        msg: "{{ inventory_content.stdout }}"
+
+- name: Copy files to origin server
+  hosts: origin_server
+  vars:
+    files_to_copy:
+      - "./dynamic_inventory.ini"
+      - "./monitoring.sh"
+      - "./origin_server.yaml"
+      - "./file_monitor.service"
+    destination_directory: "/root/"  # Adjust this path as needed
+    service_file_destination: "/etc/systemd/system/file_monitor.service"
+    private_key_source: "/home/vmadm/.ssh/id_rsa"
+    private_key_destination: "/root/.ssh/id_rsa"
+  tasks:
+    - name: Copy files to origin server
+      copy:
+        src: "{{ item }}"
+        dest: "{{ destination_directory }}"
+        mode: 0755
+      loop: "{{ files_to_copy[:-1] }}"  # Exclude the service file from this task
+
+    - name: Copy systemd service file to the appropriate directory
+      copy:
+        src: "{{ files_to_copy[-1] }}"  # The service file
+        dest: "{{ service_file_destination }}"
+        mode: '0644'
+    - name: Copy SSH private key to origin server
+      copy:
+        src: "{{ private_key_source }}"
+        dest: "{{ private_key_destination }}"
+        mode: '0600'
+    - name: Install Ansible (
+      apt:
+        name: ansible
+        state: present    
+    - name: Install inotify
+      apt:
+        name: inotify-tools
+        state: present
+
+    - name: Reload systemd to recognize new service
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: Enable and start file monitoring service
+      ansible.builtin.systemd:
+        name: file_monitor
+        enabled: yes
+        state: started

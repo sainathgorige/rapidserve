@@ -1,0 +1,72 @@
+---
+- name: Create and Setup Virtual Machines with Multiple Network Bridges
+  hosts: localhost
+  gather_facts: no
+  become: yes
+  # vars:
+  #   vm_name: "testvm"
+  #   vm_disk_size: 12G
+  #   vm_cpus: 2
+  #   vm_ram: 2048
+  #   vm_network_bridges: ["NF_US_S1_br"]
+  #   vm_ip: "192.168.1.1"
+
+  tasks:
+    - name: Debug VM name
+      debug:
+        var: vm_name
+         
+    - name: Establish directory structure for VM images
+      file:
+        path: "/var/lib/libvirt/images/{{ vm_name }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Deploy cloud-init meta-data from template
+      template:
+        src: meta-data.j2
+        dest: "/var/lib/libvirt/images/{{ vm_name }}/meta-data"
+
+    - name: Prepare user-data for cloud-init from template
+      template:
+        src: user-data.j2
+        dest: "/var/lib/libvirt/images/{{ vm_name }}/user-data"
+
+    - name: Generate CIDATA ISO for cloud-init
+      command: >
+        genisoimage -output /var/lib/libvirt/images/{{ vm_name }}/{{ vm_name }}-cidata.iso
+        -volid cidata -joliet -s
+        /var/lib/libvirt/images/{{ vm_name }}/user-data
+        /var/lib/libvirt/images/{{ vm_name }}/meta-data
+
+    - name: Create VM disk from base image
+      command: >
+        qemu-img create -f qcow2 -F qcow2 -o backing_file=/var/lib/libvirt/images/jammy-server-cloudimg-amd64.img
+        /var/lib/libvirt/images/{{ vm_name }}/{{ vm_name }}.qcow2 {{ vm_disk_size }}
+
+    - name: Initialize VM with Multiple Network Bridges
+      command: >
+        virt-install --virt-type=kvm --name={{ vm_name }} --ram={{ vm_ram }} --vcpus={{ vm_cpus }}
+        --disk path=/var/lib/libvirt/images/{{ vm_name }}/{{ vm_name }}.qcow2,format=qcow2
+        --disk path=/var/lib/libvirt/images/{{ vm_name }}/{{ vm_name }}-cidata.iso,device=cdrom
+        {% for bridge in vm_network_bridges %}
+        --network bridge={{ bridge }}_br,model=virtio
+        {% endfor %}
+        --os-variant=generic --graphics none --import --noautoconsole
+
+
+
+# expected python call
+# def create_vm(vmid, vm):
+#     extravars = {
+#         'vm_name': vm['name'],
+#         'base_image': '/path/to/base/image',  # Update this path as necessary
+#         'vm_disk_size': vm['disk_size'],
+#         'vm_ram': vm['RAM_size'],
+#         'vm_cpus': vm['CPUs'],
+#         'vm_network_bridge': 'your_network_bridge',  # Update this to your network bridge
+#     }
+#     run_playbook('create-vm.yaml', extravars)
+

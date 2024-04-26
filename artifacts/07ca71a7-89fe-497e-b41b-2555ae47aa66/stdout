@@ -1,0 +1,184 @@
+[0;34mNo config file found; using defaults[0m
+
+PLAY [Deploy subnet Infrastructure with bridges and Veth Pairs] ****************
+
+TASK [Parse retrieved data] ****************************************************
+[0;32mok: [192.168.38.9] => {"ansible_facts": {"tenant_data_parsed": {"containers": [{"container_state": "requested", "name": "ho_in_container1", "subnets": ["ho_in_S1", "ho_in_S2"], "vpc": "ho_in"}, {"container_state": "requested", "name": "ho_ja_container1", "subnets": ["ho_ja_S1"], "vpc": "ho_ja"}, {"container_state": "requested", "name": "ho_ge_container1", "subnets": ["ho_ge_S1"], "vpc": "ho_ge"}, {"container_state": "requested", "name": "ho_fr_container1", "subnets": ["ho_fr_S1"], "vpc": "ho_fr"}], "name": "hotstar", "numberOfVpcs": "4", "regional_vpcs": {"asia_vpcs": [{"name": "ho_in"}, {"name": "ho_ja"}], "europe_vpcs": [{"name": "ho_ge"}, {"name": "ho_fr"}], "vni": 1104}, "subnets": [{"CIDR": "192.168.51.0/24", "dhcp_end": "192.168.51.254", "dhcp_start": "192.168.51.2", "ip": "192.168.51.1", "name": "ho_in_S1", "subnet_state": "active", "vpc": "ho_in"}, {"CIDR": "192.168.52.0/24", "dhcp_end": "192.168.52.254", "dhcp_start": "192.168.52.2", "ip": "192.168.52.1", "name": "ho_ja_S1", "subnet_state": "active", "vpc": "ho_ja"}, {"CIDR": "192.168.53.0/24", "dhcp_end": "192.168.53.254", "dhcp_start": "192.168.53.2", "ip": "192.168.53.1", "name": "ho_ge_S1", "subnet_state": "requested", "vpc": "ho_ge"}, {"CIDR": "192.168.54.0/24", "dhcp_end": "192.168.54.254", "dhcp_start": "192.168.54.2", "ip": "192.168.54.1", "name": "ho_fr_S1", "subnet_state": "requested", "vpc": "ho_fr"}, {"CIDR": "192.168.55.0/24", "dhcp_end": "192.168.55.254", "dhcp_start": "192.168.55.2", "ip": "192.168.55.1", "name": "ho_in_S2", "subnet_state": "requested", "vpc": "ho_in"}], "tunnel_state": "active", "vpcs": [{"name": "ho_in", "vpc_state": "active"}, {"name": "ho_ja", "vpc_state": "active"}, {"name": "ho_ge", "vpc_state": "active"}, {"name": "ho_fr", "vpc_state": "active"}]}}, "changed": false}[0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[0;32mok: [192.168.38.9] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "containers": [[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ho_in_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "ho_in_S1",[0m
+[0;32m                    "ho_in_S2"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "ho_in"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ho_ja_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "ho_ja_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "ho_ja"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ho_ge_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "ho_ge_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "ho_ge"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ho_fr_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "ho_fr_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "ho_fr"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "name": "hotstar",[0m
+[0;32m        "numberOfVpcs": "4",[0m
+[0;32m        "regional_vpcs": {[0m
+[0;32m            "asia_vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "ho_in"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "name": "ho_ja"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "europe_vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "ho_ge"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "name": "ho_fr"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "vni": 1104[0m
+[0;32m        },[0m
+[0;32m        "subnets": [[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.51.0/24",[0m
+[0;32m                "dhcp_end": "192.168.51.254",[0m
+[0;32m                "dhcp_start": "192.168.51.2",[0m
+[0;32m                "ip": "192.168.51.1",[0m
+[0;32m                "name": "ho_in_S1",[0m
+[0;32m                "subnet_state": "active",[0m
+[0;32m                "vpc": "ho_in"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.52.0/24",[0m
+[0;32m                "dhcp_end": "192.168.52.254",[0m
+[0;32m                "dhcp_start": "192.168.52.2",[0m
+[0;32m                "ip": "192.168.52.1",[0m
+[0;32m                "name": "ho_ja_S1",[0m
+[0;32m                "subnet_state": "active",[0m
+[0;32m                "vpc": "ho_ja"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.53.0/24",[0m
+[0;32m                "dhcp_end": "192.168.53.254",[0m
+[0;32m                "dhcp_start": "192.168.53.2",[0m
+[0;32m                "ip": "192.168.53.1",[0m
+[0;32m                "name": "ho_ge_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "ho_ge"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.54.0/24",[0m
+[0;32m                "dhcp_end": "192.168.54.254",[0m
+[0;32m                "dhcp_start": "192.168.54.2",[0m
+[0;32m                "ip": "192.168.54.1",[0m
+[0;32m                "name": "ho_fr_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "ho_fr"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.55.0/24",[0m
+[0;32m                "dhcp_end": "192.168.55.254",[0m
+[0;32m                "dhcp_start": "192.168.55.2",[0m
+[0;32m                "ip": "192.168.55.1",[0m
+[0;32m                "name": "ho_in_S2",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "ho_in"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "tunnel_state": "active",[0m
+[0;32m        "vpcs": [[0m
+[0;32m            {[0m
+[0;32m                "name": "ho_in",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "ho_ja",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "ho_ge",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "ho_fr",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            }[0m
+[0;32m        ][0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create bridges for each subnet] ******************************************
+[0;33mchanged: [192.168.38.9] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["ip", "link", "add", "ho_ge_S1_br", "type", "bridge"], "delta": "0:00:00.015530", "end": "2024-04-24 01:32:29.593518", "msg": "", "rc": 0, "start": "2024-04-24 01:32:29.577988", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Activate bridges for each subnet] ****************************************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "link", "set", "ho_ge_S1_br", "up"], "delta": "0:00:00.012606", "end": "2024-04-24 01:32:30.031848", "msg": "", "rc": 0, "start": "2024-04-24 01:32:30.019242", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Create veth pair for each subnet] ****************************************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "link", "add", "ho_ge_S1_veth0", "type", "veth", "peer", "name", "ho_ge_S1_veth1"], "delta": "0:00:00.024675", "end": "2024-04-24 01:32:30.476673", "msg": "", "rc": 0, "start": "2024-04-24 01:32:30.451998", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Bring up veth0 interface in the root namespace] **************************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "link", "set", "ho_ge_S1_veth0", "up"], "delta": "0:00:00.012752", "end": "2024-04-24 01:32:30.934438", "msg": "", "rc": 0, "start": "2024-04-24 01:32:30.921686", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Move one end of the veth pair (veth1) to the corresponding namespace] ****
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "link", "set", "ho_ge_S1_veth1", "netns", "ho_ge"], "delta": "0:00:00.027796", "end": "2024-04-24 01:32:31.410970", "msg": "", "rc": 0, "start": "2024-04-24 01:32:31.383174", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Bring up veth1 interface in its respective namespace] ********************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "ho_ge", "ip", "link", "set", "ho_ge_S1_veth1", "up"], "delta": "0:00:00.016153", "end": "2024-04-24 01:32:31.896413", "msg": "", "rc": 0, "start": "2024-04-24 01:32:31.880260", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Attach veth0 to the bridge in default namespace] *************************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "link", "set", "ho_ge_S1_veth0", "master", "ho_ge_S1_br"], "delta": "0:00:00.011315", "end": "2024-04-24 01:32:32.320527", "msg": "", "rc": 0, "start": "2024-04-24 01:32:32.309212", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Assign IP addresses to veth1 interfaces within namespaces] ***************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "ho_ge", "ip", "addr", "add", "192.168.53.1/24", "dev", "ho_ge_S1_veth1"], "delta": "0:00:00.016039", "end": "2024-04-24 01:32:32.767340", "msg": "", "rc": 0, "start": "2024-04-24 01:32:32.751301", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Setup DHCP on veth1 interfaces within namespaces] ************************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "ho_ge", "dnsmasq", "--interface=ho_ge_S1_veth1", "--bind-interfaces", "--dhcp-range=192.168.53.2,192.168.53.254,24h", "--except-interface=lo"], "delta": "0:00:00.021791", "end": "2024-04-24 01:32:33.293956", "msg": "", "rc": 0, "start": "2024-04-24 01:32:33.272165", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Fetch IP address for the interface based on location] ********************
+[0;32mok: [192.168.38.9] => {"changed": false, "cmd": "ip netns exec ho_ge ip -o -4 addr show ho_ge_veth1 | awk '{print $4}' | cut -d/ -f1\n", "delta": "0:00:00.022508", "end": "2024-04-24 01:32:33.788385", "msg": "", "rc": 0, "start": "2024-04-24 01:32:33.765877", "stderr": "", "stderr_lines": [], "stdout": "192.168.100.42", "stdout_lines": ["192.168.100.42"]}[0m
+
+TASK [Set vpc_veth1_ip variable] ***********************************************
+[0;32mok: [192.168.38.9] => {"ansible_facts": {"vpc_veth1_ip": "192.168.100.42"}, "changed": false}[0m
+
+TASK [Debug vpc_veth1_ip] ******************************************************
+[0;32mok: [192.168.38.9] => {[0m
+[0;32m    "vpc_veth1_ip": "192.168.100.42"[0m
+[0;32m}[0m
+
+TASK [Add route in root namespace to reach VPC subnet via vpc_veth1 IP] ********
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "route", "add", "192.168.53.0/24", "via", "192.168.100.42"], "delta": "0:00:00.012690", "end": "2024-04-24 01:32:34.389484", "msg": "", "rc": 0, "start": "2024-04-24 01:32:34.376794", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Set up forwarding rules for each subnet interface within the VPC] ********
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "ho_ge", "iptables", "-A", "FORWARD", "-i", "ho_ge_veth1", "-o", "ho_ge_S1_veth1", "-m", "state", "--state", "RELATED,ESTABLISHED", "-j", "ACCEPT"], "delta": "0:00:00.015697", "end": "2024-04-24 01:32:34.883030", "msg": "", "rc": 0, "start": "2024-04-24 01:32:34.867333", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Set up forwarding rules for traffic from subnet interfaces to the VPC's external interface] ***
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "ho_ge", "iptables", "-A", "FORWARD", "-i", "ho_ge_S1_veth1", "-o", "ho_ge_veth1", "-j", "ACCEPT"], "delta": "0:00:00.016256", "end": "2024-04-24 01:32:35.402102", "msg": "", "rc": 0, "start": "2024-04-24 01:32:35.385846", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;33m192.168.38.9[0m               : [0;32mok=17  [0m [0;33mchanged=12  [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

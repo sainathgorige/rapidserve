@@ -1,0 +1,9 @@
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+
+PLAY [Deploy VPC Infrastructure with network namespace] ************************
+
+TASK [Create namespaces for each VPC] ******************************************
+[0;31mfatal: [192.168.38.8]: FAILED! => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["ip", "netns", "add", "ne_in"], "delta": "0:00:00.013193", "end": "2024-04-22 04:02:45.076942", "msg": "non-zero return code", "rc": 1, "start": "2024-04-22 04:02:45.063749", "stderr": "Cannot create namespace file \"/run/netns/ne_in\": File exists", "stderr_lines": ["Cannot create namespace file \"/run/netns/ne_in\": File exists"], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;31m192.168.38.8[0m               : ok=0    changed=0    unreachable=0    [0;31mfailed=1   [0m skipped=0    rescued=0    ignored=0   

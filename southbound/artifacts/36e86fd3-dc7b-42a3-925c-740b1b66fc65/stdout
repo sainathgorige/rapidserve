@@ -1,0 +1,22 @@
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+
+PLAY [Deploy Infrastructure with Docker Containers for Edge and Origin Servers] ***
+
+TASK [Check if network namespace exists] ***************************************
+[0;33mchanged: [192.168.38.8] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["ip", "netns", "list", "|", "grep", "-w", "ta_in"], "delta": "0:00:00.007866", "end": "2024-04-22 02:58:20.542653", "failed_when_result": false, "msg": "", "rc": 0, "start": "2024-04-22 02:58:20.534787", "stderr": "", "stderr_lines": [], "stdout": "ta_in (id: 0)", "stdout_lines": ["ta_in (id: 0)"]}[0m
+
+TASK [Fail if network namespace does not exist] ********************************
+[0;36mskipping: [192.168.38.8] => {"changed": false, "skip_reason": "Conditional result was False"}[0m
+
+TASK [Create NGINX configuration file from template for edge servers] **********
+[0;32mok: [192.168.38.8] => {"changed": false, "checksum": "217e957230bc6320243f911928353ae3042916be", "dest": "/home/vmadm/demo/RapidServe/southbound/nginx-ta_in_container1.conf", "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/home/vmadm/demo/RapidServe/southbound/nginx-ta_in_container1.conf", "size": 532, "state": "file", "uid": 0}[0m
+
+TASK [Conditionally create index.html for origin servers] **********************
+[0;36mskipping: [192.168.38.8] => {"changed": false, "skip_reason": "Conditional result was False"}[0m
+
+TASK [Build Docker image with custom NGINX config] *****************************
+[0;31mAn exception occurred during task execution. To see the full traceback, use -vvv. The error was: ansible_collections.community.docker.plugins.module_utils._api.errors.APIError: 500 Server Error for http+docker://localhost/v1.43/build?t=ta_in_container1%3Alatest&q=False&nocache=True&rm=True&forcerm=True&pull=False&dockerfile=Dockerfile-edge&buildargs=%7B%22NGINX_CONF%22%3A+%22nginx-ta_in_container1.conf%22%7D: Internal Server Error ("Cannot locate specified Dockerfile: Dockerfile-edge")[0m
+[0;31mfatal: [192.168.38.8]: FAILED! => {"changed": false, "msg": "An unexpected Docker error occurred: 500 Server Error for http+docker://localhost/v1.43/build?t=ta_in_container1%3Alatest&q=False&nocache=True&rm=True&forcerm=True&pull=False&dockerfile=Dockerfile-edge&buildargs=%7B%22NGINX_CONF%22%3A+%22nginx-ta_in_container1.conf%22%7D: Internal Server Error (\"Cannot locate specified Dockerfile: Dockerfile-edge\")"}[0m
+
+PLAY RECAP *********************************************************************
+[0;31m192.168.38.8[0m               : [0;32mok=2   [0m [0;33mchanged=1   [0m unreachable=0    [0;31mfailed=1   [0m [0;36mskipped=2   [0m rescued=0    ignored=0   

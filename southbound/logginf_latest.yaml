@@ -1,0 +1,42 @@
+---
+- name: Fetch logs from Docker containers and save by customer group
+  hosts: localhost
+  gather_facts: no
+  become: true
+
+  vars:
+    log_dest: "/tmp"  # Local log storage path
+
+  tasks:
+    - name: List all Docker containers starting with 'rs'
+      command: "docker ps --filter 'name=rs*' --format '{{ '{{.Names}}' }}'"
+      register: docker_list
+
+    - name: Extract unique container prefixes
+      set_fact:
+        unique_prefixes: "{{ unique_prefixes | default([]) + [item.split('_')[:2] | join('_')] }}"
+      loop: "{{ docker_list.stdout_lines }}"
+      when: "'rs' in item"
+
+    - name: Remove duplicates from list
+      set_fact:
+        customer_groups: "{{ unique_prefixes | default([]) | unique }}"
+
+    - name: Print customer groups
+      debug:
+        var: customer_groups
+
+    - name: Fetch and combine logs for each customer group
+      shell: >
+        docker logs $(docker ps --filter "name={{ item }}" --format '{{ '{{.Names}}' }}' | head -n 1) --since 1m | grep 'GET' || echo 'No GET requests found in logs'
+      register: log_output
+      loop: "{{ customer_groups }}"
+      ignore_errors: true
+
+    - name: Save combined log to local machine for each customer group
+      copy:
+        content: "{{ item.stdout }}"
+        dest: "{{ log_dest }}/{{ item.item }}.log"
+      loop: "{{ log_output.results }}"
+      when: item.stdout != "" and 'No GET requests found in logs' not in item.stdout
+

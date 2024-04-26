@@ -1,0 +1,51 @@
+- name: Delete Infrastructure and VMs for Tenant
+  hosts: localhost
+  gather_facts: no
+  become: true
+
+  vars:
+    tenant_name: "netflix"
+
+  tasks:
+    - name: Retrieve data from etcd
+      command: python3 retrive_etcd.py {{ tenant_name }}
+      register: etcd_data
+
+    - name: Parse retrieved data
+      set_fact:
+        etcd_data_parsed: "{{ etcd_data.stdout.split('\n')[1] | from_yaml }}"
+
+    - name: Delete VMs for each VPC
+      block:
+        - name: Destroy VM instances
+          command: virsh destroy {{ item.name }}
+          loop: "{{ etcd_data_parsed[tenant_name].vpcs | map(attribute='VMs') | flatten }}"
+          ignore_errors: yes
+
+        - name: Undefine VM instances
+          command: virsh undefine {{ item.name }}
+          loop: "{{ etcd_data_parsed[tenant_name].vpcs | map(attribute='VMs') | flatten }}"
+          ignore_errors: yes
+
+        - name: Delete VM images and cloud-init ISOs
+          file:
+            path: "/var/lib/libvirt/images/{{ item.name }}"
+            state: absent
+          loop: "{{ etcd_data_parsed[tenant_name].vpcs | map(attribute='VMs') | flatten }}"
+
+    - name: Delete network bridges and veth pairs
+      block:
+        - name: Detach and delete veth pairs for each subnet
+          command: ip link delete {{ item.name }}_veth0
+          loop: "{{ etcd_data_parsed[tenant_name].vpcs | map(attribute='subnets') | flatten }}"
+          ignore_errors: true
+
+        - name: Delete bridges for each subnet
+          command: ip link delete {{ item.name }}_br type bridge
+          loop: "{{ etcd_data_parsed[tenant_name].vpcs | map(attribute='subnets') | flatten }}"
+          ignore_errors: true
+
+    - name: Delete network namespaces for each VPC
+      command: ip netns delete {{ item.name }}
+      loop: "{{ etcd_data_parsed[tenant_name].vpcs }}"
+      ignore_errors: true

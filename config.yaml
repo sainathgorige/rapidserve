@@ -1,0 +1,294 @@
+tenants:
+- name: ganesha
+  numberOfVpcs: '4'
+  tunnel_state: active
+  vpcs:
+  - name: ga_in
+    vpc_state: active
+  - name: ga_ja
+    vpc_state: active
+  - name: ga_ge
+    vpc_state: active
+  - name: ga_fr
+    vpc_state: active
+  subnets:
+  - name: ga_in_S1
+    CIDR: 172.16.50.0/24
+    vpc: ga_in
+    subnet_state: active
+    ip: 172.16.50.1
+    dhcp_start: 172.16.50.2
+    dhcp_end: 172.16.50.254
+  - name: ga_in_S2
+    CIDR: 172.16.51.0/24
+    vpc: ga_in
+    subnet_state: active
+    ip: 172.16.51.1
+    dhcp_start: 172.16.51.2
+    dhcp_end: 172.16.51.254
+  - name: ga_ja_S1
+    CIDR: 172.16.52.0/24
+    vpc: ga_ja
+    subnet_state: active
+    ip: 172.16.52.1
+    dhcp_start: 172.16.52.2
+    dhcp_end: 172.16.52.254
+  - name: ga_ge_S1
+    CIDR: 172.16.53.0/24
+    vpc: ga_ge
+    subnet_state: active
+    ip: 172.16.53.1
+    dhcp_start: 172.16.53.2
+    dhcp_end: 172.16.53.254
+  - name: ga_fr_S1
+    CIDR: 172.16.54.0/24
+    vpc: ga_fr
+    subnet_state: active
+    ip: 172.16.54.1
+    dhcp_start: 172.16.54.2
+    dhcp_end: 172.16.54.254
+  containers:
+  - name: ga_in_container1
+    vpc: ga_in
+    subnets:
+    - ga_in_S1
+    - ga_in_S2
+    container_state: active
+  - name: ga_ja_container1
+    vpc: ga_ja
+    subnets:
+    - ga_ja_S1
+    container_state: active
+  - name: ga_ge_container1
+    vpc: ga_ge
+    subnets:
+    - ga_ge_S1
+    container_state: active
+  - name: ga_fr_container1
+    vpc: ga_fr
+    subnets:
+    - ga_fr_S1
+    container_state: active
+  regional_vpcs:
+    asia_vpcs:
+    - name: ga_in
+    - name: ga_ja
+    europe_vpcs:
+    - name: ga_ge
+    - name: ga_fr
+    vni: 1113
+- name: shiva
+  numberOfVpcs: '4'
+  tunnel_state: active
+  vpcs: &id001
+  - name: sh_in
+    vpc_state: active
+  - name: sh_ja
+    vpc_state: active
+  - name: sh_ge
+    vpc_state: active
+  - name: sh_fr
+    vpc_state: active
+  subnets: &id002
+  - name: sh_in_S1
+    CIDR: 172.16.90.0/24
+    vpc: sh_in
+    subnet_state: active
+    ip: 172.16.90.1
+    dhcp_start: 172.16.90.2
+    dhcp_end: 172.16.90.254
+  - name: sh_ja_S1
+    CIDR: 172.16.91.0/24
+    vpc: sh_ja
+    subnet_state: active
+    ip: 172.16.91.1
+    dhcp_start: 172.16.91.2
+    dhcp_end: 172.16.91.254
+  - name: sh_ge_S1
+    CIDR: 172.16.92.0/24
+    vpc: sh_ge
+    subnet_state: active
+    ip: 172.16.92.1
+    dhcp_start: 172.16.92.2
+    dhcp_end: 172.16.92.254
+  - name: sh_fr_S1
+    CIDR: 172.16.93.0/24
+    vpc: sh_fr
+    subnet_state: active
+    ip: 172.16.93.1
+    dhcp_start: 172.16.93.2
+    dhcp_end: 172.16.93.254
+  - name: sh_fr_S2
+    CIDR: 172.16.94.0/24
+    vpc: sh_fr
+    subnet_state: active
+    ip: 172.16.94.1
+    dhcp_start: 172.16.94.2
+    dhcp_end: 172.16.94.254
+  containers: &id003
+  - name: sh_in_container1
+    vpc: sh_in
+    subnets:
+    - sh_in_S1
+    container_state: active
+  - name: sh_ja_container1
+    vpc: sh_ja
+    subnets:
+    - sh_ja_S1
+    container_state: active
+  - name: sh_ge_container1
+    vpc: sh_ge
+    subnets:
+    - sh_ge_S1
+    container_state: active
+  - name: sh_fr_container1
+    vpc: sh_fr
+    subnets:
+    - sh_fr_S1
+    - sh_fr_S2
+    container_state: active
+  - name: sh_fr_container2
+    vpc: sh_fr
+    subnets:
+    - sh_fr_S2
+    container_state: active
+  regional_vpcs: &id004
+    asia_vpcs:
+    - name: sh_in
+    - name: sh_ja
+    europe_vpcs:
+    - name: sh_ge
+    - name: sh_fr
+    vni: 1121
+- name: shiva
+  numberOfVpcs: '4'
+  tunnel_state: active
+  vpcs: *id001
+  subnets: *id002
+  containers: *id003
+  regional_vpcs: *id004
+- name: parvathi
+  numberOfVpcs: '3'
+  tunnel_state: active
+  vpcs:
+  - name: pa_in
+    vpc_state: active
+  - name: pa_ja
+    vpc_state: active
+  - name: pa_ge
+    vpc_state: active
+  subnets:
+  - name: pa_in_S1
+    CIDR: 172.16.230.0/24
+    vpc: pa_in
+    subnet_state: active
+    ip: 172.16.230.1
+    dhcp_start: 172.16.230.2
+    dhcp_end: 172.16.230.254
+  - name: pa_ja_S1
+    CIDR: 172.16.231.0/24
+    vpc: pa_ja
+    subnet_state: active
+    ip: 172.16.231.1
+    dhcp_start: 172.16.231.2
+    dhcp_end: 172.16.231.254
+  - name: pa_ge_S1
+    CIDR: 172.16.232.0/24
+    vpc: pa_ge
+    subnet_state: active
+    ip: 172.16.232.1
+    dhcp_start: 172.16.232.2
+    dhcp_end: 172.16.232.254
+  containers:
+  - name: pa_in_container1
+    vpc: pa_in
+    subnets:
+    - pa_in_S1
+    container_state: active
+  - name: pa_ja_container1
+    vpc: pa_ja
+    subnets:
+    - pa_ja_S1
+    container_state: active
+  - name: pa_ge_container1
+    vpc: pa_ge
+    subnets:
+    - pa_ge_S1
+    container_state: active
+  regional_vpcs:
+    asia_vpcs:
+    - name: pa_in
+    - name: pa_ja
+    europe_vpcs:
+    - name: pa_ge
+    vni: 1125
+- name: lakshmi
+  numberOfVpcs: '4'
+  tunnel_state: active
+  vpcs:
+  - name: la_in
+    vpc_state: active
+  - name: la_ja
+    vpc_state: active
+  - name: la_ge
+    vpc_state: active
+  - name: la_fr
+    vpc_state: active
+  subnets:
+  - name: la_in_S1
+    CIDR: 172.16.170.0/24
+    vpc: la_in
+    subnet_state: active
+    ip: 172.16.170.1
+    dhcp_start: 172.16.170.2
+    dhcp_end: 172.16.170.254
+  - name: la_ja_S1
+    CIDR: 172.16.171.0/24
+    vpc: la_ja
+    subnet_state: active
+    ip: 172.16.171.1
+    dhcp_start: 172.16.171.2
+    dhcp_end: 172.16.171.254
+  - name: la_ge_S1
+    CIDR: 172.16.172.0/24
+    vpc: la_ge
+    subnet_state: active
+    ip: 172.16.172.1
+    dhcp_start: 172.16.172.2
+    dhcp_end: 172.16.172.254
+  - name: la_fr_S1
+    CIDR: 172.16.173.0/24
+    vpc: la_fr
+    subnet_state: active
+    ip: 172.16.173.1
+    dhcp_start: 172.16.173.2
+    dhcp_end: 172.16.173.254
+  containers:
+  - name: la_in_container1
+    vpc: la_in
+    subnets:
+    - la_in_S1
+    container_state: active
+  - name: la_ja_container1
+    vpc: la_ja
+    subnets:
+    - la_ja_S1
+    container_state: active
+  - name: la_ge_container1
+    vpc: la_ge
+    subnets:
+    - la_ge_S1
+    container_state: active
+  - name: la_fr_container1
+    vpc: la_fr
+    subnets:
+    - la_fr_S1
+    container_state: active
+  regional_vpcs:
+    asia_vpcs:
+    - name: la_in
+    - name: la_ja
+    europe_vpcs:
+    - name: la_ge
+    - name: la_fr
+    vni: 1127

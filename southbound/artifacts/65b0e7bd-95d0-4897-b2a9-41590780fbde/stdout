@@ -1,0 +1,31 @@
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+
+PLAY [Create and Setup Virtual Machines with Multiple Network Bridges] *********
+
+TASK [Debug VM name] ***********************************************************
+[0;32mok: [localhost] => {[0m
+[0;32m    "vm_name": "NF_US_VM2"[0m
+[0;32m}[0m
+
+TASK [Establish directory structure for VM images] *****************************
+[0;33mchanged: [localhost][0m
+
+TASK [Deploy cloud-init meta-data from template] *******************************
+[0;33mchanged: [localhost][0m
+
+TASK [Prepare user-data for cloud-init from template] **************************
+[0;33mchanged: [localhost][0m
+
+TASK [Generate CIDATA ISO for cloud-init] **************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Create VM disk from base image] ******************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Initialize VM with Multiple Network Bridges] *****************************
+[0;33mchanged: [localhost][0m
+
+PLAY RECAP *********************************************************************
+[0;33mlocalhost[0m                  : [0;32mok=7   [0m [0;33mchanged=6   [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

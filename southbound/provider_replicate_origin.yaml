@@ -1,0 +1,239 @@
+- name: Process on VM1
+  hosts: host1
+  become: yes
+  tasks:
+    - name: Create container name
+      set_fact:
+        #container_name: "{{ tenant_prefix }}_{{ region }}_container1"
+        container_name: "rs_{{ tenant_prefix }}_{{ region }}_container1"
+
+    - name: Set container prefix by removing the last character from container name
+      set_fact:
+        container_type: "{{ container_name[:5] }}"
+
+    - name: Extract parts of the container name
+      set_fact:
+        short_name: "{{ container_name[:9] + container_name[-2:] }}"
+
+    - name: Check if file exists
+      stat:
+        path: "/tmp/{{ tenant_prefix }}-index.html"
+      register: file_stat
+
+    - name: Error if file does not exist
+      fail:
+        msg: "File '/tmp/{{ tenant_prefix }}-index.html' does not exist. Please run customer_sync.playbook first."
+      when: not file_stat.stat.exists
+
+    - name: Check if Docker container exists
+      command: docker inspect "{{ container_name }}"
+      register: docker_inspect_result
+      ignore_errors: yes
+
+    - block:
+        - name: Stop and remove the Docker container
+          shell: |
+            docker stop "{{ container_name }}" && docker rm -f "{{ container_name }}"
+          ignore_errors: yes
+
+        - name: Run a new Docker container
+          shell: |
+            docker run --cap-add=NET_ADMIN --name "{{ container_name }}" --network none -d -v "/tmp/{{ tenant_prefix }}-index.html:/var/www/html/index.html" 100514735019/customer_image
+          register: docker_run_result
+          ignore_errors: yes
+
+        - name: Copy nginx config into the container
+          shell: |
+            docker cp "/home/vmadm/demo/RapidServe/southbound/nginx-origin.conf" "{{ container_name }}:/etc/nginx/nginx.conf"
+
+        - name: Reload nginx
+          shell: |
+            docker exec "{{ container_name }}" nginx -s reload
+
+        - name: remove any symlink
+          shell: sudo rm -f /var/run/netns/"{{container_name}}"
+
+        - name: Get Docker container PID
+          command: docker inspect --format '{''{.State.Pid}}' "{{ container_name }}"
+          register: docker_pid
+
+        - name: Link network namespace of container
+          command: ln -sf "/proc/{{ docker_pid.stdout }}/ns/net" "/var/run/netns/{{ container_name }}"
+          become: yes
+
+        - name: Determine subnet prefix
+          set_fact:
+            subnet_prefix: "{{ short_name[:8] }}"
+        
+        - name: print subnet name
+          debug: 
+            var: subnet_prefix
+
+
+        - name: attach veth pair to bridge
+          shell: |
+            ip link add  {{ short_name }} type veth peer name v_{{ short_name }}
+            ip link set v_{{ short_name }} up
+            ip link set v_{{ short_name }} master "{{subnet_prefix}}_S1_br"
+            ip link set "{{ short_name }}" netns "{{ container_name }}"
+            ip netns exec {{ container_name }} ip link set {{ short_name }} up
+            docker exec {{container_name}} dhclient {{short_name}}
+          become: yes
+
+        - name: get origin_ip
+          shell: docker exec "{{container_name}}" sh -c "ip addr show dev {{short_name}} | awk '/inet / {print $2}' | cut -d'/' -f1 | sed 's/inet//g' | tr -d ' '"
+          register: vm_ip_raw
+
+        - name: Extract IP address from command output
+          set_fact:
+            vm_ip: "{{ vm_ip_raw.stdout }}"
+
+
+        - name: print origin ip
+          debug:
+            var: vm_ip
+        - name: Create NGINX configuration file from template for edge servers
+          template:
+            src: "/home/vmadm/demo/RapidServe/southbound/nginx-edge.conf.j2"
+            dest: "/tmp/nginx-{{ container_name }}.conf"
+          vars:
+            vm_ip: "{{ vm_ip }}"
+
+        - name: Get all other containers with the same prefix
+          shell: docker ps --format '{''{.Names}}' | grep '^{{ container_type }}'
+          register: edge_containers_result
+          changed_when: false
+          failed_when: false
+
+        - name: Update nginx configuration for edge containers and reload nginx
+          shell: |
+            docker cp "/tmp/nginx-{{ container_name }}.conf" "{{ item }}:/etc/nginx/nginx.conf"
+            docker exec "{{ item }}" nginx -s reloaddocker exec -it 
+          loop: "{{ edge_containers_result.stdout_lines }}"
+          when: item != container_name
+      when: docker_inspect_result is succeeded  
+
+- name: Process on VM2
+  hosts: host2
+  become: yes
+  tasks:
+    - name: Create container name
+      set_fact:
+        #container_name: "{{ tenant_prefix }}_{{ region }}_container1"
+        container_name: "rs_{{ tenant_prefix }}_{{ region }}_container1"
+
+    - name: Set container prefix by removing the last character from container name
+      set_fact:
+        container_type: "{{ container_name[:5] }}"
+
+    - name: Extract parts of the container name
+      set_fact:
+        short_name: "{{ container_name[:9] + container_name[-2:] }}"
+
+    - name: Check if file exists
+      stat:
+        path: "/tmp/{{ tenant_prefix }}-index.html"
+      register: file_stat
+
+    - name: Error if file does not exist
+      fail:
+        msg: "File '/tmp/{{ tenant_prefix }}-index.html' does not exist. Please run customer_sync.playbook first."
+      when: not file_stat.stat.exists
+
+    - name: Check if Docker container exists
+      command: docker inspect "{{ container_name }}"
+      register: docker_inspect_result
+      ignore_errors: yes
+
+    - name: print conatiner inspect
+      debug:
+        var: docker_inspect_result
+
+    - block:
+        - name: Stop and remove the Docker container
+          shell: |
+            docker stop "{{ container_name }}" && docker rm -f "{{ container_name }}"
+          ignore_errors: yes
+
+        - name: Run a new Docker container
+          shell: |
+            docker run --cap-add=NET_ADMIN --name "{{ container_name }}" --network none -d -v "/tmp/{{ tenant_prefix }}-index.html:/var/www/html/index.html" 100514735019/customer_image
+          register: docker_run_result
+          ignore_errors: yes
+
+        - name: Copy nginx config into the container
+          shell: |
+            docker cp "/home/vmadm/demo/RapidServe/southbound/nginx-origin.conf" "{{ container_name }}:/etc/nginx/nginx.conf"
+
+        - name: Reload nginx
+          shell: |
+            docker exec "{{ container_name }}" nginx -s reload
+
+        - name: remove any symlink
+          shell: sudo rm -f /var/run/netns/"{{container_name}}"
+
+        - name: Get Docker container PID
+          command: docker inspect --format '{''{.State.Pid}}' "{{ container_name }}"
+          register: docker_pid
+
+        - name: Link network namespace of container
+          command: ln -sf "/proc/{{ docker_pid.stdout }}/ns/net" "/var/run/netns/{{ container_name }}"
+          become: yes
+
+        - name: Determine subnet prefix
+          set_fact:
+            subnet_prefix: "{{ short_name[:8] }}"
+        
+        - name: print subnet name
+          debug: 
+            var: subnet_prefix
+
+
+        - name: attach veth pair to bridge
+          shell: |
+            ip link add  {{ short_name }} type veth peer name v_{{ short_name }}
+            ip link set v_{{ short_name }} up
+            ip link set v_{{ short_name }} master "{{subnet_prefix}}_S1_br"
+            ip link set "{{ short_name }}" netns "{{ container_name }}"
+            ip netns exec {{ container_name }} ip link set {{ short_name }} up
+            docker exec {{container_name}} dhclient {{short_name}}
+          become: yes
+
+        - name: get origin_ip
+          shell: docker exec "{{container_name}}" sh -c "ip addr show dev {{short_name}} | awk '/inet / {print $2}' | cut -d'/' -f1 | sed 's/inet//g' | tr -d ' '"
+          register: vm_ip_raw
+
+        - name: Extract IP address from command output
+          set_fact:
+            vm_ip: "{{ vm_ip_raw.stdout }}"
+
+
+        - name: print origin ip
+          debug:
+            var: vm_ip
+
+
+        - name: Create NGINX configuration file from template for edge servers
+          template:
+            src: "/home/vmadm/demo/RapidServe/southbound/nginx-edge.conf.j2"
+            dest: "/tmp/nginx-{{ container_name }}.conf"
+          vars:
+            vm_ip: "{{ vm_ip }}"
+
+        - name: Get all other containers with the same prefix
+          shell: docker ps --format '{''{.Names}}' | grep '^{{ container_type }}'
+          register: edge_containers_result
+          changed_when: false
+          failed_when: false
+
+        - name: debug print edge container list
+          debug:
+            var: edge_containers_result
+
+        - name: Update nginx configuration for edge containers and reload nginx
+          shell: |
+            docker cp "/tmp/nginx-{{ container_name }}.conf" "{{ item }}:/etc/nginx/nginx.conf"
+            docker exec "{{ item }}" nginx -s reload
+          loop: "{{ edge_containers_result.stdout_lines }}"
+          when: item != container_name
+      when: docker_inspect_result is succeeded

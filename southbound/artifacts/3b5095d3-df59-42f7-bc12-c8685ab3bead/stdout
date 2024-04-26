@@ -1,0 +1,15 @@
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+
+PLAY [Deploy Infrastructure with Docker Containers for Edge and Origin Servers] ***
+
+TASK [Check if network namespace exists] ***************************************
+[0;33mchanged: [192.168.38.8] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["ip", "netns", "list", "|", "grep", "-w", "ta_in"], "delta": "0:00:00.008118", "end": "2024-04-22 02:31:33.929026", "failed_when_result": false, "msg": "", "rc": 0, "start": "2024-04-22 02:31:33.920908", "stderr": "", "stderr_lines": [], "stdout": "ta_ja (id: 1)\nta_in (id: 0)\nte_in (id: 2)\ncustomnginx-container\nyo_in\norigin_origin_1\norigin_vpc (id: 11)\ndns_ns_dns_1\ncon-dns\nne_ja_container1\nnf_in_edge_1\nbr3_ns (id: 21)\nbr1_ns (id: 20)\norigin_origin_3\nnf_in_edge_3\norigin_origin_2\ntester\ntest\nNF_JP (id: 19)\nNF_US (id: 8)\nnf_us (id: 16)\nprovider_ns\nNSTransit (id: 3)", "stdout_lines": ["ta_ja (id: 1)", "ta_in (id: 0)", "te_in (id: 2)", "customnginx-container", "yo_in", "origin_origin_1", "origin_vpc (id: 11)", "dns_ns_dns_1", "con-dns", "ne_ja_container1", "nf_in_edge_1", "br3_ns (id: 21)", "br1_ns (id: 20)", "origin_origin_3", "nf_in_edge_3", "origin_origin_2", "tester", "test", "NF_JP (id: 19)", "NF_US (id: 8)", "nf_us (id: 16)", "provider_ns", "NSTransit (id: 3)"]}[0m
+
+TASK [Fail if network namespace does not exist] ********************************
+[0;36mskipping: [192.168.38.8] => {"changed": false, "skip_reason": "Conditional result was False"}[0m
+
+TASK [Create NGINX configuration file from template for edge servers] **********
+[0;31mfatal: [192.168.38.8]: FAILED! => {"changed": false, "checksum": "217e957230bc6320243f911928353ae3042916be", "msg": "Destination directory /home/vmadm/demo/RapidServe/southbound does not exist"}[0m
+
+PLAY RECAP *********************************************************************
+[0;31m192.168.38.8[0m               : [0;32mok=1   [0m [0;33mchanged=1   [0m unreachable=0    [0;31mfailed=1   [0m [0;36mskipped=1   [0m rescued=0    ignored=0   

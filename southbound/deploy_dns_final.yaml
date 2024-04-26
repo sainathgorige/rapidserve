@@ -1,0 +1,195 @@
+- name: Deploy DNS Server with Network Setup
+  hosts: localhost
+  gather_facts: no
+  become: true
+
+  vars:
+    # tenant_name: ["netflix"]
+
+    bridge_name: "dns_bridge"
+    vm_name: "dns_server_vm"
+    base_image_path: "/var/lib/libvirt/images/base-vm-image.qcow2"  
+    vm_disk_size: "12G"
+    cloud_init_path: "/var/lib/libvirt/images/{{ vm_name }}"
+
+    veth_ns_to_root: "dns_ns"
+    veth_root_to_ns: "dns_root"
+    veth_ns_to_bridge: "dns_nsbridge"
+    veth_bridge_to_ns: "dns_bridgens"
+
+  tasks:
+    # - name: Retrieve data from etcd
+    #   command: python3 retrive_etcd.py {{ item }}
+    #   register: tenant_data
+    #   loop: "{{ tenant_name }}"
+
+    - name: Parse retrieved data
+      set_fact:
+        etcd_data_parsed: "{{ tenant_data | from_yaml }}" #.results[0].stdout.split('\n')[1]
+   
+    - name: Debug etcd_data_parsed
+      debug:
+        var: etcd_data_parsed
+
+    - name: Extract CDN VPC configurations
+      set_fact:
+        origin_vpc: "{{ etcd_data_parsed[tenant_name[0]]['cdn']['cdn_vpcs']['origin_vpc'][0] }}"
+        dns_vpc: "{{ etcd_data_parsed[tenant_name[0]]['cdn']['cdn_vpcs']['dns_vpc'][0] }}"
+        bridge_subnet: "{{ etcd_data_parsed[tenant_name[0]]['cdn']['cdn_vpcs']['dns_vpc'][0]['CIDR'] }}"
+
+    - name: Calculate IP addresses
+      set_fact:
+        root_ip: "{{ dns_vpc['public_subnet'] | ipaddr('network') | ipmath(1) }}/30"
+        ns_ip: "{{ dns_vpc['public_subnet'] | ipaddr('broadcast') | ipmath(-1) }}/30"
+        ns_bridge_ip: "{{ dns_vpc['CIDR'] | ipaddr('network') | ipmath(1) }}/30"
+        vm_ip: "{{ dns_vpc['CIDR'] | ipaddr('network') | ipmath(2) }}"
+        vpc_name: "{{ dns_vpc.name }}"
+
+    - name: Display calculated IP addresses
+      debug:
+        msg: |
+          root_ip: "{{ root_ip }}"
+          ns_ip: "{{ ns_ip }}"
+          ns_bridge_ip: "{{ ns_bridge_ip }}"
+          vm_ip: "{{ vm_ip }}"
+          vpc_name: "{{ dns_vpc.name}}"
+          bridge_subnet: "{{bridge_subnet}}"
+
+    - name: Create network namespace
+      command: ip netns add {{ vpc_name }}
+
+    - name: Create bridge in root namespace
+      command: ip link add name {{ bridge_name }} type bridge
+
+    - name: Set bridge up
+      command: ip link set {{ bridge_name }} up
+
+    - name: Create veth pair for NS to root connectivity
+      command: ip link add {{ veth_root_to_ns }} type veth peer name {{ veth_ns_to_root }}
+
+    - name: Attach one end of veth to the network namespace
+      command: ip link set {{ veth_ns_to_root }} netns {{ vpc_name }}
+
+    - name: Assign IP to veth in root namespace
+      command: ip addr add {{ root_ip }} dev {{ veth_root_to_ns }}
+
+    - name: Bring up veth in root namespace
+      command: ip link set {{ veth_root_to_ns }} up
+
+    - name: Assign IP to veth in network namespace
+      command: ip netns exec {{ vpc_name }} ip addr add {{ ns_ip }} dev {{ veth_ns_to_root }}
+
+    - name: Bring up veth in network namespace
+      command: ip netns exec {{ vpc_name }} ip link set {{ veth_ns_to_root }} up
+
+    - name: Create veth pair for NS to bridge connectivity
+      command: ip link add {{ veth_ns_to_bridge }} type veth peer name {{ veth_bridge_to_ns }}
+
+    - name: Attach one end of the veth pair to the network namespace
+      command: ip link set {{ veth_ns_to_bridge }} netns {{ vpc_name }}
+
+    - name: Connect the other end to the bridge
+      command: ip link set {{ veth_bridge_to_ns }} master {{ bridge_name }}
+
+    - name: Assign IP to veth in network namespace for bridge connection
+      command: ip netns exec {{ vpc_name }} ip addr add {{ ns_bridge_ip }} dev {{ veth_ns_to_bridge }}
+
+    - name: Bring up the veth in network namespace for bridge connection
+      command: ip netns exec {{ vpc_name }} ip link set {{ veth_ns_to_bridge }} up
+
+    - name: Bring up the veth on the bridge side
+      command: ip link set {{ veth_bridge_to_ns }} up
+
+    - name: Setup DHCP on dns_nsbridge within the dns_ns namespace
+      command: >
+        ip netns exec {{ vpc_name }} dnsmasq
+        --interface={{ veth_ns_to_bridge }}
+        --bind-interfaces
+        --dhcp-range={{vm_ip}},{{vm_ip}},24h
+    
+    - name: Activate loopback interface in the network namespace
+      command: ip netns exec {{ vpc_name }} ip link set lo up
+
+    - name: Enable IP forwarding in the root namespace
+      command: sysctl -w net.ipv4.ip_forward=1
+
+    - name: Setup NAT and IP masquerading for packets leaving dns_ns
+      command: ip netns exec {{ vpc_name }} iptables -t nat -A POSTROUTING -o {{ veth_ns_to_root }} -j MASQUERADE
+
+    - name: Allow forwarding from dns_ns to the bridge interface
+      command: ip netns exec {{ vpc_name }} iptables -A FORWARD -i {{ veth_ns_to_bridge }} -o {{ veth_ns_to_root }} -j ACCEPT
+
+    - name: Allow established and related connections back to the namespace
+      command: ip netns exec {{ vpc_name }} iptables -A FORWARD -i {{ veth_ns_to_root }} -o {{ veth_ns_to_bridge }} -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+    - name: Add default route in dns_ns namespace
+      command: ip netns exec {{ vpc_name }} ip route add default via {{ root_ip | ipaddr('address') }}
+
+    - name: Add route in root namespace to reach 10.10.20.0/24 subnet
+      command: ip route add {{ bridge_subnet }} via {{ ns_ip | ipaddr('address') }}
+
+    - name: Ensure VM image directory exists
+      file:
+        path: "{{ cloud_init_path }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Deploy cloud-init meta-data for VM
+      copy:
+        dest: "{{ cloud_init_path }}/meta-data"
+        content: |
+          #cloud-config
+          instance-id: {{ vm_name }}
+          local-hostname: {{ vm_name }}
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Deploy cloud-init user-data for VM
+      copy:
+        dest: "{{ cloud_init_path }}/user-data"
+        content: |
+          #cloud-config
+          bootcmd:
+            - echo "nameserver 8.8.8.8" > /etc/resolv.conf
+          disable_root: false
+          ssh_authorized_keys:
+            - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3ttzAq6NSC/s43UaygR3DcaHIhUd6qMZTonB2NmVGUw6fM261+1i0VigfiJHYe5l6Nh6QtNLvBzI980n+qL/WJQkiJ1KL3+VAK7k3RBsnEBuEqmrErX2JHTrXdh0J+L2Ly3tiI0hVATFsaNGbyLU04EmUyz9j7adknuU26/cFqxMjddlrGaBcDW4d7T522twV7vm8z9MOO+AcfcaJLOcE4+jYlu72w2pQz5znE1RGj0pfGqlcc7YdM/+dmvaQb1pssoc5NedwrWJ510Cqp5jABVz10jbvIsouC2ao0o+l1jNOI8fsddT5skf19IIW5t6GCgfVbOJ5Vbik6j1PBWFJ vmadm@lnVM08
+          users:
+            - default
+            - name: root
+              lock_passwd: false
+              plain_text_passwd: 'admin'
+            - name: ubuntu
+              lock_passwd: false
+              plain_text_passwd: 'admin'
+          network:
+            version: 2
+            renderer: networkd
+            ethernets:
+              ens4:
+                dhcp4: true
+          runcmd:
+            - "for i in /sys/class/net/*; do intf=$(basename $i); [ \"$intf\" != \"lo\" ] && ip link set $intf up and dhclient $intf; done"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Generate CIDATA ISO for cloud-init
+      command: genisoimage -output {{ cloud_init_path }}/{{ vm_name }}-cidata.iso -volid cidata -joliet -rock {{ cloud_init_path }}/user-data {{ cloud_init_path }}/meta-data
+
+    - name: Create VM disk from base image
+      command: "qemu-img create -f qcow2 -F qcow2 -o backing_file=/var/lib/libvirt/images/jammy-server-cloudimg-amd64.img {{ cloud_init_path }}/{{ vm_name }}.qcow2"
+
+    - name: Allocate space for QCOW2 images
+      command: "qemu-img resize {{ cloud_init_path }}/{{ vm_name }}.qcow2 {{ vm_disk_size }}"
+        
+    - name: Initialize VM connected to the bridge
+      command: >
+        virt-install --virt-type=kvm --name={{ vm_name }} --ram=2048 --vcpus=2
+        --disk path={{ cloud_init_path }}/{{ vm_name }}.qcow2,format=qcow2
+        --disk path={{ cloud_init_path }}/{{ vm_name }}-cidata.iso,device=cdrom
+        --network bridge={{ bridge_name }},model=virtio
+        --os-variant=generic --graphics none --import --noautoconsole

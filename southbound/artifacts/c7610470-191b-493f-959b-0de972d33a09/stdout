@@ -1,0 +1,126 @@
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+
+PLAY [Deploy subnet Infrastructure with bridges and Veth Pairs] ****************
+
+TASK [Parse retrieved data] ****************************************************
+[0;32mok: [192.168.38.8] => {"ansible_facts": {"tenant_data_parsed": {"containers": [{"container_state": "requested", "name": "ne_in_container1", "subnets": ["ne_in_S1"], "vpc": "ne_in"}, {"container_state": "requested", "name": "ne_ja_container1", "subnets": ["ne_ja_S1"], "vpc": "ne_ja"}, {"container_state": "requested", "name": "ne_ge_container1", "subnets": ["ne_ge_S1"], "vpc": "ne_ge"}, {"container_state": "requested", "name": "ne_in_container2", "subnets": ["ne_in_S1"], "vpc": "ne_in"}], "name": "netflix", "numberOfVpcs": "3", "regional_vpcs": {"asia_vpcs": [{"name": "ne_in"}, {"name": "ne_ja"}], "europe_vpcs": [{"name": "ne_ge"}], "vni": 1090}, "subnets": [{"CIDR": "172.16.47.0/24", "dhcp_end": "172.16.47.254", "dhcp_start": "172.16.47.2", "ip": "172.16.47.1", "name": "ne_in_S1", "subnet_state": "requested", "vpc": "ne_in"}, {"CIDR": "172.16.48.0/24", "dhcp_end": "172.16.48.254", "dhcp_start": "172.16.48.2", "ip": "172.16.48.1", "name": "ne_ja_S1", "subnet_state": "requested", "vpc": "ne_ja"}, {"CIDR": "172.16.49.0/24", "dhcp_end": "172.16.49.254", "dhcp_start": "172.16.49.2", "ip": "172.16.49.1", "name": "ne_ge_S1", "subnet_state": "requested", "vpc": "ne_ge"}, {"CIDR": "172.16.50.0/24", "dhcp_end": "172.16.50.254", "dhcp_start": "172.16.50.2", "ip": "172.16.50.1", "name": "ne_in_S2", "subnet_state": "requested", "vpc": "ne_in"}], "tunnel_state": "active", "vpcs": [{"name": "ne_in", "tunnel_state": "active", "vpc_state": "active"}, {"name": "ne_ja", "tunnel_state": "active", "vpc_state": "active"}, {"name": "ne_ge", "tunnel_state": "active", "vpc_state": "active"}]}}, "changed": false}[0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[0;32mok: [192.168.38.8] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "containers": [[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ne_in_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "ne_in_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "ne_in"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ne_ja_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "ne_ja_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "ne_ja"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ne_ge_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "ne_ge_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "ne_ge"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ne_in_container2",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "ne_in_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "ne_in"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "name": "netflix",[0m
+[0;32m        "numberOfVpcs": "3",[0m
+[0;32m        "regional_vpcs": {[0m
+[0;32m            "asia_vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "ne_in"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "name": "ne_ja"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "europe_vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "ne_ge"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "vni": 1090[0m
+[0;32m        },[0m
+[0;32m        "subnets": [[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.47.0/24",[0m
+[0;32m                "dhcp_end": "172.16.47.254",[0m
+[0;32m                "dhcp_start": "172.16.47.2",[0m
+[0;32m                "ip": "172.16.47.1",[0m
+[0;32m                "name": "ne_in_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "ne_in"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.48.0/24",[0m
+[0;32m                "dhcp_end": "172.16.48.254",[0m
+[0;32m                "dhcp_start": "172.16.48.2",[0m
+[0;32m                "ip": "172.16.48.1",[0m
+[0;32m                "name": "ne_ja_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "ne_ja"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.49.0/24",[0m
+[0;32m                "dhcp_end": "172.16.49.254",[0m
+[0;32m                "dhcp_start": "172.16.49.2",[0m
+[0;32m                "ip": "172.16.49.1",[0m
+[0;32m                "name": "ne_ge_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "ne_ge"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.50.0/24",[0m
+[0;32m                "dhcp_end": "172.16.50.254",[0m
+[0;32m                "dhcp_start": "172.16.50.2",[0m
+[0;32m                "ip": "172.16.50.1",[0m
+[0;32m                "name": "ne_in_S2",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "ne_in"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "tunnel_state": "active",[0m
+[0;32m        "vpcs": [[0m
+[0;32m            {[0m
+[0;32m                "name": "ne_in",[0m
+[0;32m                "tunnel_state": "active",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "ne_ja",[0m
+[0;32m                "tunnel_state": "active",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "ne_ge",[0m
+[0;32m                "tunnel_state": "active",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            }[0m
+[0;32m        ][0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create bridges for each subnet] ******************************************
+[0;31mfatal: [192.168.38.8]: FAILED! => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["ip", "link", "add", "ne_in_S1_br", "type", "bridge"], "delta": "0:00:00.011346", "end": "2024-04-22 04:47:06.272132", "msg": "non-zero return code", "rc": 2, "start": "2024-04-22 04:47:06.260786", "stderr": "RTNETLINK answers: File exists", "stderr_lines": ["RTNETLINK answers: File exists"], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;31m192.168.38.8[0m               : [0;32mok=2   [0m changed=0    unreachable=0    [0;31mfailed=1   [0m skipped=0    rescued=0    ignored=0   

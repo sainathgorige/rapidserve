@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "2b42fd3e-13b0-419e-ac4f-bb43fa3201cb", "counter": 8, "stdout": "\u001b[0;31mThe error appears to be in '/home/vmadm/demo/RapidServe/southbound/deploy_con.yaml': line 79, column 47, but may\u001b[0m", "start_line": 7, "end_line": 8, "runner_ident": "db4aedb3-6b8a-463d-8389-26be6b7ef58e", "created": "2024-04-22T02:27:38.422305"}

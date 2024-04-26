@@ -1,0 +1,142 @@
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+
+PLAY [Deploy Infrastructure with Veth Pairs] ***********************************
+
+TASK [Parse retrieved data] ****************************************************
+[0;32mok: [localhost][0m
+
+TASK [Debug etcd_data_parsed] **************************************************
+[0;32mok: [localhost] => {[0m
+[0;32m    "etcd_data_parsed": {[0m
+[0;32m        "netflix": {[0m
+[0;32m            "cdn": {[0m
+[0;32m                "cdn_vpcs": {[0m
+[0;32m                    "dns_vpc": [[0m
+[0;32m                        {[0m
+[0;32m                            "CIDR": "192.168.6.0/24",[0m
+[0;32m                            "name": "dns_vpc",[0m
+[0;32m                            "public_subnet": "172.16.2.0/30"[0m
+[0;32m                        }[0m
+[0;32m                    ],[0m
+[0;32m                    "origin_vpc": [[0m
+[0;32m                        {[0m
+[0;32m                            "CIDR": "192.168.5.0/24",[0m
+[0;32m                            "name": "origin_vpc",[0m
+[0;32m                            "public_subnet": "172.16.1.0/30"[0m
+[0;32m                        }[0m
+[0;32m                    ][0m
+[0;32m                },[0m
+[0;32m                "domainName": "netflix.cdn.com",[0m
+[0;32m                "location": [[0m
+[0;32m                    "JP",[0m
+[0;32m                    "US"[0m
+[0;32m                ],[0m
+[0;32m                "state": "requested"[0m
+[0;32m            },[0m
+[0;32m            "name": "netflix",[0m
+[0;32m            "numberOfVpcs": "2",[0m
+[0;32m            "state": "requested",[0m
+[0;32m            "vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "VMs": [[0m
+[0;32m                        {[0m
+[0;32m                            "CPUs": "2",[0m
+[0;32m                            "RAM_size": "2048",[0m
+[0;32m                            "VM_state": "requested",[0m
+[0;32m                            "disk_size": "12G",[0m
+[0;32m                            "model": "ubuntu",[0m
+[0;32m                            "name": "NF_US_VM1",[0m
+[0;32m                            "subnets": [[0m
+[0;32m                                "NF_US_S1"[0m
+[0;32m                            ][0m
+[0;32m                        },[0m
+[0;32m                        {[0m
+[0;32m                            "CPUs": "2",[0m
+[0;32m                            "RAM_size": "2048",[0m
+[0;32m                            "VM_state": "requested",[0m
+[0;32m                            "disk_size": "12G",[0m
+[0;32m                            "model": "ubuntu",[0m
+[0;32m                            "name": "NF_US_VM2",[0m
+[0;32m                            "subnets": [[0m
+[0;32m                                "NF_US_S2"[0m
+[0;32m                            ][0m
+[0;32m                        }[0m
+[0;32m                    ],[0m
+[0;32m                    "VMs_state": "active",[0m
+[0;32m                    "name": "NF_US",[0m
+[0;32m                    "numberOfSubnets": "2",[0m
+[0;32m                    "subnets": [[0m
+[0;32m                        {[0m
+[0;32m                            "CIDR": "192.168.1.0/30",[0m
+[0;32m                            "dhcp_end": "192.168.1.2",[0m
+[0;32m                            "dhcp_start": "192.168.1.2",[0m
+[0;32m                            "ip": "192.168.1.1",[0m
+[0;32m                            "name": "NF_US_S1"[0m
+[0;32m                        },[0m
+[0;32m                        {[0m
+[0;32m                            "CIDR": "192.168.2.0/24",[0m
+[0;32m                            "dhcp_end": "192.168.2.254",[0m
+[0;32m                            "dhcp_start": "192.168.2.2",[0m
+[0;32m                            "ip": "192.168.2.1",[0m
+[0;32m                            "name": "NF_US_S2"[0m
+[0;32m                        }[0m
+[0;32m                    ][0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "VMs": [[0m
+[0;32m                        {[0m
+[0;32m                            "CPUs": "2",[0m
+[0;32m                            "RAM_size": "2048",[0m
+[0;32m                            "VM_state": "requested",[0m
+[0;32m                            "disk_size": "12G",[0m
+[0;32m                            "model": "ubuntu",[0m
+[0;32m                            "name": "NF_JP_VM1",[0m
+[0;32m                            "subnets": [[0m
+[0;32m                                "NF_JP_S1"[0m
+[0;32m                            ][0m
+[0;32m                        },[0m
+[0;32m                        {[0m
+[0;32m                            "CPUs": "2",[0m
+[0;32m                            "RAM_size": "2048",[0m
+[0;32m                            "VM_state": "requested",[0m
+[0;32m                            "disk_size": "12G",[0m
+[0;32m                            "model": "ubuntu",[0m
+[0;32m                            "name": "NF_JP_VM2",[0m
+[0;32m                            "subnets": [[0m
+[0;32m                                "NF_JP_S2"[0m
+[0;32m                            ][0m
+[0;32m                        }[0m
+[0;32m                    ],[0m
+[0;32m                    "VMs_state": "active",[0m
+[0;32m                    "name": "NF_JP",[0m
+[0;32m                    "numberOfSubnets": "2",[0m
+[0;32m                    "subnets": [[0m
+[0;32m                        {[0m
+[0;32m                            "CIDR": "192.168.3.0/24",[0m
+[0;32m                            "dhcp_end": "192.168.3.254",[0m
+[0;32m                            "dhcp_start": "192.168.3.2",[0m
+[0;32m                            "ip": "192.168.3.1",[0m
+[0;32m                            "name": "NF_JP_S1"[0m
+[0;32m                        },[0m
+[0;32m                        {[0m
+[0;32m                            "CIDR": "192.168.4.0/24",[0m
+[0;32m                            "dhcp_end": "192.168.4.254",[0m
+[0;32m                            "dhcp_start": "192.168.4.2",[0m
+[0;32m                            "ip": "192.168.4.1",[0m
+[0;32m                            "name": "NF_JP_S2"[0m
+[0;32m                        }[0m
+[0;32m                    ][0m
+[0;32m                }[0m
+[0;32m            ][0m
+[0;32m        }[0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create namespaces for each VPC] ******************************************
+[0;31mfailed: [localhost] (item={'name': 'NF_US', 'numberOfSubnets': '2', 'VMs_state': 'active', 'subnets': [{'name': 'NF_US_S1', 'CIDR': '192.168.1.0/30', 'ip': '192.168.1.1', 'dhcp_start': '192.168.1.2', 'dhcp_end': '192.168.1.2'}, {'name': 'NF_US_S2', 'CIDR': '192.168.2.0/24', 'ip': '192.168.2.1', 'dhcp_start': '192.168.2.2', 'dhcp_end': '192.168.2.254'}], 'VMs': [{'name': 'NF_US_VM1', 'VM_state': 'requested', 'subnets': ['NF_US_S1'], 'model': 'ubuntu', 'RAM_size': '2048', 'CPUs': '2', 'disk_size': '12G'}, {'name': 'NF_US_VM2', 'VM_state': 'requested', 'subnets': ['NF_US_S2'], 'model': 'ubuntu', 'RAM_size': '2048', 'CPUs': '2', 'disk_size': '12G'}]}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["ip", "netns", "add", "NF_US"], "delta": "0:00:00.010935", "end": "2024-04-18 06:16:07.289256", "item": {"VMs": [{"CPUs": "2", "RAM_size": "2048", "VM_state": "requested", "disk_size": "12G", "model": "ubuntu", "name": "NF_US_VM1", "subnets": ["NF_US_S1"]}, {"CPUs": "2", "RAM_size": "2048", "VM_state": "requested", "disk_size": "12G", "model": "ubuntu", "name": "NF_US_VM2", "subnets": ["NF_US_S2"]}], "VMs_state": "active", "name": "NF_US", "numberOfSubnets": "2", "subnets": [{"CIDR": "192.168.1.0/30", "dhcp_end": "192.168.1.2", "dhcp_start": "192.168.1.2", "ip": "192.168.1.1", "name": "NF_US_S1"}, {"CIDR": "192.168.2.0/24", "dhcp_end": "192.168.2.254", "dhcp_start": "192.168.2.2", "ip": "192.168.2.1", "name": "NF_US_S2"}]}, "msg": "non-zero return code", "rc": 1, "start": "2024-04-18 06:16:07.278321", "stderr": "Cannot create namespace file \"/run/netns/NF_US\": File exists", "stderr_lines": ["Cannot create namespace file \"/run/netns/NF_US\": File exists"], "stdout": "", "stdout_lines": []}[0m
+[0;31mfailed: [localhost] (item={'name': 'NF_JP', 'numberOfSubnets': '2', 'VMs_state': 'active', 'subnets': [{'name': 'NF_JP_S1', 'CIDR': '192.168.3.0/24', 'ip': '192.168.3.1', 'dhcp_start': '192.168.3.2', 'dhcp_end': '192.168.3.254'}, {'name': 'NF_JP_S2', 'CIDR': '192.168.4.0/24', 'ip': '192.168.4.1', 'dhcp_start': '192.168.4.2', 'dhcp_end': '192.168.4.254'}], 'VMs': [{'name': 'NF_JP_VM1', 'VM_state': 'requested', 'subnets': ['NF_JP_S1'], 'model': 'ubuntu', 'RAM_size': '2048', 'CPUs': '2', 'disk_size': '12G'}, {'name': 'NF_JP_VM2', 'VM_state': 'requested', 'subnets': ['NF_JP_S2'], 'model': 'ubuntu', 'RAM_size': '2048', 'CPUs': '2', 'disk_size': '12G'}]}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["ip", "netns", "add", "NF_JP"], "delta": "0:00:00.011769", "end": "2024-04-18 06:16:07.601542", "item": {"VMs": [{"CPUs": "2", "RAM_size": "2048", "VM_state": "requested", "disk_size": "12G", "model": "ubuntu", "name": "NF_JP_VM1", "subnets": ["NF_JP_S1"]}, {"CPUs": "2", "RAM_size": "2048", "VM_state": "requested", "disk_size": "12G", "model": "ubuntu", "name": "NF_JP_VM2", "subnets": ["NF_JP_S2"]}], "VMs_state": "active", "name": "NF_JP", "numberOfSubnets": "2", "subnets": [{"CIDR": "192.168.3.0/24", "dhcp_end": "192.168.3.254", "dhcp_start": "192.168.3.2", "ip": "192.168.3.1", "name": "NF_JP_S1"}, {"CIDR": "192.168.4.0/24", "dhcp_end": "192.168.4.254", "dhcp_start": "192.168.4.2", "ip": "192.168.4.1", "name": "NF_JP_S2"}]}, "msg": "non-zero return code", "rc": 1, "start": "2024-04-18 06:16:07.589773", "stderr": "Cannot create namespace file \"/run/netns/NF_JP\": File exists", "stderr_lines": ["Cannot create namespace file \"/run/netns/NF_JP\": File exists"], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;31mlocalhost[0m                  : [0;32mok=2   [0m changed=0    unreachable=0    [0;31mfailed=1   [0m skipped=0    rescued=0    ignored=0   

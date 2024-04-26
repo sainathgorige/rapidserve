@@ -1,0 +1,96 @@
+---
+- name: Retrieve and parse VM data, then set up load balancing
+  hosts: localhost
+  gather_facts: no
+  vars:
+    tenant_name: ['netflix']  # Example tenant name
+    service_port: 80  # Define the service port for load balancing
+
+  tasks:
+    # - name: Retrieve data from etcd
+    #   command: python3 retrive_etcd.py {{ item }}
+    #   register: tenant_data
+    #   loop: "{{ tenant_name }}"
+
+    - name: Parse retrieved data
+      set_fact:
+        etcd_data_parsed: "{{ tenant_data | from_yaml }}" #.results[0].stdout.split('\n')[1]
+   
+    - name: Debug etcd_data_parsed
+      debug:
+        var: etcd_data_parsed
+
+    - name: Extract list of VPCs
+      set_fact:
+        list_of_vpcs: "{{ etcd_data_parsed.netflix.vpcs }}"
+
+    - name: Initialize an empty dictionary for VPCs and their VM IPs
+      set_fact:
+        vpc_vm_ip_dict: {}
+
+    - name: Fetch VM IPs for each VPC and update the dictionary
+      command: "./get_ip_tenant.sh {{ item.name }}"
+      register: vpc_ips
+      loop: "{{ list_of_vpcs }}"
+      loop_control:
+        loop_var: item
+      changed_when: False
+
+    - name: Update dictionary with VPC names and their VM IPs
+      set_fact:
+        vpc_vm_ip_dict: "{{ vpc_vm_ip_dict | combine({item.item.name: item.stdout_lines}) }}"
+      loop: "{{ vpc_ips.results }}"
+      when: item.rc == 0
+      loop_control:
+        loop_var: item
+
+    - debug:
+        var: vpc_vm_ip_dict
+
+    - name: Fetch IP address for the veth1 interface for each VPC
+      shell: >
+        ip netns exec {{ item.name }} ip -o -4 addr show {{ item.name }}_veth1 | 
+        awk '{print $4}' | cut -d/ -f1
+      register: veth_ips
+      loop: "{{ list_of_vpcs }}"
+      loop_control:
+        loop_var: item
+
+    - name: Create custom iptables chain for load balancing for each VPC
+      command: "sudo ip netns exec {{ item.item.name }} iptables -t nat -N LOAD_BALANCE"
+      loop: "{{ veth_ips.results }}"
+      when: item.rc == 0
+      loop_control:
+        loop_var: item
+
+    - name: Direct incoming traffic to the load balancing chain for each VPC
+      command: >
+        sudo ip netns exec {{ item.0.name }} iptables -t nat -A PREROUTING -p tcp --dport {{ service_port }} -d {{ item.1.stdout }} -j LOAD_BALANCE
+      loop: "{{ list_of_vpcs | zip(veth_ips.results) }}"
+      loop_control:
+        label: "{{ item.0.name }}"
+
+    - name: Generate VPC VM IP list for load balancing
+      set_fact:
+        vpc_vm_ip_list: "{{ vpc_vm_ip_list | default([]) + [{'vpc': item.key, 'vm_ips': item.value}] }}"
+      loop: "{{ vpc_vm_ip_dict | dict2items }}"
+      loop_control:
+        loop_var: item
+
+    - name: Setup iptables rules for NF_US VM IPs
+      ansible.builtin.shell: |
+        sudo ip netns exec NF_US iptables -t nat -A LOAD_BALANCE -p tcp \
+        -m statistic --mode nth --every {{ vpc_vm_ip_dict['NF_US'] | length }} --packet {{ loop_index }} \
+        -j DNAT --to-destination {{ item }}:{{ service_port }}
+      loop: "{{ vpc_vm_ip_dict['NF_US'] }}"
+      loop_control:
+        index_var: loop_index
+
+    - name: Setup iptables rules for NF_JP VM IPs
+      ansible.builtin.shell: |
+        sudo ip netns exec NF_JP iptables -t nat -A LOAD_BALANCE -p tcp \
+        -m statistic --mode nth --every {{ vpc_vm_ip_dict['NF_JP'] | length }} --packet {{ loop_index }} \
+        -j DNAT --to-destination {{ item }}:{{ service_port }}
+      loop: "{{ vpc_vm_ip_dict['NF_JP'] }}"
+      loop_control:
+        index_var: loop_index

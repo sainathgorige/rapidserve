@@ -1,0 +1,24 @@
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+
+PLAY [Deploy Infrastructure with Docker Containers for Edge and Origin Servers] ***
+
+TASK [Check if network namespace exists] ***************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Fail if network namespace does not exist] ********************************
+[0;36mskipping: [localhost][0m
+
+TASK [Create NGINX configuration file from template for edge servers] **********
+[0;32mok: [localhost][0m
+
+TASK [Conditionally create index.html for origin servers] **********************
+[0;36mskipping: [localhost][0m
+
+TASK [Build Docker image with custom NGINX config] *****************************
+[0;31mAn exception occurred during task execution. To see the full traceback, use -vvv. The error was: requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))[0m
+[0;31mfatal: [localhost]: FAILED! => {"changed": false, "msg": "An unexpected requests error occurred when trying to talk to the Docker daemon: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"}[0m
+
+PLAY RECAP *********************************************************************
+[0;31mlocalhost[0m                  : [0;32mok=2   [0m [0;33mchanged=1   [0m unreachable=0    [0;31mfailed=1   [0m [0;36mskipped=2   [0m rescued=0    ignored=0   

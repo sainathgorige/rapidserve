@@ -1,0 +1,45 @@
+# # Dockerfile-dns
+# FROM 100514735019/customnginx:latest
+
+# # Ensure BIND9 is installed (redundant if already included in the image)
+# RUN apt-get update && apt-get install -y bind9
+
+# # Expose the DNS service ports
+# EXPOSE 53/udp
+# EXPOSE 53/tcp
+
+# # Run BIND9 in the foreground
+# CMD ["named", "-g"]
+
+# # # Create a startup script to run both Nginx and named
+# # RUN echo "#!/bin/sh\n\
+# # nginx -g 'daemon off;' &\n\
+# # named -g\n\
+# # " > /start_services.sh \
+# #     && chmod +x /start_services.sh
+
+# # # Run the startup script
+# # CMD ["/start_services.sh"]
+
+
+FROM 100514735019/customnginx:latest
+# Install BIND9
+RUN apt-get update && \
+    apt-get install -y bind9 bind9utils bind9-doc
+
+# Open necessary port(s)
+EXPOSE 53/udp 53/tcp
+
+# Copy your named configuration files into the image
+
+# Set permissions and ownership for BIND files
+RUN chown -R bind:bind /etc/bind && \
+    chmod -R 775 /etc/bind
+
+CMD ["/usr/sbin/named", "-g"]
+
+# # Set the entrypoint to named
+# ENTRYPOINT ["/usr/sbin/named"]
+
+# # Run named in the foreground to keep the container running
+# CMD ["-g"]

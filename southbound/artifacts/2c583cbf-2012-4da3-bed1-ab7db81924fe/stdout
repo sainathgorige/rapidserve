@@ -1,0 +1,683 @@
+[0;34mansible-playbook [core 2.14.2][0m
+[0;34m  config file = /etc/ansible/ansible.cfg[0m
+[0;34m  configured module search path = ['/home/vmadm/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules'][0m
+[0;34m  ansible python module location = /usr/lib/python3/dist-packages/ansible[0m
+[0;34m  ansible collection location = /home/vmadm/.ansible/collections:/usr/share/ansible/collections[0m
+[0;34m  executable location = /usr/bin/ansible-playbook[0m
+[0;34m  python version = 3.11.4 (main, Dec  7 2023, 15:43:41) [GCC 12.3.0] (/usr/bin/python3)[0m
+[0;34m  jinja version = 3.1.2[0m
+[0;34m  libyaml = True[0m
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+[0;34mhost_list declined parsing /home/vmadm/demo/RapidServe/southbound/host_inventory_asia.ini as it did not pass its verify_file() method[0m
+[0;34mscript declined parsing /home/vmadm/demo/RapidServe/southbound/host_inventory_asia.ini as it did not pass its verify_file() method[0m
+[0;34mauto declined parsing /home/vmadm/demo/RapidServe/southbound/host_inventory_asia.ini as it did not pass its verify_file() method[0m
+[0;34myaml declined parsing /home/vmadm/demo/RapidServe/southbound/host_inventory_asia.ini as it did not pass its verify_file() method[0m
+[0;34mParsed /home/vmadm/demo/RapidServe/southbound/host_inventory_asia.ini inventory source with ini plugin[0m
+[0;34mSkipping callback 'awx_display', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'default', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'minimal', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'oneline', as we already have a stdout callback.[0m
+
+PLAYBOOK: deploy_vpc.yaml ******************************************************
+[0;34m1 plays in /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml[0m
+
+PLAY [Deploy VPC Infrastructure with network namespace] ************************
+
+TASK [Create namespaces for each VPC] ******************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:7[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /tmp/.ansible/tmp `"&& mkdir "` echo /tmp/.ansible/tmp/ansible-tmp-1713749337.4345229-3781253-248269690479543 `" && echo ansible-tmp-1713749337.4345229-3781253-248269690479543="` echo /tmp/.ansible/tmp/ansible-tmp-1713749337.4345229-3781253-248269690479543 `" ) && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'ansible-tmp-1713749337.4345229-3781253-248269690479543=/tmp/.ansible/tmp/ansible-tmp-1713749337.4345229-3781253-248269690479543\n', b'')[0m
+[0;34m<192.168.38.8> Attempting python interpreter discovery[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'echo PLATFORM; uname; echo FOUND; command -v '"'"'"'"'"'"'"'"'python3.11'"'"'"'"'"'"'"'"'; command -v '"'"'"'"'"'"'"'"'python3.10'"'"'"'"'"'"'"'"'; command -v '"'"'"'"'"'"'"'"'python3.9'"'"'"'"'"'"'"'"'; command -v '"'"'"'"'"'"'"'"'python3.8'"'"'"'"'"'"'"'"'; command -v '"'"'"'"'"'"'"'"'python3.7'"'"'"'"'"'"'"'"'; command -v '"'"'"'"'"'"'"'"'python3.6'"'"'"'"'"'"'"'"'; command -v '"'"'"'"'"'"'"'"'python3.5'"'"'"'"'"'"'"'"'; command -v '"'"'"'"'"'"'"'"'/usr/bin/python3'"'"'"'"'"'"'"'"'; command -v '"'"'"'"'"'"'"'"'/usr/libexec/platform-python'"'"'"'"'"'"'"'"'; command -v '"'"'"'"'"'"'"'"'python2.7'"'"'"'"'"'"'"'"'; command -v '"'"'"'"'"'"'"'"'/usr/bin/python'"'"'"'"'"'"'"'"'; command -v '"'"'"'"'"'"'"'"'python'"'"'"'"'"'"'"'"'; echo ENDFOUND && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'PLATFORM\nLinux\nFOUND\n/usr/bin/python3.11\n/usr/bin/python3\nENDFOUND\n', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'/usr/bin/python3.11 && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'{"platform_dist_result": [], "osrelease_content": "PRETTY_NAME=\\"Ubuntu 23.04\\"\\nNAME=\\"Ubuntu\\"\\nVERSION_ID=\\"23.04\\"\\nVERSION=\\"23.04 (Lunar Lobster)\\"\\nVERSION_CODENAME=lunar\\nID=ubuntu\\nID_LIKE=debian\\nHOME_URL=\\"https://www.ubuntu.com/\\"\\nSUPPORT_URL=\\"https://help.ubuntu.com/\\"\\nBUG_REPORT_URL=\\"https://bugs.launchpad.net/ubuntu/\\"\\nPRIVACY_POLICY_URL=\\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\\"\\nUBUNTU_CODENAME=lunar\\nLOGO=ubuntu-logo\\n"}\n', b'')[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<192.168.38.8> PUT /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpnjsp62lg TO /tmp/.ansible/tmp/ansible-tmp-1713749337.4345229-3781253-248269690479543/AnsiballZ_command.py[0m
+[0;34m<192.168.38.8> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' '[192.168.38.8]'[0m
+[0;34m<192.168.38.8> (0, b'sftp> put /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpnjsp62lg /tmp/.ansible/tmp/ansible-tmp-1713749337.4345229-3781253-248269690479543/AnsiballZ_command.py\n', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'chmod u+x /tmp/.ansible/tmp/ansible-tmp-1713749337.4345229-3781253-248269690479543/ /tmp/.ansible/tmp/ansible-tmp-1713749337.4345229-3781253-248269690479543/AnsiballZ_command.py && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' -tt 192.168.38.8 '/bin/sh -c '"'"'sudo -H -S -n  -u root /bin/sh -c '"'"'"'"'"'"'"'"'echo BECOME-SUCCESS-mavaxyqxnwoyhamlgklmcdxhndcpfxmh ; /usr/bin/python3 /tmp/.ansible/tmp/ansible-tmp-1713749337.4345229-3781253-248269690479543/AnsiballZ_command.py'"'"'"'"'"'"'"'"' && sleep 0'"'"''[0m
+[0;34mEscalation succeeded[0m
+[0;34m<192.168.38.8> (0, b'\r\n{"changed": true, "stdout": "", "stderr": "", "rc": 0, "cmd": ["ip", "netns", "add", "ta_in"], "start": "2024-04-22 01:28:58.581774", "end": "2024-04-22 01:28:58.591025", "delta": "0:00:00.009251", "msg": "", "invocation": {"module_args": {"_raw_params": "ip netns add ta_in", "_uses_shell": false, "stdin_add_newline": true, "strip_empty_ends": true, "argv": null, "chdir": null, "executable": null, "creates": null, "removes": null, "stdin": null}}}\r\n', b'Shared connection to 192.168.38.8 closed.\r\n')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'rm -f -r /tmp/.ansible/tmp/ansible-tmp-1713749337.4345229-3781253-248269690479543/ > /dev/null 2>&1 && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;33mchanged: [192.168.38.8] => {[0m
+[0;33m    "ansible_facts": {[0m
+[0;33m        "discovered_interpreter_python": "/usr/bin/python3"[0m
+[0;33m    },[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "add",[0m
+[0;33m        "ta_in"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.009251",[0m
+[0;33m    "end": "2024-04-22 01:28:58.591025",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns add ta_in",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-22 01:28:58.581774",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Get /30 subnet for current VPC] ******************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:10[0m
+[0;34m<localhost> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<localhost> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /tmp/.ansible/tmp `"&& mkdir "` echo /tmp/.ansible/tmp/ansible-tmp-1713749338.8088634-3781380-213539865213155 `" && echo ansible-tmp-1713749338.8088634-3781380-213539865213155="` echo /tmp/.ansible/tmp/ansible-tmp-1713749338.8088634-3781380-213539865213155 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<localhost> PUT /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpn4tc1qkn TO /tmp/.ansible/tmp/ansible-tmp-1713749338.8088634-3781380-213539865213155/AnsiballZ_command.py[0m
+[0;34m<localhost> EXEC /bin/sh -c 'chmod u+x /tmp/.ansible/tmp/ansible-tmp-1713749338.8088634-3781380-213539865213155/ /tmp/.ansible/tmp/ansible-tmp-1713749338.8088634-3781380-213539865213155/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<localhost> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-omsaagzmhrbvosqjkptvuczeoeeknrch ; /usr/bin/python3 /tmp/.ansible/tmp/ansible-tmp-1713749338.8088634-3781380-213539865213155/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<localhost> EXEC /bin/sh -c 'rm -f -r /tmp/.ansible/tmp/ansible-tmp-1713749338.8088634-3781380-213539865213155/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [192.168.38.8 -> localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "python3",[0m
+[0;33m        "subnetting.py",[0m
+[0;33m        "192.168.100.0/24"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.031912",[0m
+[0;33m    "end": "2024-04-22 01:28:59.154667",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "python3 subnetting.py 192.168.100.0/24",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-22 01:28:59.122755",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "192.168.100.0/30",[0m
+[0;33m    "stdout_lines": [[0m
+[0;33m        "192.168.100.0/30"[0m
+[0;33m    ][0m
+[0;33m}[0m
+
+TASK [Debug vpc subnet output] *************************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:15[0m
+[0;32mok: [192.168.38.8] => {[0m
+[0;32m    "msg": "Subnet for ta_in: 192.168.100.0/30"[0m
+[0;32m}[0m
+
+TASK [Create veth pair for current VPC] ****************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:19[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /tmp/.ansible/tmp `"&& mkdir "` echo /tmp/.ansible/tmp/ansible-tmp-1713749339.3033805-3781443-204360951909828 `" && echo ansible-tmp-1713749339.3033805-3781443-204360951909828="` echo /tmp/.ansible/tmp/ansible-tmp-1713749339.3033805-3781443-204360951909828 `" ) && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'ansible-tmp-1713749339.3033805-3781443-204360951909828=/tmp/.ansible/tmp/ansible-tmp-1713749339.3033805-3781443-204360951909828\n', b'')[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<192.168.38.8> PUT /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpk3wanpby TO /tmp/.ansible/tmp/ansible-tmp-1713749339.3033805-3781443-204360951909828/AnsiballZ_command.py[0m
+[0;34m<192.168.38.8> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' '[192.168.38.8]'[0m
+[0;34m<192.168.38.8> (0, b'sftp> put /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpk3wanpby /tmp/.ansible/tmp/ansible-tmp-1713749339.3033805-3781443-204360951909828/AnsiballZ_command.py\n', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'chmod u+x /tmp/.ansible/tmp/ansible-tmp-1713749339.3033805-3781443-204360951909828/ /tmp/.ansible/tmp/ansible-tmp-1713749339.3033805-3781443-204360951909828/AnsiballZ_command.py && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' -tt 192.168.38.8 '/bin/sh -c '"'"'sudo -H -S -n  -u root /bin/sh -c '"'"'"'"'"'"'"'"'echo BECOME-SUCCESS-dqkyhajuyvyzgvejcayhgpiqehazuilz ; /usr/bin/python3 /tmp/.ansible/tmp/ansible-tmp-1713749339.3033805-3781443-204360951909828/AnsiballZ_command.py'"'"'"'"'"'"'"'"' && sleep 0'"'"''[0m
+[0;34mEscalation succeeded[0m
+[0;34m<192.168.38.8> (0, b'\r\n{"changed": true, "stdout": "", "stderr": "", "rc": 0, "cmd": ["ip", "link", "add", "ta_in_veth0", "type", "veth", "peer", "name", "ta_in_veth1"], "start": "2024-04-22 01:28:59.706873", "end": "2024-04-22 01:28:59.714681", "delta": "0:00:00.007808", "msg": "", "invocation": {"module_args": {"_raw_params": "ip link add ta_in_veth0 type veth peer name ta_in_veth1\\n", "_uses_shell": false, "stdin_add_newline": true, "strip_empty_ends": true, "argv": null, "chdir": null, "executable": null, "creates": null, "removes": null, "stdin": null}}}\r\n', b'Shared connection to 192.168.38.8 closed.\r\n')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'rm -f -r /tmp/.ansible/tmp/ansible-tmp-1713749339.3033805-3781443-204360951909828/ > /dev/null 2>&1 && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;33mchanged: [192.168.38.8] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "add",[0m
+[0;33m        "ta_in_veth0",[0m
+[0;33m        "type",[0m
+[0;33m        "veth",[0m
+[0;33m        "peer",[0m
+[0;33m        "name",[0m
+[0;33m        "ta_in_veth1"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.007808",[0m
+[0;33m    "end": "2024-04-22 01:28:59.714681",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip link add ta_in_veth0 type veth peer name ta_in_veth1\n",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-22 01:28:59.706873",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Activate veth0 in default namespace] *************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:23[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /tmp/.ansible/tmp `"&& mkdir "` echo /tmp/.ansible/tmp/ansible-tmp-1713749339.85945-3781573-90940122805970 `" && echo ansible-tmp-1713749339.85945-3781573-90940122805970="` echo /tmp/.ansible/tmp/ansible-tmp-1713749339.85945-3781573-90940122805970 `" ) && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'ansible-tmp-1713749339.85945-3781573-90940122805970=/tmp/.ansible/tmp/ansible-tmp-1713749339.85945-3781573-90940122805970\n', b'')[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<192.168.38.8> PUT /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpbck9_jij TO /tmp/.ansible/tmp/ansible-tmp-1713749339.85945-3781573-90940122805970/AnsiballZ_command.py[0m
+[0;34m<192.168.38.8> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' '[192.168.38.8]'[0m
+[0;34m<192.168.38.8> (0, b'sftp> put /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpbck9_jij /tmp/.ansible/tmp/ansible-tmp-1713749339.85945-3781573-90940122805970/AnsiballZ_command.py\n', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'chmod u+x /tmp/.ansible/tmp/ansible-tmp-1713749339.85945-3781573-90940122805970/ /tmp/.ansible/tmp/ansible-tmp-1713749339.85945-3781573-90940122805970/AnsiballZ_command.py && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' -tt 192.168.38.8 '/bin/sh -c '"'"'sudo -H -S -n  -u root /bin/sh -c '"'"'"'"'"'"'"'"'echo BECOME-SUCCESS-ufbgdwqaewtgzsxyfylbwobqawykinpi ; /usr/bin/python3 /tmp/.ansible/tmp/ansible-tmp-1713749339.85945-3781573-90940122805970/AnsiballZ_command.py'"'"'"'"'"'"'"'"' && sleep 0'"'"''[0m
+[0;34mEscalation succeeded[0m
+[0;34m<192.168.38.8> (0, b'\r\n{"changed": true, "stdout": "", "stderr": "", "rc": 0, "cmd": ["ip", "link", "set", "ta_in_veth0", "up"], "start": "2024-04-22 01:29:00.240567", "end": "2024-04-22 01:29:00.247331", "delta": "0:00:00.006764", "msg": "", "invocation": {"module_args": {"_raw_params": "ip link set ta_in_veth0 up", "_uses_shell": false, "stdin_add_newline": true, "strip_empty_ends": true, "argv": null, "chdir": null, "executable": null, "creates": null, "removes": null, "stdin": null}}}\r\n', b'Shared connection to 192.168.38.8 closed.\r\n')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'rm -f -r /tmp/.ansible/tmp/ansible-tmp-1713749339.85945-3781573-90940122805970/ > /dev/null 2>&1 && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;33mchanged: [192.168.38.8] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "set",[0m
+[0;33m        "ta_in_veth0",[0m
+[0;33m        "up"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.006764",[0m
+[0;33m    "end": "2024-04-22 01:29:00.247331",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip link set ta_in_veth0 up",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-22 01:29:00.240567",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Assign IP to veth0 in the default namespace] *****************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:26[0m
+[0;34mredirecting (type: filter) ansible.builtin.ipmath to ansible.netcommon.ipmath[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipmath' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;34mredirecting (type: filter) ansible.netcommon.ipmath to ansible.utils.ipmath[0m
+[0;34mredirecting (type: filter) ansible.builtin.ipaddr to ansible.netcommon.ipaddr[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipaddr' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;34mredirecting (type: filter) ansible.netcommon.ipaddr to ansible.utils.ipaddr[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /tmp/.ansible/tmp `"&& mkdir "` echo /tmp/.ansible/tmp/ansible-tmp-1713749340.5168-3781669-56014482246914 `" && echo ansible-tmp-1713749340.5168-3781669-56014482246914="` echo /tmp/.ansible/tmp/ansible-tmp-1713749340.5168-3781669-56014482246914 `" ) && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'ansible-tmp-1713749340.5168-3781669-56014482246914=/tmp/.ansible/tmp/ansible-tmp-1713749340.5168-3781669-56014482246914\n', b'')[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<192.168.38.8> PUT /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpi9hje0ae TO /tmp/.ansible/tmp/ansible-tmp-1713749340.5168-3781669-56014482246914/AnsiballZ_command.py[0m
+[0;34m<192.168.38.8> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' '[192.168.38.8]'[0m
+[0;34m<192.168.38.8> (0, b'sftp> put /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpi9hje0ae /tmp/.ansible/tmp/ansible-tmp-1713749340.5168-3781669-56014482246914/AnsiballZ_command.py\n', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'chmod u+x /tmp/.ansible/tmp/ansible-tmp-1713749340.5168-3781669-56014482246914/ /tmp/.ansible/tmp/ansible-tmp-1713749340.5168-3781669-56014482246914/AnsiballZ_command.py && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' -tt 192.168.38.8 '/bin/sh -c '"'"'sudo -H -S -n  -u root /bin/sh -c '"'"'"'"'"'"'"'"'echo BECOME-SUCCESS-xvsvunkqyqwqailrjejnbzieuajimbzb ; /usr/bin/python3 /tmp/.ansible/tmp/ansible-tmp-1713749340.5168-3781669-56014482246914/AnsiballZ_command.py'"'"'"'"'"'"'"'"' && sleep 0'"'"''[0m
+[0;34mEscalation succeeded[0m
+[0;34m<192.168.38.8> (0, b'\r\n{"changed": true, "stdout": "", "stderr": "", "rc": 0, "cmd": ["ip", "addr", "add", "192.168.100.1/30", "dev", "ta_in_veth0"], "start": "2024-04-22 01:29:00.954191", "end": "2024-04-22 01:29:00.962069", "delta": "0:00:00.007878", "msg": "", "invocation": {"module_args": {"_raw_params": "ip addr add 192.168.100.1/30 dev ta_in_veth0\\n", "_uses_shell": false, "stdin_add_newline": true, "strip_empty_ends": true, "argv": null, "chdir": null, "executable": null, "creates": null, "removes": null, "stdin": null}}}\r\n', b'Shared connection to 192.168.38.8 closed.\r\n')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'rm -f -r /tmp/.ansible/tmp/ansible-tmp-1713749340.5168-3781669-56014482246914/ > /dev/null 2>&1 && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;33mchanged: [192.168.38.8] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "addr",[0m
+[0;33m        "add",[0m
+[0;33m        "192.168.100.1/30",[0m
+[0;33m        "dev",[0m
+[0;33m        "ta_in_veth0"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.007878",[0m
+[0;33m    "end": "2024-04-22 01:29:00.962069",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip addr add 192.168.100.1/30 dev ta_in_veth0\n",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-22 01:29:00.954191",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Move one end of the veth pair (veth1) to the corresponding namespace] ****
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:30[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /tmp/.ansible/tmp `"&& mkdir "` echo /tmp/.ansible/tmp/ansible-tmp-1713749341.1382864-3781815-254210511764443 `" && echo ansible-tmp-1713749341.1382864-3781815-254210511764443="` echo /tmp/.ansible/tmp/ansible-tmp-1713749341.1382864-3781815-254210511764443 `" ) && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'ansible-tmp-1713749341.1382864-3781815-254210511764443=/tmp/.ansible/tmp/ansible-tmp-1713749341.1382864-3781815-254210511764443\n', b'')[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<192.168.38.8> PUT /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmp_ejp0ei4 TO /tmp/.ansible/tmp/ansible-tmp-1713749341.1382864-3781815-254210511764443/AnsiballZ_command.py[0m
+[0;34m<192.168.38.8> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' '[192.168.38.8]'[0m
+[0;34m<192.168.38.8> (0, b'sftp> put /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmp_ejp0ei4 /tmp/.ansible/tmp/ansible-tmp-1713749341.1382864-3781815-254210511764443/AnsiballZ_command.py\n', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'chmod u+x /tmp/.ansible/tmp/ansible-tmp-1713749341.1382864-3781815-254210511764443/ /tmp/.ansible/tmp/ansible-tmp-1713749341.1382864-3781815-254210511764443/AnsiballZ_command.py && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' -tt 192.168.38.8 '/bin/sh -c '"'"'sudo -H -S -n  -u root /bin/sh -c '"'"'"'"'"'"'"'"'echo BECOME-SUCCESS-sotoekoskjjmdtezdyrvdmmpblccgode ; /usr/bin/python3 /tmp/.ansible/tmp/ansible-tmp-1713749341.1382864-3781815-254210511764443/AnsiballZ_command.py'"'"'"'"'"'"'"'"' && sleep 0'"'"''[0m
+[0;34mEscalation succeeded[0m
+[0;34m<192.168.38.8> (0, b'\r\n{"changed": true, "stdout": "", "stderr": "", "rc": 0, "cmd": ["ip", "link", "set", "ta_in_veth1", "netns", "ta_in"], "start": "2024-04-22 01:29:01.555474", "end": "2024-04-22 01:29:01.585634", "delta": "0:00:00.030160", "msg": "", "invocation": {"module_args": {"_raw_params": "ip link set ta_in_veth1 netns ta_in", "_uses_shell": false, "stdin_add_newline": true, "strip_empty_ends": true, "argv": null, "chdir": null, "executable": null, "creates": null, "removes": null, "stdin": null}}}\r\n', b'Shared connection to 192.168.38.8 closed.\r\n')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'rm -f -r /tmp/.ansible/tmp/ansible-tmp-1713749341.1382864-3781815-254210511764443/ > /dev/null 2>&1 && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;33mchanged: [192.168.38.8] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "set",[0m
+[0;33m        "ta_in_veth1",[0m
+[0;33m        "netns",[0m
+[0;33m        "ta_in"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.030160",[0m
+[0;33m    "end": "2024-04-22 01:29:01.585634",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip link set ta_in_veth1 netns ta_in",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-22 01:29:01.555474",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Assign IP to veth1 in the corresponding namespace] ***********************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:33[0m
+[0;34mredirecting (type: filter) ansible.builtin.ipmath to ansible.netcommon.ipmath[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipmath' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;34mredirecting (type: filter) ansible.netcommon.ipmath to ansible.utils.ipmath[0m
+[0;34mredirecting (type: filter) ansible.builtin.ipaddr to ansible.netcommon.ipaddr[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipaddr' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;34mredirecting (type: filter) ansible.netcommon.ipaddr to ansible.utils.ipaddr[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /tmp/.ansible/tmp `"&& mkdir "` echo /tmp/.ansible/tmp/ansible-tmp-1713749341.858786-3781965-1688016519630 `" && echo ansible-tmp-1713749341.858786-3781965-1688016519630="` echo /tmp/.ansible/tmp/ansible-tmp-1713749341.858786-3781965-1688016519630 `" ) && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'ansible-tmp-1713749341.858786-3781965-1688016519630=/tmp/.ansible/tmp/ansible-tmp-1713749341.858786-3781965-1688016519630\n', b'')[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<192.168.38.8> PUT /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmp2er95h32 TO /tmp/.ansible/tmp/ansible-tmp-1713749341.858786-3781965-1688016519630/AnsiballZ_command.py[0m
+[0;34m<192.168.38.8> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' '[192.168.38.8]'[0m
+[0;34m<192.168.38.8> (0, b'sftp> put /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmp2er95h32 /tmp/.ansible/tmp/ansible-tmp-1713749341.858786-3781965-1688016519630/AnsiballZ_command.py\n', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'chmod u+x /tmp/.ansible/tmp/ansible-tmp-1713749341.858786-3781965-1688016519630/ /tmp/.ansible/tmp/ansible-tmp-1713749341.858786-3781965-1688016519630/AnsiballZ_command.py && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' -tt 192.168.38.8 '/bin/sh -c '"'"'sudo -H -S -n  -u root /bin/sh -c '"'"'"'"'"'"'"'"'echo BECOME-SUCCESS-bzusqmwsejrddlaamnuyqkxmzoquwxvd ; /usr/bin/python3 /tmp/.ansible/tmp/ansible-tmp-1713749341.858786-3781965-1688016519630/AnsiballZ_command.py'"'"'"'"'"'"'"'"' && sleep 0'"'"''[0m
+[0;34mEscalation succeeded[0m
+[0;34m<192.168.38.8> (0, b'\r\n{"changed": true, "stdout": "", "stderr": "", "rc": 0, "cmd": ["ip", "netns", "exec", "ta_in", "ip", "addr", "add", "192.168.100.2/30", "dev", "ta_in_veth1"], "start": "2024-04-22 01:29:02.298702", "end": "2024-04-22 01:29:02.318287", "delta": "0:00:00.019585", "msg": "", "invocation": {"module_args": {"_raw_params": "ip netns exec ta_in ip addr add 192.168.100.2/30 dev ta_in_veth1\\n", "_uses_shell": false, "stdin_add_newline": true, "strip_empty_ends": true, "argv": null, "chdir": null, "executable": null, "creates": null, "removes": null, "stdin": null}}}\r\n', b'Shared connection to 192.168.38.8 closed.\r\n')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'rm -f -r /tmp/.ansible/tmp/ansible-tmp-1713749341.858786-3781965-1688016519630/ > /dev/null 2>&1 && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;33mchanged: [192.168.38.8] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "exec",[0m
+[0;33m        "ta_in",[0m
+[0;33m        "ip",[0m
+[0;33m        "addr",[0m
+[0;33m        "add",[0m
+[0;33m        "192.168.100.2/30",[0m
+[0;33m        "dev",[0m
+[0;33m        "ta_in_veth1"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.019585",[0m
+[0;33m    "end": "2024-04-22 01:29:02.318287",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns exec ta_in ip addr add 192.168.100.2/30 dev ta_in_veth1\n",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-22 01:29:02.298702",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Activate veth1 in corresponding namespace] *******************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:37[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /tmp/.ansible/tmp `"&& mkdir "` echo /tmp/.ansible/tmp/ansible-tmp-1713749342.501171-3782018-12156882532329 `" && echo ansible-tmp-1713749342.501171-3782018-12156882532329="` echo /tmp/.ansible/tmp/ansible-tmp-1713749342.501171-3782018-12156882532329 `" ) && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'ansible-tmp-1713749342.501171-3782018-12156882532329=/tmp/.ansible/tmp/ansible-tmp-1713749342.501171-3782018-12156882532329\n', b'')[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<192.168.38.8> PUT /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpn178apj8 TO /tmp/.ansible/tmp/ansible-tmp-1713749342.501171-3782018-12156882532329/AnsiballZ_command.py[0m
+[0;34m<192.168.38.8> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' '[192.168.38.8]'[0m
+[0;34m<192.168.38.8> (0, b'sftp> put /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpn178apj8 /tmp/.ansible/tmp/ansible-tmp-1713749342.501171-3782018-12156882532329/AnsiballZ_command.py\n', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'chmod u+x /tmp/.ansible/tmp/ansible-tmp-1713749342.501171-3782018-12156882532329/ /tmp/.ansible/tmp/ansible-tmp-1713749342.501171-3782018-12156882532329/AnsiballZ_command.py && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' -tt 192.168.38.8 '/bin/sh -c '"'"'sudo -H -S -n  -u root /bin/sh -c '"'"'"'"'"'"'"'"'echo BECOME-SUCCESS-qnuelidbayhehnljhiuztlwgbcfrxzzd ; /usr/bin/python3 /tmp/.ansible/tmp/ansible-tmp-1713749342.501171-3782018-12156882532329/AnsiballZ_command.py'"'"'"'"'"'"'"'"' && sleep 0'"'"''[0m
+[0;34mEscalation succeeded[0m
+[0;34m<192.168.38.8> (0, b'\r\n{"changed": true, "stdout": "", "stderr": "", "rc": 0, "cmd": ["ip", "netns", "exec", "ta_in", "ip", "link", "set", "ta_in_veth1", "up"], "start": "2024-04-22 01:29:02.915185", "end": "2024-04-22 01:29:02.927160", "delta": "0:00:00.011975", "msg": "", "invocation": {"module_args": {"_raw_params": "ip netns exec ta_in ip link set ta_in_veth1 up", "_uses_shell": false, "stdin_add_newline": true, "strip_empty_ends": true, "argv": null, "chdir": null, "executable": null, "creates": null, "removes": null, "stdin": null}}}\r\n', b'Shared connection to 192.168.38.8 closed.\r\n')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'rm -f -r /tmp/.ansible/tmp/ansible-tmp-1713749342.501171-3782018-12156882532329/ > /dev/null 2>&1 && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;33mchanged: [192.168.38.8] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "exec",[0m
+[0;33m        "ta_in",[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "set",[0m
+[0;33m        "ta_in_veth1",[0m
+[0;33m        "up"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.011975",[0m
+[0;33m    "end": "2024-04-22 01:29:02.927160",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns exec ta_in ip link set ta_in_veth1 up",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-22 01:29:02.915185",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Activate loopback interface in the network namespace] ********************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:40[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /tmp/.ansible/tmp `"&& mkdir "` echo /tmp/.ansible/tmp/ansible-tmp-1713749343.074773-3782101-159069557237141 `" && echo ansible-tmp-1713749343.074773-3782101-159069557237141="` echo /tmp/.ansible/tmp/ansible-tmp-1713749343.074773-3782101-159069557237141 `" ) && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'ansible-tmp-1713749343.074773-3782101-159069557237141=/tmp/.ansible/tmp/ansible-tmp-1713749343.074773-3782101-159069557237141\n', b'')[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<192.168.38.8> PUT /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpnqdl1z0w TO /tmp/.ansible/tmp/ansible-tmp-1713749343.074773-3782101-159069557237141/AnsiballZ_command.py[0m
+[0;34m<192.168.38.8> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' '[192.168.38.8]'[0m
+[0;34m<192.168.38.8> (0, b'sftp> put /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpnqdl1z0w /tmp/.ansible/tmp/ansible-tmp-1713749343.074773-3782101-159069557237141/AnsiballZ_command.py\n', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'chmod u+x /tmp/.ansible/tmp/ansible-tmp-1713749343.074773-3782101-159069557237141/ /tmp/.ansible/tmp/ansible-tmp-1713749343.074773-3782101-159069557237141/AnsiballZ_command.py && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' -tt 192.168.38.8 '/bin/sh -c '"'"'sudo -H -S -n  -u root /bin/sh -c '"'"'"'"'"'"'"'"'echo BECOME-SUCCESS-chxaunlonwkhpxwypwhkragjvfyvgukj ; /usr/bin/python3 /tmp/.ansible/tmp/ansible-tmp-1713749343.074773-3782101-159069557237141/AnsiballZ_command.py'"'"'"'"'"'"'"'"' && sleep 0'"'"''[0m
+[0;34mEscalation succeeded[0m
+[0;34m<192.168.38.8> (0, b'\r\n{"changed": true, "stdout": "", "stderr": "", "rc": 0, "cmd": ["ip", "netns", "exec", "ta_in", "ip", "link", "set", "lo", "up"], "start": "2024-04-22 01:29:03.417762", "end": "2024-04-22 01:29:03.426697", "delta": "0:00:00.008935", "msg": "", "invocation": {"module_args": {"_raw_params": "ip netns exec ta_in ip link set lo up", "_uses_shell": false, "stdin_add_newline": true, "strip_empty_ends": true, "argv": null, "chdir": null, "executable": null, "creates": null, "removes": null, "stdin": null}}}\r\n', b'Shared connection to 192.168.38.8 closed.\r\n')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'rm -f -r /tmp/.ansible/tmp/ansible-tmp-1713749343.074773-3782101-159069557237141/ > /dev/null 2>&1 && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;33mchanged: [192.168.38.8] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "exec",[0m
+[0;33m        "ta_in",[0m
+[0;33m        "ip",[0m
+[0;33m        "link",[0m
+[0;33m        "set",[0m
+[0;33m        "lo",[0m
+[0;33m        "up"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.008935",[0m
+[0;33m    "end": "2024-04-22 01:29:03.426697",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns exec ta_in ip link set lo up",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-22 01:29:03.417762",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Add default route in VPC namespace via vpc_veth0 IP] *********************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:43[0m
+[0;34mredirecting (type: filter) ansible.builtin.ipmath to ansible.netcommon.ipmath[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipmath' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;34mredirecting (type: filter) ansible.netcommon.ipmath to ansible.utils.ipmath[0m
+[0;34mredirecting (type: filter) ansible.builtin.ipaddr to ansible.netcommon.ipaddr[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipaddr' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;34mredirecting (type: filter) ansible.netcommon.ipaddr to ansible.utils.ipaddr[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /tmp/.ansible/tmp `"&& mkdir "` echo /tmp/.ansible/tmp/ansible-tmp-1713749343.6804664-3782141-140030795422674 `" && echo ansible-tmp-1713749343.6804664-3782141-140030795422674="` echo /tmp/.ansible/tmp/ansible-tmp-1713749343.6804664-3782141-140030795422674 `" ) && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'ansible-tmp-1713749343.6804664-3782141-140030795422674=/tmp/.ansible/tmp/ansible-tmp-1713749343.6804664-3782141-140030795422674\n', b'')[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<192.168.38.8> PUT /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmp7hd3qe6h TO /tmp/.ansible/tmp/ansible-tmp-1713749343.6804664-3782141-140030795422674/AnsiballZ_command.py[0m
+[0;34m<192.168.38.8> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' '[192.168.38.8]'[0m
+[0;34m<192.168.38.8> (0, b'sftp> put /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmp7hd3qe6h /tmp/.ansible/tmp/ansible-tmp-1713749343.6804664-3782141-140030795422674/AnsiballZ_command.py\n', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'chmod u+x /tmp/.ansible/tmp/ansible-tmp-1713749343.6804664-3782141-140030795422674/ /tmp/.ansible/tmp/ansible-tmp-1713749343.6804664-3782141-140030795422674/AnsiballZ_command.py && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' -tt 192.168.38.8 '/bin/sh -c '"'"'sudo -H -S -n  -u root /bin/sh -c '"'"'"'"'"'"'"'"'echo BECOME-SUCCESS-aehoqftahuwovobdvljzmyvgqpgizqek ; /usr/bin/python3 /tmp/.ansible/tmp/ansible-tmp-1713749343.6804664-3782141-140030795422674/AnsiballZ_command.py'"'"'"'"'"'"'"'"' && sleep 0'"'"''[0m
+[0;34mEscalation succeeded[0m
+[0;34m<192.168.38.8> (0, b'\r\n{"changed": true, "stdout": "", "stderr": "", "rc": 0, "cmd": ["ip", "netns", "exec", "ta_in", "ip", "route", "add", "default", "via", "192.168.100.1"], "start": "2024-04-22 01:29:04.079094", "end": "2024-04-22 01:29:04.091778", "delta": "0:00:00.012684", "msg": "", "invocation": {"module_args": {"_raw_params": "ip netns exec ta_in ip route add default via 192.168.100.1\\n", "_uses_shell": false, "stdin_add_newline": true, "strip_empty_ends": true, "argv": null, "chdir": null, "executable": null, "creates": null, "removes": null, "stdin": null}}}\r\n', b'Shared connection to 192.168.38.8 closed.\r\n')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'rm -f -r /tmp/.ansible/tmp/ansible-tmp-1713749343.6804664-3782141-140030795422674/ > /dev/null 2>&1 && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;33mchanged: [192.168.38.8] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "exec",[0m
+[0;33m        "ta_in",[0m
+[0;33m        "ip",[0m
+[0;33m        "route",[0m
+[0;33m        "add",[0m
+[0;33m        "default",[0m
+[0;33m        "via",[0m
+[0;33m        "192.168.100.1"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.012684",[0m
+[0;33m    "end": "2024-04-22 01:29:04.091778",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns exec ta_in ip route add default via 192.168.100.1\n",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-22 01:29:04.079094",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+TASK [Set up NAT for the VPC's external interface] *****************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:47[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /tmp/.ansible/tmp `"&& mkdir "` echo /tmp/.ansible/tmp/ansible-tmp-1713749344.2598555-3782231-190193310900941 `" && echo ansible-tmp-1713749344.2598555-3782231-190193310900941="` echo /tmp/.ansible/tmp/ansible-tmp-1713749344.2598555-3782231-190193310900941 `" ) && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'ansible-tmp-1713749344.2598555-3782231-190193310900941=/tmp/.ansible/tmp/ansible-tmp-1713749344.2598555-3782231-190193310900941\n', b'')[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<192.168.38.8> PUT /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpnn_sfne8 TO /tmp/.ansible/tmp/ansible-tmp-1713749344.2598555-3782231-190193310900941/AnsiballZ_command.py[0m
+[0;34m<192.168.38.8> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' '[192.168.38.8]'[0m
+[0;34m<192.168.38.8> (0, b'sftp> put /home/vmadm/.ansible/tmp/ansible-local-3781228adiap8te/tmpnn_sfne8 /tmp/.ansible/tmp/ansible-tmp-1713749344.2598555-3782231-190193310900941/AnsiballZ_command.py\n', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'chmod u+x /tmp/.ansible/tmp/ansible-tmp-1713749344.2598555-3782231-190193310900941/ /tmp/.ansible/tmp/ansible-tmp-1713749344.2598555-3782231-190193310900941/AnsiballZ_command.py && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' -tt 192.168.38.8 '/bin/sh -c '"'"'sudo -H -S -n  -u root /bin/sh -c '"'"'"'"'"'"'"'"'echo BECOME-SUCCESS-dvefvsqytesjrnufbzttkhibrxbjneoj ; /usr/bin/python3 /tmp/.ansible/tmp/ansible-tmp-1713749344.2598555-3782231-190193310900941/AnsiballZ_command.py'"'"'"'"'"'"'"'"' && sleep 0'"'"''[0m
+[0;34mEscalation succeeded[0m
+[0;34m<192.168.38.8> (0, b'\r\n{"changed": true, "stdout": "", "stderr": "", "rc": 0, "cmd": ["ip", "netns", "exec", "ta_in", "iptables", "-t", "nat", "-A", "POSTROUTING", "-o", "ta_in_veth1", "-j", "MASQUERADE"], "start": "2024-04-22 01:29:04.640476", "end": "2024-04-22 01:29:04.652468", "delta": "0:00:00.011992", "msg": "", "invocation": {"module_args": {"_raw_params": "ip netns exec ta_in iptables -t nat -A POSTROUTING -o ta_in_veth1 -j MASQUERADE", "_uses_shell": false, "stdin_add_newline": true, "strip_empty_ends": true, "argv": null, "chdir": null, "executable": null, "creates": null, "removes": null, "stdin": null}}}\r\n', b'Shared connection to 192.168.38.8 closed.\r\n')[0m
+[0;34m<192.168.38.8> ESTABLISH SSH CONNECTION FOR USER: vmadm[0m
+[0;34m<192.168.38.8> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o 'IdentityFile="/home/vmadm/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vmadm"' -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o 'ControlPath="/home/vmadm/.ansible/cp/224cf1a03e"' 192.168.38.8 '/bin/sh -c '"'"'rm -f -r /tmp/.ansible/tmp/ansible-tmp-1713749344.2598555-3782231-190193310900941/ > /dev/null 2>&1 && sleep 0'"'"''[0m
+[0;34m<192.168.38.8> (0, b'', b'')[0m
+[0;33mchanged: [192.168.38.8] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "exec",[0m
+[0;33m        "ta_in",[0m
+[0;33m        "iptables",[0m
+[0;33m        "-t",[0m
+[0;33m        "nat",[0m
+[0;33m        "-A",[0m
+[0;33m        "POSTROUTING",[0m
+[0;33m        "-o",[0m
+[0;33m        "ta_in_veth1",[0m
+[0;33m        "-j",[0m
+[0;33m        "MASQUERADE"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.011992",[0m
+[0;33m    "end": "2024-04-22 01:29:04.652468",[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns exec ta_in iptables -t nat -A POSTROUTING -o ta_in_veth1 -j MASQUERADE",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-22 01:29:04.640476",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "",[0m
+[0;33m    "stdout_lines": [][0m
+[0;33m}[0m
+
+PLAY RECAP *********************************************************************
+[0;33m192.168.38.8[0m               : [0;32mok=12  [0m [0;33mchanged=11  [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

@@ -1,0 +1,274 @@
+tenants:
+- name: netflix
+  numberOfVpcs: '1'
+  state: requested
+  vpcs:
+  - name: NE_IN
+    vpc_state: requested
+  subnets:
+  - name: NE_IN_S1
+    CIDR: 192.168.50.0/24
+    vpc: NE_IN
+    subnet_state: requested
+    ip: 192.168.50.1
+  containers:
+  - name: ne_in_container1
+    vpc: NE_IN
+    subnets:
+    - NE_IN_S1
+    container_state: requested
+  regional_vpcs:
+    asia_vpcs: []
+    europe_vpcs: []
+- name: hotstar
+  numberOfVpcs: '1'
+  state: requested
+  vpcs:
+  - name: HO_IN
+    vpc_state: active
+  subnets:
+  - name: HO_IN_S1
+    CIDR: 192.168.150.0/24
+    vpc: HO_IN
+    subnet_state: active
+    ip: 192.168.150.1
+    dhcp_start: 192.168.150.2
+    dhcp_end: 192.168.150.254
+  containers:
+  - name: ho_in_container1
+    vpc: HO_IN
+    subnets:
+    - HO_IN_S1
+    container_state: active
+- name: disney
+  numberOfVpcs: '1'
+  state: requested
+  vpcs:
+  - name: DI_IN
+    vpc_state: requested
+  subnets:
+  - name: DI_IN_S1
+    CIDR: 172.16.150.0/24
+    vpc: DI_IN
+    subnet_state: requested
+    ip: 172.16.150.1
+    dhcp_start: 172.16.150.2
+    dhcp_end: 172.16.150.254
+  containers:
+  - name: di_in_container1
+    vpc: DI_IN
+    subnets:
+    - DI_IN_S1
+    container_state: requested
+- name: karthik
+  numberOfVpcs: '1'
+  state: requested
+  vpcs:
+  - name: ka_in
+    vpc_state: active
+  - name: ka_ja
+    vpc_state: active
+  - name: ka_ge
+    vpc_state: active
+  - name: ka_fr
+    vpc_state: active
+  subnets:
+  - name: ka_in_S1
+    CIDR: 172.16.175.0/24
+    vpc: ka_in
+    subnet_state: active
+    ip: 172.16.175.1
+    dhcp_start: 172.16.175.2
+    dhcp_end: 172.16.175.254
+  - name: ka_in_S2
+    CIDR: 172.16.176.0/24
+    vpc: ka_in
+    subnet_state: active
+    ip: 172.16.176.1
+    dhcp_start: 172.16.176.2
+    dhcp_end: 172.16.176.254
+  containers:
+  - name: ka_in_container1
+    vpc: ka_in
+    subnets:
+    - ka_in_S1
+    container_state: active
+  - name: ka_in_container2
+    vpc: ka_in
+    subnets:
+    - ka_in_S2
+    container_state: active
+  - name: ka_in_container3
+    vpc: ka_in
+    subnets: []
+    container_state: requested
+  regional_vpcs:
+    asia_vpcs:
+    - name: ka_in
+    - name: ka_ja
+    europe_vpcs:
+    - name: ka_ge
+    - name: ka_fr
+    vni: 1000
+- name: tata
+  numberOfVpcs: '3'
+  state: requested
+  vpcs:
+  - name: ta_in
+    vpc_state: active
+  - name: ta_ja
+    vpc_state: active
+  - name: ta_ge
+    vpc_state: active
+  subnets:
+  - name: ta_in_S1
+    CIDR: 172.16.243.0/24
+    vpc: ta_in
+    subnet_state: active
+    ip: 172.16.243.1
+    dhcp_start: 172.16.243.2
+    dhcp_end: 172.16.243.254
+  - name: ta_in_S2
+    CIDR: 172.16.244.0/24
+    vpc: ta_in
+    subnet_state: active
+    ip: 172.16.244.1
+    dhcp_start: 172.16.244.2
+    dhcp_end: 172.16.244.254
+  - name: ta_ja_S1
+    CIDR: 172.16.245.0/24
+    vpc: ta_ja
+    subnet_state: active
+    ip: 172.16.245.1
+    dhcp_start: 172.16.245.2
+    dhcp_end: 172.16.245.254
+  - name: ta_ge_S1
+    CIDR: 172.16.246.0/24
+    vpc: ta_ge
+    subnet_state: active
+    ip: 172.16.246.1
+    dhcp_start: 172.16.246.2
+    dhcp_end: 172.16.246.254
+  containers:
+  - name: ta_in_container1
+    vpc: ta_in
+    subnets:
+    - ta_in_S1
+    container_state: active
+  - name: ta_ja_container1
+    vpc: ta_ja
+    subnets:
+    - ta_ja_S1
+    container_state: requested
+  - name: ta_ge_container1
+    vpc: ta_ge
+    subnets:
+    - ta_ge_S1
+    container_state: requested
+  - name: ta_in_container2
+    vpc: ta_in
+    subnets:
+    - ta_in_S2
+    container_state: requested
+  regional_vpcs:
+    asia_vpcs:
+    - name: ta_in
+    - name: ta_ja
+    europe_vpcs:
+    - name: ta_ge
+    vni: 1062
+- name: yolo
+  numberOfVpcs: '3'
+  state: requested
+  vpcs:
+  - name: yo_in
+    vpc_state: requested
+  - name: yo_ja
+    vpc_state: requested
+  - name: yo_fr
+    vpc_state: requested
+  subnets:
+  - name: yo_in_S1
+    CIDR: 192.168.166.0/24
+    vpc: yo_in
+    subnet_state: requested
+    ip: 192.168.166.1
+    dhcp_start: 192.168.166.2
+    dhcp_end: 192.168.166.254
+  - name: yo_in_S2
+    CIDR: 192.168.167.0/24
+    vpc: yo_in
+    subnet_state: requested
+    ip: 192.168.167.1
+    dhcp_start: 192.168.167.2
+    dhcp_end: 192.168.167.254
+  - name: yo_ja_S1
+    CIDR: 192.168.168.0/24
+    vpc: yo_ja
+    subnet_state: requested
+    ip: 192.168.168.1
+    dhcp_start: 192.168.168.2
+    dhcp_end: 192.168.168.254
+  - name: yo_fr_S1
+    CIDR: 192.168.169.0/24
+    vpc: yo_fr
+    subnet_state: requested
+    ip: 192.168.169.1
+    dhcp_start: 192.168.169.2
+    dhcp_end: 192.168.169.254
+  containers:
+  - name: yo_in_container1
+    vpc: yo_in
+    subnets:
+    - yo_in_S1
+    - yo_in_S2
+    container_state: requested
+  - name: yo_in_container2
+    vpc: yo_in
+    subnets:
+    - yo_in_S2
+    container_state: requested
+  - name: yo_ja_container1
+    vpc: yo_ja
+    subnets:
+    - yo_ja_S1
+    container_state: requested
+  - name: yo_fr_container1
+    vpc: yo_fr
+    subnets:
+    - yo_fr_S1
+    container_state: requested
+- name: tesla
+  numberOfVpcs: '2'
+  state: requested
+  vpcs:
+  - name: te_in
+    vpc_state: requested
+  - name: te_ge
+    vpc_state: requested
+  subnets:
+  - name: te_in_S1
+    CIDR: 192.168.55.0/24
+    vpc: te_in
+    subnet_state: requested
+    ip: 192.168.55.1
+    dhcp_start: 192.168.55.2
+    dhcp_end: 192.168.55.254
+  - name: te_ge_S1
+    CIDR: 192.168.57.0/24
+    vpc: te_ge
+    subnet_state: requested
+    ip: 192.168.57.1
+    dhcp_start: 192.168.57.2
+    dhcp_end: 192.168.57.254
+  containers:
+  - name: te_in_container1
+    vpc: te_in
+    subnets:
+    - te_in_S1
+    container_state: requested
+  - name: te_ge_container1
+    vpc: te_ge
+    subnets:
+    - te_ge_S1
+    container_state: requested

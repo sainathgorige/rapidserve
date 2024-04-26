@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "92fc2a1f-4463-47a8-9e02-e443ba52df6c", "counter": 11, "stdout": "\u001b[0;31mERROR! the playbook: deploy_vpc.yaml could not be found\u001b[0m", "start_line": 10, "end_line": 11, "runner_ident": "2c4bf80d-78b7-4b2d-9465-701b9bdb1970", "created": "2024-04-21T06:35:07.122952"}

@@ -1,0 +1,2 @@
+[1;35m[WARNING]: Could not match supplied host pattern, ignoring: {}[0m
+[0;31mERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.[0m

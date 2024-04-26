@@ -1,0 +1,129 @@
+- name: Deploy Infrastructure with Veth Pairs and VMs
+  hosts: localhost
+  gather_facts: no
+  become: true
+
+  # vars:
+  #   tenant_name: "netflix"
+
+  tasks:
+    # - name: Retrieve data from etcd
+    #   command: python3 retrive_etcd.py {{ item }}
+    #   register: tenant_data
+    #   loop: "{{ tenant_name }}"
+
+    - name: Parse retrieved data
+      set_fact:
+        etcd_data_parsed: "{{ tenant_data | from_yaml }}" #.results[0].stdout.split('\n')[1]
+   
+    - name: Debug etcd_data_parsed
+      debug:
+        var: etcd_data_parsed
+
+    # - name: Calculate VM IP address with new method
+    #   set_fact:
+    #     vm_ip: "{{ (etcd_data_parsed['netflix']['cdn']['cdn_vpcs']['origin_vpc'][0]['CIDR'] | ansible.utils.ipaddr('network') | ansible.utils.ipmath(2)) }}"
+
+    # - name: Create VMs for each VPC
+    #   vars:
+    #     vpcs: "{{ etcd_data_parsed[tenant_name[0]].vpcs }}"
+    #   block:
+    #     - name: Establish directory structure for VM images
+    #       file:
+    #         path: "/var/lib/libvirt/images/{{ item.name }}"
+    #         state: directory
+    #         owner: root
+    #         group: root
+    #         mode: "0755"
+    #       loop: "{{ vpcs | map(attribute='VMs') | flatten }}"
+
+    #     - name: Deploy cloud-init meta-data
+    #       copy:
+    #         dest: "/var/lib/libvirt/images/{{ item.name }}/meta-data"
+    #         content: |
+    #           #cloud-config
+    #           instance-id: {{ item.name }}
+    #           local-hostname: {{ item.name }}
+    #         owner: root
+    #         group: root
+    #         mode: "0644"
+    #       loop: "{{ vpcs | map(attribute='VMs') | flatten }}"
+
+    #     - name: Prepare user-data for cloud-init
+    #       copy:
+    #         dest: "/var/lib/libvirt/images/{{ item.name }}/user-data"
+    #         content: |
+    #           #cloud-config
+    #           bootcmd:
+    #             - echo "nameserver 8.8.8.8" > /etc/resolv.conf
+    #           disable_root: false
+    #           ssh_authorized_keys:
+    #             - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3ttzAq6NSC/s43UaygR3DcaHIhUd6qMZTonB2NmVGUw6fM261+1i0VigfiJHYe5l6Nh6QtNLvBzI980n+qL/WJQkiJ1KL3+VAK7k3RBsnEBuEqmrErX2JHTrXdh0J+L2Ly3tiI0hVATFsaNGbyLU04EmUyz9j7adknuU26/cFqxMjddlrGaBcDW4d7T522twV7vm8z9MOO+AcfcaJLOcE4+jYlu72w2pQz5znE1RGj0pfGqlcc7YdM/+dmvaQb1pssoc5NedwrWJ510Cqp5jABVz10jbvIsouC2ao0o+l1jNOI8fsddT5skf19IIW5t6GCgfVbOJ5Vbik6j1PBWFJ vmadm@lnVM08
+    #           users:
+    #             - default
+    #             - name: root
+    #               lock_passwd: false
+    #               plain_text_passwd: 'admin'
+    #             - name: ubuntu
+    #               lock_passwd: false
+    #               plain_text_passwd: 'admin'
+    #           network:
+    #             version: 2
+    #             renderer: networkd
+    #             ethernets:
+    #               ens4:
+    #                 dhcp4: true
+    #           packages:
+    #             - traceroute
+    #             - nginx
+    #           write_files:
+    #             - content: |
+    #                 events {
+    #                     worker_connections 1024;
+    #                 }
+    #                 http {
+    #                     proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=my_cache:10m max_size=10g inactive=20s use_temp_path=off;
+    #                     server {
+    #                         listen 80;
+    #                         location / {
+    #                             proxy_cache my_cache;
+    #                             proxy_pass http://{{vm_ip}};
+    #                             proxy_set_header Host $host;
+    #                             proxy_cache_valid 200 302 60s;
+    #                             proxy_cache_valid 404 1m;
+    #                             add_header X-Cache-Status $upstream_cache_status;
+    #                         }
+    #                     }
+    #                 }
+    #               path: /etc/nginx/nginx.conf
+    #               owner: root:root
+    #               permissions: '0644'
+    #           runcmd:
+    #             - "for i in /sys/class/net/*; do intf=$(basename $i); if [ \"$intf\" != \"lo\" ]; then ip link set $intf up; dhclient $intf; fi; done"
+    #             - systemctl enable nginx
+    #             - systemctl start nginx
+    #         owner: root
+    #         group: root
+    #         mode: "0644"
+    #       loop: "{{ vpcs | map(attribute='VMs') | flatten }}"
+
+    #     - name: Generate CIDATA ISO for cloud-init
+    #       command: "genisoimage -output /var/lib/libvirt/images/{{ item.name }}/{{ item.name }}-cidata.iso -volid cidata -joliet -rock /var/lib/libvirt/images/{{ item.name }}/meta-data /var/lib/libvirt/images/{{ item.name }}/user-data"
+    #       loop: "{{ vpcs | map(attribute='VMs') | flatten }}"
+
+    #     - name: Establish base QCOW2 images
+    #       command: "qemu-img create -f qcow2 -F qcow2 -o backing_file=/var/lib/libvirt/images/jammy-server-cloudimg-amd64.img /var/lib/libvirt/images/{{ item.name }}/{{ item.name }}.qcow2"
+    #       loop: "{{ vpcs | map(attribute='VMs') | flatten }}"
+
+    #     - name: Allocate space for QCOW2 images
+    #       command: "qemu-img resize /var/lib/libvirt/images/{{ item.name }}/{{ item.name }}.qcow2 {{ item.disk_size }}"
+    #       loop: "{{ vpcs | map(attribute='VMs') | flatten }}"
+
+    #     - name: Initialize VMs according to defined topology
+    #       shell: >
+    #         virt-install --virt-type=kvm --name={{ item.name }} --ram={{ item.RAM_size }} --vcpus={{ item.CPUs }}
+    #         --os-variant=generic --disk path=/var/lib/libvirt/images/{{ item.name }}/{{ item.name }}.qcow2,format=qcow2
+    #         --disk path=/var/lib/libvirt/images/{{ item.name }}/{{ item.name }}-cidata.iso,device=cdrom
+    #         --import {% for subnet in item.subnets %} --network bridge={{ subnet }}_br,model=virtio {% endfor %}
+    #         --noautoconsole
+    #       loop: "{{ vpcs | map(attribute='VMs') | flatten }}"

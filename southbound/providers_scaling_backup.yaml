@@ -1,0 +1,26 @@
+---
+- hosts: hostvms
+  become: yes  # Assuming you need root privileges to manage crontab for vmadm
+
+  vars_prompt:
+    - name: customer_names_input
+      prompt: "Enter the list of regions/vpc names separated by commas:"
+      private: no  # Set to yes if you want to hide input
+
+  tasks:
+    - name: Split input into a list
+      set_fact:
+        customer_names: "{{ customer_names_input.split(',') }}"
+
+    - name: Add customer-specific cron jobs
+      cron:
+        name: "Monitor script for {{ item }}"
+        user: vmadm
+        job: "for i in {1..6}; do /home/vmadm/demo/RapidServe/southbound/monitor.sh {{ item }} 10 30 0.75 1.0 >> /tmp/{{ item }}_scaling_monitor.log 2>&1; sleep 10; done"
+        minute: "*"
+        hour: "*"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        state: present
+      loop: "{{ customer_names }}"

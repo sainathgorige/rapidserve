@@ -1,0 +1,11 @@
+[0;34mNo config file found; using defaults[0m
+[0;31mERROR! Unable to parse argument string. list index out of range[0m
+[0;31m[0m
+[0;31mThe error appears to be in '/home/vmadm/demo/RapidServe/southbound/deploy_con.yaml': line 77, column 7, but may[0m
+[0;31mbe elsewhere in the file depending on the exact syntax problem.[0m
+[0;31m[0m
+[0;31mThe offending line appears to be:[0m
+[0;31m[0m
+[0;31m[0m
+[0;31m    - name: Configure network interfaces and veth pairs[0m
+[0;31m      ^ here[0m

@@ -1,0 +1,111 @@
+[0;34mNo config file found; using defaults[0m
+
+PLAY [Deploy subnet Infrastructure with bridges and Veth Pairs] ****************
+
+TASK [Parse retrieved data] ****************************************************
+[0;32mok: [192.168.38.8] => {"ansible_facts": {"tenant_data_parsed": {"containers": [{"container_state": "requested", "name": "yi_in_container1", "subnets": ["yi_in_S1", "yi_in_S2"], "vpc": "yi_in"}], "name": "yini", "numberOfVpcs": "1", "regional_vpcs": {"asia_vpcs": [{"name": "yi_in"}], "europe_vpcs": [], "vni": 1110}, "subnets": [{"CIDR": "192.168.78.0/24", "dhcp_end": "192.168.78.254", "dhcp_start": "192.168.78.2", "ip": "192.168.78.1", "name": "yi_in_S1", "subnet_state": "requested", "vpc": "yi_in"}, {"CIDR": "192.168.79.0/24", "dhcp_end": "192.168.79.254", "dhcp_start": "192.168.79.2", "ip": "192.168.79.1", "name": "yi_in_S2", "subnet_state": "requested", "vpc": "yi_in"}], "tunnel_state": "active", "vpcs": [{"name": "yi_in", "vpc_state": "active"}]}}, "changed": false}[0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[0;32mok: [192.168.38.8] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "containers": [[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "yi_in_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "yi_in_S1",[0m
+[0;32m                    "yi_in_S2"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "yi_in"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "name": "yini",[0m
+[0;32m        "numberOfVpcs": "1",[0m
+[0;32m        "regional_vpcs": {[0m
+[0;32m            "asia_vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "yi_in"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "europe_vpcs": [],[0m
+[0;32m            "vni": 1110[0m
+[0;32m        },[0m
+[0;32m        "subnets": [[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.78.0/24",[0m
+[0;32m                "dhcp_end": "192.168.78.254",[0m
+[0;32m                "dhcp_start": "192.168.78.2",[0m
+[0;32m                "ip": "192.168.78.1",[0m
+[0;32m                "name": "yi_in_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "yi_in"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.79.0/24",[0m
+[0;32m                "dhcp_end": "192.168.79.254",[0m
+[0;32m                "dhcp_start": "192.168.79.2",[0m
+[0;32m                "ip": "192.168.79.1",[0m
+[0;32m                "name": "yi_in_S2",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "yi_in"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "tunnel_state": "active",[0m
+[0;32m        "vpcs": [[0m
+[0;32m            {[0m
+[0;32m                "name": "yi_in",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            }[0m
+[0;32m        ][0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create bridges for each subnet] ******************************************
+[0;33mchanged: [192.168.38.8] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["ip", "link", "add", "yi_in_S1_br", "type", "bridge"], "delta": "0:00:00.007033", "end": "2024-04-24 02:21:48.826751", "msg": "", "rc": 0, "start": "2024-04-24 02:21:48.819718", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Activate bridges for each subnet] ****************************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "yi_in_S1_br", "up"], "delta": "0:00:00.012602", "end": "2024-04-24 02:21:49.388239", "msg": "", "rc": 0, "start": "2024-04-24 02:21:49.375637", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Create veth pair for each subnet] ****************************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "add", "yi_in_S1_veth0", "type", "veth", "peer", "name", "yi_in_S1_veth1"], "delta": "0:00:00.015731", "end": "2024-04-24 02:21:49.897871", "msg": "", "rc": 0, "start": "2024-04-24 02:21:49.882140", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Bring up veth0 interface in the root namespace] **************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "yi_in_S1_veth0", "up"], "delta": "0:00:00.014055", "end": "2024-04-24 02:21:50.461574", "msg": "", "rc": 0, "start": "2024-04-24 02:21:50.447519", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Move one end of the veth pair (veth1) to the corresponding namespace] ****
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "yi_in_S1_veth1", "netns", "yi_in"], "delta": "0:00:00.032611", "end": "2024-04-24 02:21:51.025964", "msg": "", "rc": 0, "start": "2024-04-24 02:21:50.993353", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Bring up veth1 interface in its respective namespace] ********************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "yi_in", "ip", "link", "set", "yi_in_S1_veth1", "up"], "delta": "0:00:00.015481", "end": "2024-04-24 02:21:51.578405", "msg": "", "rc": 0, "start": "2024-04-24 02:21:51.562924", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Attach veth0 to the bridge in default namespace] *************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "yi_in_S1_veth0", "master", "yi_in_S1_br"], "delta": "0:00:00.013642", "end": "2024-04-24 02:21:52.130268", "msg": "", "rc": 0, "start": "2024-04-24 02:21:52.116626", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Assign IP addresses to veth1 interfaces within namespaces] ***************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "yi_in", "ip", "addr", "add", "192.168.78.1/24", "dev", "yi_in_S1_veth1"], "delta": "0:00:00.015900", "end": "2024-04-24 02:21:52.673846", "msg": "", "rc": 0, "start": "2024-04-24 02:21:52.657946", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Setup DHCP on veth1 interfaces within namespaces] ************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "yi_in", "dnsmasq", "--interface=yi_in_S1_veth1", "--bind-interfaces", "--dhcp-range=192.168.78.2,192.168.78.254,24h", "--except-interface=lo"], "delta": "0:00:00.018264", "end": "2024-04-24 02:21:53.247721", "msg": "", "rc": 0, "start": "2024-04-24 02:21:53.229457", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Fetch IP address for the interface based on location] ********************
+[0;32mok: [192.168.38.8] => {"changed": false, "cmd": "ip netns exec yi_in ip -o -4 addr show yi_in_veth1 | awk '{print $4}' | cut -d/ -f1\n", "delta": "0:00:00.023344", "end": "2024-04-24 02:21:53.820524", "msg": "", "rc": 0, "start": "2024-04-24 02:21:53.797180", "stderr": "", "stderr_lines": [], "stdout": "192.168.100.74", "stdout_lines": ["192.168.100.74"]}[0m
+
+TASK [Set vpc_veth1_ip variable] ***********************************************
+[0;32mok: [192.168.38.8] => {"ansible_facts": {"vpc_veth1_ip": "192.168.100.74"}, "changed": false}[0m
+
+TASK [Debug vpc_veth1_ip] ******************************************************
+[0;32mok: [192.168.38.8] => {[0m
+[0;32m    "vpc_veth1_ip": "192.168.100.74"[0m
+[0;32m}[0m
+
+TASK [Add route in root namespace to reach VPC subnet via vpc_veth1 IP] ********
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "route", "add", "192.168.78.0/24", "via", "192.168.100.74"], "delta": "0:00:00.013808", "end": "2024-04-24 02:21:54.461967", "msg": "", "rc": 0, "start": "2024-04-24 02:21:54.448159", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Set up forwarding rules for each subnet interface within the VPC] ********
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "yi_in", "iptables", "-A", "FORWARD", "-i", "yi_in_veth1", "-o", "yi_in_S1_veth1", "-m", "state", "--state", "RELATED,ESTABLISHED", "-j", "ACCEPT"], "delta": "0:00:00.015237", "end": "2024-04-24 02:21:55.015396", "msg": "", "rc": 0, "start": "2024-04-24 02:21:55.000159", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Set up forwarding rules for traffic from subnet interfaces to the VPC's external interface] ***
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "yi_in", "iptables", "-A", "FORWARD", "-i", "yi_in_S1_veth1", "-o", "yi_in_veth1", "-j", "ACCEPT"], "delta": "0:00:00.014098", "end": "2024-04-24 02:21:55.557198", "msg": "", "rc": 0, "start": "2024-04-24 02:21:55.543100", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;33m192.168.38.8[0m               : [0;32mok=17  [0m [0;33mchanged=12  [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

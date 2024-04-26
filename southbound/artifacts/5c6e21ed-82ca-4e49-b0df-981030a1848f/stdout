@@ -1,0 +1,106 @@
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+
+PLAY [Deploy subnet Infrastructure with bridges and Veth Pairs] ****************
+
+TASK [Parse retrieved data] ****************************************************
+[0;32mok: [localhost][0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[0;32mok: [localhost] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "containers": [[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "AH_IN_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "AH_IN_S1",[0m
+[0;32m                    "AH_IN_S2"[0m
+[0;32m                ][0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "AH_JA_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "AH_JA_S1"[0m
+[0;32m                ][0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "AH_FR_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "AH_FR_S1"[0m
+[0;32m                ][0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "AH_IN_container2",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "AH_IN_S1"[0m
+[0;32m                ][0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "name": "aha",[0m
+[0;32m        "numberOfVpcs": "3",[0m
+[0;32m        "state": "requested",[0m
+[0;32m        "subnets": [[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.1.0/24",[0m
+[0;32m                "dhcp_end": "192.168.1.254",[0m
+[0;32m                "dhcp_start": "192.168.1.2",[0m
+[0;32m                "ip": "192.168.1.1",[0m
+[0;32m                "name": "AH_IN_S1",[0m
+[0;32m                "subnet_state": "active",[0m
+[0;32m                "vpc": "AH_IN"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.2.0/24",[0m
+[0;32m                "dhcp_end": "192.168.2.254",[0m
+[0;32m                "dhcp_start": "192.168.2.2",[0m
+[0;32m                "ip": "192.168.2.1",[0m
+[0;32m                "name": "AH_JA_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "AH_JA"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.3.0/24",[0m
+[0;32m                "dhcp_end": "192.168.3.254",[0m
+[0;32m                "dhcp_start": "192.168.3.2",[0m
+[0;32m                "ip": "192.168.3.1",[0m
+[0;32m                "name": "AH_IN_S2",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "AH_IN"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.4.0/24",[0m
+[0;32m                "dhcp_end": "192.168.4.254",[0m
+[0;32m                "dhcp_start": "192.168.4.2",[0m
+[0;32m                "ip": "192.168.4.1",[0m
+[0;32m                "name": "AH_FR_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "AH_FR"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "vpcs": [[0m
+[0;32m            {[0m
+[0;32m                "name": "AH_IN",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "AH_JA",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "AH_FR",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            }[0m
+[0;32m        ][0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create bridges for each subnet] ******************************************
+[0;31mfatal: [localhost]: FAILED! => {"changed": true, "cmd": ["ip", "link", "add", "AH_JA_S1_br", "type", "bridge"], "delta": "0:00:00.012505", "end": "2024-04-21 00:42:32.125516", "msg": "non-zero return code", "rc": 2, "start": "2024-04-21 00:42:32.113011", "stderr": "RTNETLINK answers: File exists", "stderr_lines": ["RTNETLINK answers: File exists"], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;31mlocalhost[0m                  : [0;32mok=2   [0m changed=0    unreachable=0    [0;31mfailed=1   [0m skipped=0    rescued=0    ignored=0   

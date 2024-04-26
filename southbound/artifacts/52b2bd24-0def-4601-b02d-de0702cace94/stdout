@@ -1,0 +1,18 @@
+[0;34mansible-playbook [core 2.14.2][0m
+[0;34m  config file = None[0m
+[0;34m  configured module search path = ['/home/vmadm/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules'][0m
+[0;34m  ansible python module location = /usr/lib/python3/dist-packages/ansible[0m
+[0;34m  ansible collection location = /home/vmadm/.ansible/collections:/usr/share/ansible/collections[0m
+[0;34m  executable location = /usr/bin/ansible-playbook[0m
+[0;34m  python version = 3.11.4 (main, Dec  7 2023, 15:43:41) [GCC 12.3.0] (/usr/bin/python3)[0m
+[0;34m  jinja version = 3.1.2[0m
+[0;34m  libyaml = True[0m
+[0;34mNo config file found; using defaults[0m
+[0;34msetting up inventory plugins[0m
+[0;34mhost_list declined parsing /home/vmadm/demo/RapidServe/southbound/host_inventory_europe.ini as it did not pass its verify_file() method[0m
+[0;34mscript declined parsing /home/vmadm/demo/RapidServe/southbound/host_inventory_europe.ini as it did not pass its verify_file() method[0m
+[0;34mauto declined parsing /home/vmadm/demo/RapidServe/southbound/host_inventory_europe.ini as it did not pass its verify_file() method[0m
+[0;34myaml declined parsing /home/vmadm/demo/RapidServe/southbound/host_inventory_europe.ini as it did not pass its verify_file() method[0m
+[0;34mParsed /home/vmadm/demo/RapidServe/southbound/host_inventory_europe.ini inventory source with ini plugin[0m
+[1;35m[WARNING]: Could not match supplied host pattern, ignoring: 192.168.38.8[0m
+[0;31mERROR! Specified inventory, host pattern and/or --limit leaves us with no hosts to target.[0m

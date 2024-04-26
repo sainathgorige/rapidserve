@@ -1,0 +1,51 @@
+---
+- name: Create routes for provider VPC IPs over gre tunnel
+  hosts: all
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Gather IP address for each namespace interface
+      shell: >
+        sudo ip netns exec {{ item }} ip -o -4 addr show {{ item }}_veth1 | awk '{print $4}' | cut -d/ -f1
+      changed_when: false
+      loop:
+        - rs_th
+        - rs_ba
+        - rs_gr
+        - rs_ir
+      register: ip_result
+      when: (ansible_host == '192.168.38.8' and item in ['rs_th', 'rs_ba']) or
+            (ansible_host == '192.168.38.9' and item in ['rs_gr', 'rs_ir'])
+      ignore_errors: yes
+
+    - name: Set facts for IPs
+      set_fact:
+        "{{ item.item }}_veth1_ip": "{{ item.stdout }}"
+      loop: "{{ ip_result.results }}"
+      when: item.rc is defined and item.rc == 0 and item.stdout != ''
+
+    # - name: Print all IPs gathered (debugging)
+    #   debug:
+    #     var: hostvars[inventory_hostname]
+
+- name: Configure routes on hosts
+  hosts: host1
+  gather_facts: no
+  tasks:
+    - name: Configure route for host2 interfaces
+      command: "sudo ip route add {{ hostvars['192.168.38.9'][item + '_veth1_ip'] }}/32 via 192.168.4.2"
+      loop:
+        - rs_gr
+        - rs_ir
+      when: hostvars['192.168.38.9'][item + '_veth1_ip'] is defined
+
+- name: Configure routes on hosts
+  hosts: host2
+  gather_facts: no
+  tasks:
+    - name: Configure route for host1 interfaces
+      command: "sudo ip route add {{ hostvars['192.168.38.8'][item + '_veth1_ip'] }}/32 via 192.168.4.1"
+      loop:
+        - rs_th
+        - rs_ba
+      when: hostvars['192.168.38.8'][item + '_veth1_ip'] is defined

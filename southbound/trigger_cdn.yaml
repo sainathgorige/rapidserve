@@ -1,0 +1,73 @@
+- name: Configure Tenant-specific Web Content on Origin Server
+  hosts: origin_server_vm
+  become: true
+  vars_prompt:
+    - name: tenant_name
+      prompt: "Enter the tenant's name"
+      private: no
+
+  vars:
+    web_root: "/var/www/origin"
+    # Ensure you have the path to your Python script correctly specified
+    python_script_path: "retrieve_etcd.py"
+
+  tasks:
+    - name: Retrieve subnets for the tenant from etcd
+      command: "python3 {{ python_script_path }} {{ tenant_name }}"
+      register: tenant_subnets
+      delegate_to: localhost
+
+    - name: Ensure tenant-specific directory exists
+      file:
+        path: "{{ web_root }}/{{ tenant_name }}"
+        state: directory
+        mode: '0755'
+        owner: www-data
+        group: www-data
+
+    - name: Create sample HTML file for tenant
+      copy:
+        dest: "{{ web_root }}/{{ tenant_name }}/index.html"
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Welcome to {{ tenant_name }}!</title>
+          </head>
+          <body>
+            <h1>Hello from {{ tenant_name }}!</h1>
+          </body>
+          </html>
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Configure Nginx to serve tenant-specific content with subnet allowances
+      blockinfile:
+        path: /etc/nginx/sites-available/default
+        block: |
+          server {
+            listen 80;
+            server_name {{ tenant_name }}.example.com;
+
+            location / {
+              root {{ web_root }}/{{ tenant_name }};
+              index index.html;
+              try_files $uri $uri/ =404;
+              # Dynamic subnet allowances based on Python script output
+              {% for subnet in tenant_subnets.stdout_lines %}
+              allow {{ subnet }};  # Adjust this based on the actual output format of your script
+              {% endfor %}
+              deny all;
+            }
+          }
+        marker: "# {mark} ANSIBLE MANAGED BLOCK: {{ tenant_name }}"
+      notify:
+        - restart nginx
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+        daemon_reload: yes

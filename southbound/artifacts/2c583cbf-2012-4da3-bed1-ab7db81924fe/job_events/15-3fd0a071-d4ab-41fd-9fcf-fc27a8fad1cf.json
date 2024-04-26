@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "3fd0a071-d4ab-41fd-9fcf-fc27a8fad1cf", "counter": 15, "stdout": "\u001b[0;34mParsed /home/vmadm/demo/RapidServe/southbound/host_inventory_asia.ini inventory source with ini plugin\u001b[0m", "start_line": 14, "end_line": 15, "runner_ident": "2c583cbf-2012-4da3-bed1-ab7db81924fe", "created": "2024-04-22T01:28:57.122020"}

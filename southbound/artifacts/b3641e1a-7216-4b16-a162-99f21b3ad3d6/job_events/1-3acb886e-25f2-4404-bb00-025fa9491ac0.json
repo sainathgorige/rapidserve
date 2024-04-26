@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "3acb886e-25f2-4404-bb00-025fa9491ac0", "counter": 1, "stdout": "\u001b[0;34mUsing /etc/ansible/ansible.cfg as config file\u001b[0m", "start_line": 0, "end_line": 1, "runner_ident": "b3641e1a-7216-4b16-a162-99f21b3ad3d6", "created": "2024-04-22T03:22:58.390892"}

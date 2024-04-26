@@ -1,0 +1,8 @@
+#!/bin/bash
+# Dynamically generated script to fetch IP addresses for specified interfaces
+{% for container in regions %}
+interface_name="{{ container[:9] }}{{ container[-2:] }}"
+ip=$(docker exec {{ container }} ip addr show $interface_name | grep 'inet ' | awk '{print $2}' | cut -d'/' -f1)
+echo "{{ container }},$ip"
+{% endfor %}
+

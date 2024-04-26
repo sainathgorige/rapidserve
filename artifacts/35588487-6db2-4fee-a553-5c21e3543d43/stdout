@@ -1,0 +1,157 @@
+[0;34mansible-playbook [core 2.14.2][0m
+[0;34m  config file = None[0m
+[0;34m  configured module search path = ['/home/vmadm/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules'][0m
+[0;34m  ansible python module location = /usr/lib/python3/dist-packages/ansible[0m
+[0;34m  ansible collection location = /home/vmadm/.ansible/collections:/usr/share/ansible/collections[0m
+[0;34m  executable location = /usr/bin/ansible-playbook[0m
+[0;34m  python version = 3.11.4 (main, Dec  7 2023, 15:43:41) [GCC 12.3.0] (/usr/bin/python3)[0m
+[0;34m  jinja version = 3.1.2[0m
+[0;34m  libyaml = True[0m
+[0;34mNo config file found; using defaults[0m
+[0;34mhost_list declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mscript declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mauto declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34myaml declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mini declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mtoml declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+[0;34mSkipping callback 'awx_display', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'default', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'minimal', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'oneline', as we already have a stdout callback.[0m
+
+PLAYBOOK: deploy_vpc.yaml ******************************************************
+[0;34m1 plays in /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml[0m
+
+PLAY [Deploy VPC Infrastructure with network namespace] ************************
+
+TASK [Parse retrieved data] ****************************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:12[0m
+[0;32mok: [localhost] => {[0m
+[0;32m    "ansible_facts": {[0m
+[0;32m        "tenant_data_parsed": {[0m
+[0;32m            "containers": [[0m
+[0;32m                {[0m
+[0;32m                    "container_state": "requested",[0m
+[0;32m                    "name": "di_in_container1",[0m
+[0;32m                    "subnets": [[0m
+[0;32m                        "DI_IN_S1"[0m
+[0;32m                    ],[0m
+[0;32m                    "vpc": "DI_IN"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "name": "disney",[0m
+[0;32m            "numberOfVpcs": "1",[0m
+[0;32m            "state": "requested",[0m
+[0;32m            "subnets": [[0m
+[0;32m                {[0m
+[0;32m                    "CIDR": "172.16.150.0/24",[0m
+[0;32m                    "dhcp_end": "172.16.150.254",[0m
+[0;32m                    "dhcp_start": "172.16.150.2",[0m
+[0;32m                    "ip": "172.16.150.1",[0m
+[0;32m                    "name": "DI_IN_S1",[0m
+[0;32m                    "subnet_state": "requested",[0m
+[0;32m                    "vpc": "DI_IN"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "DI_IN",[0m
+[0;32m                    "vpc_state": "requested"[0m
+[0;32m                }[0m
+[0;32m            ][0m
+[0;32m        }[0m
+[0;32m    },[0m
+[0;32m    "changed": false[0m
+[0;32m}[0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:16[0m
+[0;32mok: [localhost] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "containers": [[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "di_in_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "DI_IN_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "DI_IN"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "name": "disney",[0m
+[0;32m        "numberOfVpcs": "1",[0m
+[0;32m        "state": "requested",[0m
+[0;32m        "subnets": [[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.150.0/24",[0m
+[0;32m                "dhcp_end": "172.16.150.254",[0m
+[0;32m                "dhcp_start": "172.16.150.2",[0m
+[0;32m                "ip": "172.16.150.1",[0m
+[0;32m                "name": "DI_IN_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "DI_IN"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "vpcs": [[0m
+[0;32m            {[0m
+[0;32m                "name": "DI_IN",[0m
+[0;32m                "vpc_state": "requested"[0m
+[0;32m            }[0m
+[0;32m        ][0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create namespaces for each VPC] ******************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_vpc.yaml:25[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: vmadm[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~vmadm && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/vmadm/.ansible/tmp `"&& mkdir "` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713681609.875461-3417522-207838552936563 `" && echo ansible-tmp-1713681609.875461-3417522-207838552936563="` echo /home/vmadm/.ansible/tmp/ansible-tmp-1713681609.875461-3417522-207838552936563 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /home/vmadm/.ansible/tmp/ansible-local-34175128rei6qh8/tmpsc30v0w9 TO /home/vmadm/.ansible/tmp/ansible-tmp-1713681609.875461-3417522-207838552936563/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/vmadm/.ansible/tmp/ansible-tmp-1713681609.875461-3417522-207838552936563/ /home/vmadm/.ansible/tmp/ansible-tmp-1713681609.875461-3417522-207838552936563/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S -n  -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-bznpowrbdbyswwnysdtkumnswxmohhri ; /usr/bin/python3 /home/vmadm/.ansible/tmp/ansible-tmp-1713681609.875461-3417522-207838552936563/AnsiballZ_command.py'"'"' && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/vmadm/.ansible/tmp/ansible-tmp-1713681609.875461-3417522-207838552936563/ > /dev/null 2>&1 && sleep 0'[0m
+[0;31mfatal: [localhost]: FAILED! => {[0m
+[0;31m    "changed": true,[0m
+[0;31m    "cmd": [[0m
+[0;31m        "ip",[0m
+[0;31m        "netns",[0m
+[0;31m        "add",[0m
+[0;31m        "DI_IN"[0m
+[0;31m    ],[0m
+[0;31m    "delta": "0:00:00.011334",[0m
+[0;31m    "end": "2024-04-21 06:40:10.320336",[0m
+[0;31m    "invocation": {[0m
+[0;31m        "module_args": {[0m
+[0;31m            "_raw_params": "ip netns add DI_IN",[0m
+[0;31m            "_uses_shell": false,[0m
+[0;31m            "argv": null,[0m
+[0;31m            "chdir": null,[0m
+[0;31m            "creates": null,[0m
+[0;31m            "executable": null,[0m
+[0;31m            "removes": null,[0m
+[0;31m            "stdin": null,[0m
+[0;31m            "stdin_add_newline": true,[0m
+[0;31m            "strip_empty_ends": true[0m
+[0;31m        }[0m
+[0;31m    },[0m
+[0;31m    "msg": "non-zero return code",[0m
+[0;31m    "rc": 1,[0m
+[0;31m    "start": "2024-04-21 06:40:10.309002",[0m
+[0;31m    "stderr": "Cannot create namespace file \"/run/netns/DI_IN\": File exists",[0m
+[0;31m    "stderr_lines": [[0m
+[0;31m        "Cannot create namespace file \"/run/netns/DI_IN\": File exists"[0m
+[0;31m    ],[0m
+[0;31m    "stdout": "",[0m
+[0;31m    "stdout_lines": [][0m
+[0;31m}[0m
+
+PLAY RECAP *********************************************************************
+[0;31mlocalhost[0m                  : [0;32mok=2   [0m changed=0    unreachable=0    [0;31mfailed=1   [0m skipped=0    rescued=0    ignored=0   

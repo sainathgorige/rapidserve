@@ -1,0 +1,12 @@
+# Use your specified image as the base image
+FROM 100514735019/customnginx
+
+# Install Nginx if not already included in your base image
+# If your custom image already includes Nginx configured to your liking, skip this step
+
+# Overwrite the existing nginx.conf or modify it to ensure Nginx runs in the foreground
+
+# Set the default command to launch Nginx
+# Using the `-g daemon off;` ensures Nginx runs in the foreground
+CMD ["nginx", "-g", "daemon off;"]
+

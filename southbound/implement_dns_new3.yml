@@ -1,0 +1,371 @@
+---
+- name: Implement dns functionality. Adding bind9 configurations for customer infra
+  gather_facts: no
+  hosts: all
+  become: false
+  vars:
+    containers:
+      "192.168.38.8": "dns_cont_host1"
+      "192.168.38.9": "dns_cont_host2"
+    bind_conf_path: "/etc/bind"
+    bind_zones_path: "{{ bind_conf_path }}/zones"
+    subnets:
+      - 192.168.100.118/32 #dj_ge public up
+      - 192.168.100.150/32
+      - 192.168.100.0/24
+      - 172.16.0.1/32
+      - 172.16.3.0/24
+      - 172.16.4.0/24
+      - 172.16.5.0/24     
+    # regions: 
+    #   - ireland
+    #   - greece
+    #   - bangladesh
+    #   - thailand
+    # existing_regions:
+    # - region: india
+    #   public_ips: 192.168.100.140
+    # - region: germany
+    #   public_ips: 192.168.100.141
+    # tenant_name: chandler
+    # domainName: chandler.cdn.com
+    # origin_vpc_public_subnet_ip: 192.168.100.1 
+    combined_regions: "{{ existing_regions | map('regex_replace', '(.*)', '{\"region\": \"\\1\"}') | list + regions }}"
+    container_names: []
+
+  tasks:
+    - name: Set tenant abbreviation variable
+      set_fact:
+        tenant_abbreviation: "{{ tenant_name[:2] }}"
+
+    - name: Combine region lists
+      set_fact:
+        unified_regions: "{{ regions + existing_regions | map(attribute='region') | list }}"
+
+    - debug:
+        msg: "Unified regions list: {{ unified_regions }}"
+
+    - name: Set abbreviated combined regions list
+      set_fact:
+        location: "{{ dict(unified_regions | zip(unified_regions | map('regex_replace', '^(..).*$', '\\1'))) }}"
+
+    - name: Print all regions
+      debug:
+        msg: "{{ location }}"
+
+    - name: Set abbreviated new regions list
+      set_fact:
+        new_location: "{{ dict(regions | zip(regions | map('regex_replace', '^(..).*$', '\\1'))) }}"
+
+    - name: Print new regions
+      debug:
+        msg: "{{ new_location }}"
+
+    - name: Generate region prefixes
+      set_fact:
+        region_prefix: "{{ region_prefix | default({}) | combine({item: 'rs_' ~ tenant_abbreviation ~ '_' ~ item[:2]}) }}"
+      loop: "{{ new_location.keys() }}"
+
+    - name: Print consolidated region prefixes
+      debug:
+        msg: "{{ region_prefix }}"
+
+    - name: Find containers for Bangladesh on 192.168.38.8
+      shell: "docker ps --filter 'name=^{{ region_prefix['bangladesh'] }}*' --format '{{ '{{.Names}}' }}'"
+      register: bangladesh_containers
+      when: 
+        - "inventory_hostname == '192.168.38.8'"
+        - "'bangladesh' in regions"
+      delegate_to: 192.168.38.8
+      ignore_errors: true
+
+    - name: Set container list in bangladesh
+      set_fact:
+        bangladesh_containers_list: "{{ bangladesh_containers.stdout }}"
+      when: 
+        - "inventory_hostname == '192.168.38.8'"
+        - "'bangladesh' in regions"
+      delegate_to: 192.168.38.8
+      ignore_errors: true
+
+    - name: Find containers for Thailand on 192.168.38.8
+      shell: "docker ps --filter 'name=^{{ region_prefix['thailand'] }}*' --format '{{ '{{.Names}}' }}'"
+      register: thailand_containers
+      when: 
+        - "inventory_hostname == '192.168.38.8'"
+        - "'thailand' in regions"
+      delegate_to: 192.168.38.8
+      ignore_errors: true
+
+    - name: Set container list in thailand
+      set_fact:
+        thailand_containers_list: "{{ thailand_containers.stdout }}"
+      when: 
+        - "inventory_hostname == '192.168.38.8'"
+        - "'thailand' in regions"
+      delegate_to: 192.168.38.8
+      ignore_errors: true
+
+    - name: Find containers for Greece on 192.168.38.9
+      shell: "docker ps --filter 'name=^{{ region_prefix['greece'] }}*' --format '{{ '{{.Names}}' }}'"
+      register: greece_containers
+      when: 
+        - "inventory_hostname == '192.168.38.9'"
+        - "'greece' in regions"
+      delegate_to: 192.168.38.9
+      ignore_errors: true
+
+    - name: Set container list in greece
+      set_fact:
+        greece_containers_list: "{{ greece_containers.stdout }}"
+      when: 
+        - "inventory_hostname == '192.168.38.9'"
+        - "'greece' in regions"
+      delegate_to: 192.168.38.9
+      ignore_errors: true
+
+    - name: Find containers for Ireland on 192.168.38.9
+      shell: "docker ps --filter 'name=^{{ region_prefix['ireland'] }}*' --format '{{ '{{.Names}}' }}'"
+      register: ireland_containers
+      when: 
+        - "inventory_hostname == '192.168.38.9'"
+        - "'ireland' in regions"
+      delegate_to: 192.168.38.9
+      ignore_errors: true
+
+    - name: Set container list in ireland
+      set_fact:
+        ireland_containers_list: "{{ ireland_containers.stdout }}"
+      when: 
+        - "inventory_hostname == '192.168.38.9'"
+        - "'ireland' in regions"
+      delegate_to: 192.168.38.9
+      ignore_errors: true
+
+    - name: Combine container lists into a dictionary mapped by region and exclude empty entries
+      set_fact:
+        region_container_mappings: >-
+          {{
+            {
+              'bangladesh': bangladesh_containers_list | default(''),
+              'thailand': thailand_containers_list | default(''),
+              'greece': greece_containers_list | default(''),
+              'ireland': ireland_containers_list | default('')
+            } 
+          }}
+
+    - name: Remove empty mappings from the dictionary
+      set_fact:
+        region_container_mappings: >-
+          {{
+            region_container_mappings
+            | dict2items
+            | selectattr('value', 'ne', '')
+            | items2dict
+          }}
+
+    - name: Print the final container mappings for each region
+      debug:
+        msg: "{{ region_container_mappings }}"
+        
+    - name: Ensure BIND zones directory exists
+      command: docker exec {{ containers[ansible_host] }} mkdir -p {{ bind_zones_path }}
+
+    - name: Assign subnets sequentially to each location
+      set_fact:
+        subnet_mapping: "{{ dict(location.values() | zip(subnets)) }}"
+
+    - name: Comment out named.conf.default-zones include in named.conf
+      command: docker exec {{ containers[ansible_host] }} sed -i '/^include "\/etc\/bind\/named.conf.default-zones";$/ s/^/#/' {{ bind_conf_path }}/named.conf
+
+    - name: Setup BIND named.conf with dynamic ACLs for each location
+      command: >
+        docker exec {{ containers[ansible_host] }} bash -c "printf '%s\n' 'acl \"{{ location[region].lower() }}_{{ tenant_abbreviation }}-users\" {' '{{ subnet_mapping[location[region]] }};' '};' 'view \"{{ location[region].lower() }}_{{ tenant_abbreviation }}-view\" {' 'match-clients { \"{{ location[region].lower() }}_{{ tenant_abbreviation }}-users\"; };' 'zone \"{{ domainName }}\" {' 'type master;' 'file \"{{ bind_zones_path }}/db.{{ domainName }}.{{ location[region].lower() }}\";' '};' '};' >> {{ bind_conf_path }}/named.conf"
+      loop: "{{ location.keys() }}"
+      loop_control:
+        loop_var: region
+
+    # - name: Setup BIND named.conf with dynamic ACLs for each location
+    #   command: >
+    #     docker exec {{ containers[ansible_host] }} bash -c "echo '{{ block | to_json | replace('\"', '\\"') }}' >> {{ bind_conf_path }}/named.conf"
+    #   loop: "{{ location.keys() }}"
+    #   loop_control:
+    #     loop_var: region
+    #   vars:
+    #     block: |
+    #       acl "{{ location[region].lower() }}_{{ tenant_abbreviation }}-users" {
+    #           {{ subnet_mapping[location[region]] }};
+    #       };
+    #       view "{{ location[region].lower() }}_{{ tenant_abbreviation }}-view" {
+    #           match-clients { "{{ location[region].lower() }}_{{ tenant_abbreviation }}-users"; };
+    #           zone "{{ domainName }}" {
+    #               type master;
+    #               file "{{ bind_zones_path }}/db.{{ domainName }}.{{ location[region].lower() }}";
+    #           };
+    #       };
+
+    # - name: Setup BIND named.conf with dynamic ACLs for each location
+    #   command: >
+    #     docker exec {{ containers[ansible_host] }} bash -c "echo '{{ block }}' >> {{ bind_conf_path }}/named.conf"
+    #   loop: "{{ location.keys() }}"
+    #   loop_control:
+    #     loop_var: region
+    #   vars:
+    #     block: |
+    #       acl "{{ location[region].lower() }}_{{tenant_abbreviation}}-users" {
+    #           {{ subnet_mapping[location[region]] }};
+    #       };
+    #       view "{{ location[region].lower() }}_{{tenant_abbreviation}}-view" {
+    #           match-clients { {{ location[region].lower() }}_{{tenant_abbreviation}}-users; };
+    #           zone "{{ domainName }}" {
+    #               type master;
+    #               file "{{ bind_zones_path }}/db.{{ domainName }}.{{ location[region].lower() }}";
+    #           };
+    #       };
+
+    # - name: Fetch IP address for each container
+    #   shell: >
+    #     docker exec "{{ region_container_mappings[item] }}" sh -c "ip addr show dev  | grep 'inet ' | awk '{print \$2}' | cut -d'/' -f1"
+    #   register: container_ip_raw
+    #   when: item in region_container_mappings
+    #   loop: "{{ region_container_mappings.keys() }}"
+    #   loop_control:
+    #     loop_var: item
+    #   changed_when: false
+
+    - name: Fetch IP address for each container based on custom interface names
+      shell: >
+        docker exec "{{ region_container_mappings[item] }}" sh -c "ip addr show dev {{ region_container_mappings[item][:9] }}{{ region_container_mappings[item][-2:] }} | grep 'inet ' | awk '{print \$2}' | cut -d'/' -f1"
+      register: ns_domain_ip_raw
+      when:
+        - item in region_container_mappings
+        - (ansible_host == '192.168.38.8' and item in ['bangladesh', 'thailand']) or
+          (ansible_host == '192.168.38.9' and item in ['ireland', 'greece'])
+      loop: "{{ region_container_mappings.keys() }}"
+      loop_control:
+        loop_var: item
+      changed_when: false
+
+
+    # - name: Fetch IP address for the interface based on location
+    #   shell: >
+    #     sudo ip netns exec rs_{{ location[item] }} ip -o -4 addr show rs_{{ location[item] }}_veth1 | awk '{print $4}' | cut -d/ -f1
+    #   register: ns_domain_ip_raw
+    #   changed_when: false
+    #   loop: "{{ location.keys() }}"
+    #   when: >-
+    #     (ansible_host == '192.168.38.8' and item in ['bangladesh', 'thailand']) or
+    #     (ansible_host == '192.168.38.9' and item in ['greece', 'ireland'])
+    #   loop_control:
+    #     loop_var: item
+
+    - name: Use known IPs for specified locations
+      set_fact:
+        ip_per_region: "{{ ip_per_region | default({}) | combine({ location[item]: existing_regions | selectattr('region', 'equalto', item) | map(attribute='public_ips') | first }) }}"
+      loop: "{{ location.keys() }}"
+      when: >-
+        (ansible_host == '192.168.38.8' and item in ['india', 'japan']) or
+        (ansible_host == '192.168.38.9' and item in ['germany', 'france'])
+      loop_control:
+        loop_var: item
+
+    - name: Gather IP addresses into a dictionary by region
+      set_fact:
+        ip_per_region: "{{ ip_per_region | default({}) | combine({ location[item.item]: item.stdout }) }}"
+      loop: "{{ ns_domain_ip_raw.results }}"
+      when:
+        - "'stdout' in item and 'rc' in item"  
+        - "item.stdout != ''"  
+        - "item.rc == 0" 
+      loop_control:
+        loop_var: item
+
+    - name: Print only the IP addresses
+      debug:
+        msg: "{{ ip_per_region }}"
+
+    # # - name: Fetch IP address for the interface based on location
+    # #   shell: >
+    # #     sudo ip netns exec {{ tenant_abbreviation }}_{{ location[item] }} ip -o -4 addr show {{ tenant_abbreviation }}_{{ location[item] }}_veth1 | 
+    # #     awk '{print $4}' | cut -d/ -f1
+    # #   register: ns_domain_ip_raw
+    # #   changed_when: false
+    # #   loop: "{{ regions }}"
+    # #   when: (ansible_host == '192.168.38.8' and item in ['india', 'japan']) or
+    # #         (ansible_host == '192.168.38.9' and item in ['germany', 'france'])
+    # #   loop_control:
+    # #     loop_var: item
+
+    # # - name: Gather IP addresses into a dictionary by region
+    # #   set_fact:
+    # #     ip_per_region: "{{ ip_per_region | default({}) | combine({ location[item.item]: item.stdout }) }}"
+    # #   loop: "{{ ns_domain_ip_raw.results }}"
+    # #   when:
+    # #     - "'stdout' in item and 'rc' in item"  
+    # #     - "item.stdout != ''"  
+    # #     - "item.rc == 0" 
+    # #   loop_control:
+    # #     loop_var: item
+
+    # # - name: Print only the IP addresses
+    # #   debug:
+    # #     msg: "{{ ip_per_region }}"
+
+    - name: Create temporary DNS zone file on remote VM
+      copy:
+        content: |
+          $TTL    604800
+          @       IN      SOA     ns.{{ domainName }}. admin.{{ domainName }}. (
+                                    4         ; Serial
+                                    604800    ; Refresh
+                                    86400     ; Retry
+                                    2419200   ; Expire
+                                    604800 )  ; Negative Cache TTL
+          ;
+                  IN      NS      ns.{{ domainName }}.
+          ns      IN      A       {{ origin_vpc_public_subnet_ip }}
+          @       IN      A       {{ ip_per_region[location[item]] }}
+        dest: "/tmp/db.{{ domainName }}.{{ location[item].lower() }}.zone"
+      loop: "{{ location.keys() }}"
+      loop_control:
+        loop_var: item
+      when: (ansible_host == '192.168.38.8' and item in ['india', 'japan', 'bangladesh', 'thailand']) or
+            (ansible_host == '192.168.38.9' and item in ['germany', 'france', 'greece', 'ireland'])
+
+    - name: Copy DNS zone files into Docker containers
+      command: >
+        docker cp /tmp/db.{{ domainName }}.{{ location[item].lower() }}.zone {{ containers[ansible_host] }}:{{ bind_zones_path }}/db.{{ domainName }}.{{ location[item].lower() }}
+      loop: "{{ location.keys() }}"
+      loop_control:
+        loop_var: item
+      when: (ansible_host == '192.168.38.8' and item in ['india', 'japan', 'bangladesh', 'thailand']) or
+            (ansible_host == '192.168.38.9' and item in ['germany', 'france', 'greece', 'ireland'])
+
+    - name: Remove temporary DNS zone files from VM
+      file:
+        path: "/tmp/db.{{ domainName }}.{{ location[item].lower() }}.zone"
+        state: absent
+      loop: "{{ location.keys() }}"
+      loop_control:
+        loop_var: item
+      when: (ansible_host == '192.168.38.8' and item in ['india', 'japan', 'bangladesh', 'thailand']) or
+            (ansible_host == '192.168.38.9' and item in ['germany', 'france', 'greece', 'ireland'])
+
+    - name: Add routes for specific regions on 192.168.38.9
+      ansible.builtin.command:
+        cmd: "ip route add {{ item.public_ips }} via 192.168.4.2"
+      loop: "{{ existing_regions }}"
+      when: item.region in ['india', 'bangladesh']
+      delegate_to: 192.168.38.9
+      become: true
+
+    - name: Add routes for specific regions on 192.168.38.8
+      ansible.builtin.command:
+        cmd: "ip route add {{ item.public_ips }} via 192.168.4.1"
+      loop: "{{ existing_regions }}"
+      when: item.region in ['france', 'germany']
+      delegate_to: 192.168.38.8
+      become: true
+
+    - name: Restart BIND9 to apply changes
+      command: docker exec {{ containers[ansible_host] }} bash -c "kill -HUP $(cat /var/run/named/named.pid)"

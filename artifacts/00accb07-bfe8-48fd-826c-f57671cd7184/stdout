@@ -1,0 +1,126 @@
+[0;34mNo config file found; using defaults[0m
+
+PLAY [Deploy subnet Infrastructure with bridges and Veth Pairs] ****************
+
+TASK [Parse retrieved data] ****************************************************
+[0;32mok: [192.168.38.8] => {"ansible_facts": {"tenant_data_parsed": {"containers": [{"container_state": "requested", "name": "ta_in_container1", "subnets": ["ta_in_S1"], "vpc": "ta_in"}, {"container_state": "requested", "name": "ta_ge_container1", "subnets": ["ta_ge_S1"], "vpc": "ta_ge"}], "name": "tata", "numberOfVpcs": "2", "regional_vpcs": {"asia_vpcs": [{"name": "ta_in"}], "europe_vpcs": [{"name": "ta_ge"}], "vni": 1108}, "subnets": [{"CIDR": "192.168.56.0/24", "dhcp_end": "192.168.56.254", "dhcp_start": "192.168.56.2", "ip": "192.168.56.1", "name": "ta_in_S1", "subnet_state": "requested", "vpc": "ta_in"}, {"CIDR": "192.168.57.0/24", "dhcp_end": "192.168.57.254", "dhcp_start": "192.168.57.2", "ip": "192.168.57.1", "name": "ta_ge_S1", "subnet_state": "requested", "vpc": "ta_ge"}], "tunnel_state": "active", "vpcs": [{"name": "ta_in", "vpc_state": "active"}, {"name": "ta_ge", "vpc_state": "active"}]}}, "changed": false}[0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[0;32mok: [192.168.38.8] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "containers": [[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ta_in_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "ta_in_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "ta_in"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "ta_ge_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "ta_ge_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "ta_ge"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "name": "tata",[0m
+[0;32m        "numberOfVpcs": "2",[0m
+[0;32m        "regional_vpcs": {[0m
+[0;32m            "asia_vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "ta_in"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "europe_vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "ta_ge"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "vni": 1108[0m
+[0;32m        },[0m
+[0;32m        "subnets": [[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.56.0/24",[0m
+[0;32m                "dhcp_end": "192.168.56.254",[0m
+[0;32m                "dhcp_start": "192.168.56.2",[0m
+[0;32m                "ip": "192.168.56.1",[0m
+[0;32m                "name": "ta_in_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "ta_in"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "192.168.57.0/24",[0m
+[0;32m                "dhcp_end": "192.168.57.254",[0m
+[0;32m                "dhcp_start": "192.168.57.2",[0m
+[0;32m                "ip": "192.168.57.1",[0m
+[0;32m                "name": "ta_ge_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "ta_ge"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "tunnel_state": "active",[0m
+[0;32m        "vpcs": [[0m
+[0;32m            {[0m
+[0;32m                "name": "ta_in",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "ta_ge",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            }[0m
+[0;32m        ][0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create bridges for each subnet] ******************************************
+[0;33mchanged: [192.168.38.8] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["ip", "link", "add", "ta_in_S1_br", "type", "bridge"], "delta": "0:00:00.011553", "end": "2024-04-24 01:43:14.139799", "msg": "", "rc": 0, "start": "2024-04-24 01:43:14.128246", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Activate bridges for each subnet] ****************************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "ta_in_S1_br", "up"], "delta": "0:00:00.013066", "end": "2024-04-24 01:43:14.677945", "msg": "", "rc": 0, "start": "2024-04-24 01:43:14.664879", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Create veth pair for each subnet] ****************************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "add", "ta_in_S1_veth0", "type", "veth", "peer", "name", "ta_in_S1_veth1"], "delta": "0:00:00.017534", "end": "2024-04-24 01:43:15.194163", "msg": "", "rc": 0, "start": "2024-04-24 01:43:15.176629", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Bring up veth0 interface in the root namespace] **************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "ta_in_S1_veth0", "up"], "delta": "0:00:00.011771", "end": "2024-04-24 01:43:15.761213", "msg": "", "rc": 0, "start": "2024-04-24 01:43:15.749442", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Move one end of the veth pair (veth1) to the corresponding namespace] ****
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "ta_in_S1_veth1", "netns", "ta_in"], "delta": "0:00:00.028596", "end": "2024-04-24 01:43:16.313762", "msg": "", "rc": 0, "start": "2024-04-24 01:43:16.285166", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Bring up veth1 interface in its respective namespace] ********************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "ta_in", "ip", "link", "set", "ta_in_S1_veth1", "up"], "delta": "0:00:00.017388", "end": "2024-04-24 01:43:16.862460", "msg": "", "rc": 0, "start": "2024-04-24 01:43:16.845072", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Attach veth0 to the bridge in default namespace] *************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "ta_in_S1_veth0", "master", "ta_in_S1_br"], "delta": "0:00:00.011637", "end": "2024-04-24 01:43:17.387381", "msg": "", "rc": 0, "start": "2024-04-24 01:43:17.375744", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Assign IP addresses to veth1 interfaces within namespaces] ***************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "ta_in", "ip", "addr", "add", "192.168.56.1/24", "dev", "ta_in_S1_veth1"], "delta": "0:00:00.015167", "end": "2024-04-24 01:43:17.946955", "msg": "", "rc": 0, "start": "2024-04-24 01:43:17.931788", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Setup DHCP on veth1 interfaces within namespaces] ************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "ta_in", "dnsmasq", "--interface=ta_in_S1_veth1", "--bind-interfaces", "--dhcp-range=192.168.56.2,192.168.56.254,24h", "--except-interface=lo"], "delta": "0:00:00.018308", "end": "2024-04-24 01:43:18.494682", "msg": "", "rc": 0, "start": "2024-04-24 01:43:18.476374", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Fetch IP address for the interface based on location] ********************
+[0;32mok: [192.168.38.8] => {"changed": false, "cmd": "ip netns exec ta_in ip -o -4 addr show ta_in_veth1 | awk '{print $4}' | cut -d/ -f1\n", "delta": "0:00:00.009133", "end": "2024-04-24 01:43:19.034814", "msg": "", "rc": 0, "start": "2024-04-24 01:43:19.025681", "stderr": "", "stderr_lines": [], "stdout": "192.168.100.50", "stdout_lines": ["192.168.100.50"]}[0m
+
+TASK [Set vpc_veth1_ip variable] ***********************************************
+[0;32mok: [192.168.38.8] => {"ansible_facts": {"vpc_veth1_ip": "192.168.100.50"}, "changed": false}[0m
+
+TASK [Debug vpc_veth1_ip] ******************************************************
+[0;32mok: [192.168.38.8] => {[0m
+[0;32m    "vpc_veth1_ip": "192.168.100.50"[0m
+[0;32m}[0m
+
+TASK [Add route in root namespace to reach VPC subnet via vpc_veth1 IP] ********
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "route", "add", "192.168.56.0/24", "via", "192.168.100.50"], "delta": "0:00:00.008680", "end": "2024-04-24 01:43:19.676063", "msg": "", "rc": 0, "start": "2024-04-24 01:43:19.667383", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Set up forwarding rules for each subnet interface within the VPC] ********
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "ta_in", "iptables", "-A", "FORWARD", "-i", "ta_in_veth1", "-o", "ta_in_S1_veth1", "-m", "state", "--state", "RELATED,ESTABLISHED", "-j", "ACCEPT"], "delta": "0:00:00.015619", "end": "2024-04-24 01:43:20.223409", "msg": "", "rc": 0, "start": "2024-04-24 01:43:20.207790", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Set up forwarding rules for traffic from subnet interfaces to the VPC's external interface] ***
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "ta_in", "iptables", "-A", "FORWARD", "-i", "ta_in_S1_veth1", "-o", "ta_in_veth1", "-j", "ACCEPT"], "delta": "0:00:00.015762", "end": "2024-04-24 01:43:20.782092", "msg": "", "rc": 0, "start": "2024-04-24 01:43:20.766330", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;33m192.168.38.8[0m               : [0;32mok=17  [0m [0;33mchanged=12  [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

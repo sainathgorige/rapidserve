@@ -1,0 +1,17 @@
+---
+- name: Get /30 subnet for current VPC
+  command: python3 subnetting.py
+  register: subnet_output
+
+- name: Compute local IP
+  command: ip link add name {{ tunnel_veth }} type vxlan id {{ vni }} local {{ local_host }} remote {{ peer_host }} dstport 4789
+
+- name: Create VXLAN interface
+  command: ip link add name {{ tunnel_veth }} type vxlan id {{ vni }} local {{ local_host }} remote {{ peer_host }} dstport 4789
+
+- name: Assign IP to the VXLAN interface
+  command: ip addr add {{ tunnel_ip }}/30 dev {{ tunnel_veth }}
+
+- name: Bring up the VXLAN interface
+  command: ip link set {{ tunnel_veth }} up
+

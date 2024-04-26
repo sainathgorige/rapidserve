@@ -1,0 +1,69 @@
+---
+- name: Process on VM1
+  hosts: host1
+  gather_facts: no
+  become: true
+
+  vars:
+    log_dest: "/tmp"  # Adjust to your local log storage path
+
+  tasks:
+    - name: List all Docker containers starting with 'rs'
+      command: "docker ps --filter 'name=rs*' --format '{{ '{{.Names}}' }}'"
+      register: docker_list
+
+    - name: Extract unique container prefixes
+      set_fact:
+        unique_prefixes: "{{ unique_prefixes | default([]) + [item.split('_')[:2] | join('_')] }}"
+      loop: "{{ docker_list.stdout_lines }}"
+      when: "'rs' in item"
+
+    - name: Remove duplicates from list
+      set_fact:
+        customer_groups: "{{ unique_prefixes | default([]) | unique }}"
+
+    - name: Setup cron job for fetching logs every minute
+      cron:
+        name: "Fetch Docker Logs Every Minute for {{ customer_groups }}"
+        user: vmadm
+        job: "{{ playbook_dir }}/fetch_and_save_logs.sh {{ customer_groups | join(' ') }} >> /tmp/fetch_logs_cron.log 2>&1"
+        minute: "*"
+        hour: "*"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        state: present
+
+
+- name: Process on VM2
+  hosts: host2
+  become: yes
+  vars:
+    log_dest: "/tmp"  # Adjust to your local log storage path
+
+  tasks:
+    - name: List all Docker containers starting with 'rs'
+      command: "docker ps --filter 'name=rs*' --format '{{ '{{.Names}}' }}'"
+      register: docker_list
+
+    - name: Extract unique container prefixes
+      set_fact:
+        unique_prefixes: "{{ unique_prefixes | default([]) + [item.split('_')[:2] | join('_')] }}"
+      loop: "{{ docker_list.stdout_lines }}"
+      when: "'rs' in item"
+
+    - name: Remove duplicates from list
+      set_fact:
+        customer_groups: "{{ unique_prefixes | default([]) | unique }}"
+
+    - name: Setup cron job for fetching logs every minute
+      cron:
+        name: "Fetch Docker Logs Every Minute for {{ customer_groups }}"
+        user: vmadm
+        job: "{{ playbook_dir }}/fetch_and_save_logs.sh {{ customer_groups | join(' ') }} >> /tmp/fetch_logs_cron.log 2>&1"
+        minute: "*"
+        hour: "*"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        state: present

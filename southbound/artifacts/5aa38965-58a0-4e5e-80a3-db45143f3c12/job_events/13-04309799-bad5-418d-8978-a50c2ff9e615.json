@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "04309799-bad5-418d-8978-a50c2ff9e615", "counter": 13, "stdout": "\u001b[0;34mauto declined parsing /home/vmadm/demo/RapidServe/southbound/host_inventory_asia.ini as it did not pass its verify_file() method\u001b[0m", "start_line": 12, "end_line": 13, "runner_ident": "5aa38965-58a0-4e5e-80a3-db45143f3c12", "created": "2024-04-22T01:22:06.728950"}

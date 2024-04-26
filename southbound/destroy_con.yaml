@@ -1,0 +1,48 @@
+---
+- name: Teardown Infrastructure with Docker Containers for Edge and Origin Servers
+  hosts: localhost
+  gather_facts: no
+  become: true
+
+  vars:
+   # container_num: 4  # Base number for the container, match your deployment
+    server_type: "edge"  # 'edge' or 'origin', match your deployment settings
+    # vpc_name: "nf_us"
+    # container_name: "{{ vpc_name }}_container{{container_num}}"
+    # bridges: ["bri_9", "bri_8"]  # List of bridges from your deployment
+
+  tasks:
+    - name: Stop and remove Docker container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: absent
+        force_kill: yes
+
+    - name: Remove Docker image
+      community.docker.docker_image:
+        name: "{{ container_name }}"
+        state: absent
+        force_absent: yes
+    - name: Extract parts of the container name
+      set_fact:
+        short_name: "{{ container_name[:8] }}_{{ subnets.split('_')[1] }}_{{ container_name[-2:] }}"
+
+    - name: Remove veth pairs associated with each bridge
+      command: ip link delete v_{{ short_name }}
+      ignore_errors: true
+
+    - name: Remove NGINX configuration file
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/nginx-{{ container_name }}.conf"
+        state: absent
+
+    - name: Remove index.html if it was created
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/index.html"
+        state: absent
+      when: server_type == 'origin'
+
+    - name: Unlink network namespace for the container
+      command: rm -f /var/run/netns/{{ container_name }}
+      ignore_errors: true
+

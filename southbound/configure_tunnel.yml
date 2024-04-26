@@ -1,0 +1,84 @@
+---
+- name: Get /30 subnet for current VPC pair
+  command: python3 subnetting.py 192.168.4.0/24
+  register: subnet_output
+  delegate_to: localhost
+
+- name: Debug subnet output
+  debug:
+    msg: "Subnet is {{ subnet_output.stdout }}"
+
+- name: Fetch IP for veth interface inside {{ host1_vpc_name }}
+  shell: ip netns exec {{ host1_vpc_name }} ip -o -4 addr show {{ host1_vpc_name }}_veth1 | awk '{print $4}' | cut -d/ -f1
+  register: host1_vpc_ip_raw
+  delegate_to: "192.168.38.8"
+  changed_when: false 
+
+- name: Set IP for {{ host1_vpc_name }}
+  set_fact:
+    host1_vpc_ip: "{{ host1_vpc_ip_raw.stdout }}"
+
+- name: Fetch IP for veth interface inside host2_vpc
+  shell: ip netns exec {{ host2_vpc.name }} ip -o -4 addr show {{ host2_vpc.name}}_veth1 | awk '{print $4}' | cut -d/ -f1
+  register: host2_vpc_ip_raw
+  delegate_to: "192.168.38.9"
+  changed_when: false 
+
+- name: Set IP for host2_vpc
+  set_fact:
+    host2_vpc_ip: "{{ host2_vpc_ip_raw.stdout }}"
+    
+- name: Create tunnel interface inside host1_vpc
+  command: >
+    ip netns exec {{ host1_vpc_name }} ip link add name vxlan{{ vni_counter }} type vxlan id {{ vni_counter }} local {{ host1_vpc_ip }} remote {{ host2_vpc_ip }} dstport 4789
+  delegate_to: "192.168.38.8"
+
+- name: Assign IP to the tunnel interface inside host1_vpc
+  command: >
+    ip netns exec {{ host1_vpc_name }} ip addr add {{ subnet_output.stdout | ansible.utils.ipaddr('network') | ansible.utils.ipmath(1) }}/30 dev vxlan{{ vni_counter }}
+  delegate_to: "192.168.38.8"
+
+- name: Create tunnel interface inside host2_vpc
+  command: >
+    ip netns exec {{ host2_vpc.name }} ip link add name vxlan{{ vni_counter }} type vxlan id {{ vni_counter }} local {{ host2_vpc_ip }} remote {{ host1_vpc_ip }} dstport 4789
+  delegate_to: "192.168.38.9"
+
+- name: Assign IP to the tunnel interface inside host2_vpc
+  command: >
+    ip netns exec {{ host2_vpc.name }} ip addr add {{ subnet_output.stdout | ansible.utils.ipaddr('network') | ansible.utils.ipmath(2) }}/30 dev vxlan{{ vni_counter }}
+  delegate_to: "192.168.38.9"
+
+- name: Add route for local tunnel endpoint IP to veth1 interface IP on host1
+  command: >
+    ip route add {{ subnet_output.stdout | ansible.utils.ipaddr('network') | ansible.utils.ipmath(1) }}/32 via {{ host1_vpc_ip }}
+  delegate_to: "192.168.38.8"
+
+- name: Add route for local tunnel endpoint IP to veth1 interface IP on host2
+  command: >
+    ip route add {{ subnet_output.stdout | ansible.utils.ipaddr('network') | ansible.utils.ipmath(2) }}/32 via {{ host2_vpc_ip }}
+  delegate_to: "192.168.38.9"
+
+- name: Add route for remote tunnel endpoint IP to GRE tunnel next hop on host1
+  command: >
+    ip route add {{ subnet_output.stdout | ansible.utils.ipaddr('network') | ansible.utils.ipmath(2) }}/32 via {{ gre_host2_ip }}
+  delegate_to: "192.168.38.8"
+
+- name: Add route for remote tunnel endpoint IP to GRE tunnel next hop on host2
+  command: >
+    ip route add {{ subnet_output.stdout | ansible.utils.ipaddr('network') | ansible.utils.ipmath(1) }}/32 via {{ gre_host1_ip }}
+  delegate_to: "192.168.38.9"
+
+- name: Bring up tunnel interfaces inside VPCs
+  command: ip netns exec {{ item.namespace }} ip link set up dev vxlan{{ vni_counter }}
+  loop:
+    - { namespace: "{{ host1_vpc_name }}", host: '192.168.38.8' }
+    - { namespace: "{{ host2_vpc.name }}", host: '192.168.38.9' }
+  loop_control:
+    loop_var: "item"
+  delegate_to: "{{ item.host }}"
+
+- name: Increment VNI for the next tunnel
+  set_fact:
+    vni_counter: "{{ vni_counter | int + 1 }}"
+
+

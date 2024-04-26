@@ -1,0 +1,22 @@
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+[0;31mERROR! conflicting action statements: set_fact, command[0m
+[0;31m[0m
+[0;31mThe error appears to be in '/home/vmadm/demo/RapidServe/southbound/deploy_con.yaml': line 83, column 7, but may[0m
+[0;31mbe elsewhere in the file depending on the exact syntax problem.[0m
+[0;31m[0m
+[0;31mThe offending line appears to be:[0m
+[0;31m[0m
+[0;31m    # Loop for setting up veth pairs and attaching them to subnets[0m
+[0;31m    - name: Create veth pair for bridge {{ item }}[0m
+[0;31m      ^ here[0m
+[0;31mWe could be wrong, but this one looks like it might be an issue with[0m
+[0;31mmissing quotes. Always quote template expression brackets when they[0m
+[0;31mstart a value. For instance:[0m
+[0;31m[0m
+[0;31m    with_items:[0m
+[0;31m      - {{ foo }}[0m
+[0;31m[0m
+[0;31mShould be written as:[0m
+[0;31m[0m
+[0;31m    with_items:[0m
+[0;31m      - "{{ foo }}"[0m

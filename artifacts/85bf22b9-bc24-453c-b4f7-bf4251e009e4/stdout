@@ -1,0 +1,150 @@
+[0;34mNo config file found; using defaults[0m
+
+PLAY [Deploy subnet Infrastructure with bridges and Veth Pairs] ****************
+
+TASK [Parse retrieved data] ****************************************************
+[0;32mok: [192.168.38.8] => {"ansible_facts": {"tenant_data_parsed": {"containers": [{"container_state": "requested", "name": "pa_in_container1", "subnets": ["pa_in_S1"], "vpc": "pa_in"}, {"container_state": "requested", "name": "pa_ja_container1", "subnets": ["pa_ja_S1"], "vpc": "pa_ja"}, {"container_state": "requested", "name": "pa_ge_container1", "subnets": ["pa_ge_S1"], "vpc": "pa_ge"}], "name": "parvathi", "numberOfVpcs": "3", "regional_vpcs": {"asia_vpcs": [{"name": "pa_in"}, {"name": "pa_ja"}], "europe_vpcs": [{"name": "pa_ge"}], "vni": 1125}, "subnets": [{"CIDR": "172.16.230.0/24", "dhcp_end": "172.16.230.254", "dhcp_start": "172.16.230.2", "ip": "172.16.230.1", "name": "pa_in_S1", "subnet_state": "requested", "vpc": "pa_in"}, {"CIDR": "172.16.231.0/24", "dhcp_end": "172.16.231.254", "dhcp_start": "172.16.231.2", "ip": "172.16.231.1", "name": "pa_ja_S1", "subnet_state": "requested", "vpc": "pa_ja"}, {"CIDR": "172.16.232.0/24", "dhcp_end": "172.16.232.254", "dhcp_start": "172.16.232.2", "ip": "172.16.232.1", "name": "pa_ge_S1", "subnet_state": "requested", "vpc": "pa_ge"}], "tunnel_state": "active", "vpcs": [{"name": "pa_in", "vpc_state": "active"}, {"name": "pa_ja", "vpc_state": "active"}, {"name": "pa_ge", "vpc_state": "active"}]}}, "changed": false}[0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[0;32mok: [192.168.38.8] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "containers": [[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "pa_in_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "pa_in_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "pa_in"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "pa_ja_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "pa_ja_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "pa_ja"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "pa_ge_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "pa_ge_S1"[0m
+[0;32m                ],[0m
+[0;32m                "vpc": "pa_ge"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "name": "parvathi",[0m
+[0;32m        "numberOfVpcs": "3",[0m
+[0;32m        "regional_vpcs": {[0m
+[0;32m            "asia_vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "pa_in"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "name": "pa_ja"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "europe_vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "pa_ge"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "vni": 1125[0m
+[0;32m        },[0m
+[0;32m        "subnets": [[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.230.0/24",[0m
+[0;32m                "dhcp_end": "172.16.230.254",[0m
+[0;32m                "dhcp_start": "172.16.230.2",[0m
+[0;32m                "ip": "172.16.230.1",[0m
+[0;32m                "name": "pa_in_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "pa_in"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.231.0/24",[0m
+[0;32m                "dhcp_end": "172.16.231.254",[0m
+[0;32m                "dhcp_start": "172.16.231.2",[0m
+[0;32m                "ip": "172.16.231.1",[0m
+[0;32m                "name": "pa_ja_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "pa_ja"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.232.0/24",[0m
+[0;32m                "dhcp_end": "172.16.232.254",[0m
+[0;32m                "dhcp_start": "172.16.232.2",[0m
+[0;32m                "ip": "172.16.232.1",[0m
+[0;32m                "name": "pa_ge_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "pa_ge"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "tunnel_state": "active",[0m
+[0;32m        "vpcs": [[0m
+[0;32m            {[0m
+[0;32m                "name": "pa_in",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "pa_ja",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "pa_ge",[0m
+[0;32m                "vpc_state": "active"[0m
+[0;32m            }[0m
+[0;32m        ][0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create bridges for each subnet] ******************************************
+[0;33mchanged: [192.168.38.8] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["ip", "link", "add", "pa_in_S1_br", "type", "bridge"], "delta": "0:00:00.014005", "end": "2024-04-26 02:46:42.969144", "msg": "", "rc": 0, "start": "2024-04-26 02:46:42.955139", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Activate bridges for each subnet] ****************************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "pa_in_S1_br", "up"], "delta": "0:00:00.014458", "end": "2024-04-26 02:46:43.514934", "msg": "", "rc": 0, "start": "2024-04-26 02:46:43.500476", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Create veth pair for each subnet] ****************************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "add", "pa_in_S1_v0", "type", "veth", "peer", "name", "pa_in_S1_v1"], "delta": "0:00:00.020595", "end": "2024-04-26 02:46:44.064130", "msg": "", "rc": 0, "start": "2024-04-26 02:46:44.043535", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Bring up veth0 interface in the root namespace] **************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "pa_in_S1_v0", "up"], "delta": "0:00:00.012397", "end": "2024-04-26 02:46:44.614760", "msg": "", "rc": 0, "start": "2024-04-26 02:46:44.602363", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Move one end of the veth pair (veth1) to the corresponding namespace] ****
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "pa_in_S1_v1", "netns", "pa_in"], "delta": "0:00:00.039971", "end": "2024-04-26 02:46:45.227104", "msg": "", "rc": 0, "start": "2024-04-26 02:46:45.187133", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Bring up veth1 interface in its respective namespace] ********************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "pa_in", "ip", "link", "set", "pa_in_S1_v1", "up"], "delta": "0:00:00.016451", "end": "2024-04-26 02:46:45.779331", "msg": "", "rc": 0, "start": "2024-04-26 02:46:45.762880", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Attach veth0 to the bridge in default namespace] *************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "link", "set", "pa_in_S1_v0", "master", "pa_in_S1_br"], "delta": "0:00:00.012543", "end": "2024-04-26 02:46:46.347879", "msg": "", "rc": 0, "start": "2024-04-26 02:46:46.335336", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Assign IP addresses to veth1 interfaces within namespaces] ***************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "pa_in", "ip", "addr", "add", "172.16.230.1/24", "dev", "pa_in_S1_v1"], "delta": "0:00:00.014475", "end": "2024-04-26 02:46:46.906650", "msg": "", "rc": 0, "start": "2024-04-26 02:46:46.892175", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Setup DHCP on veth1 interfaces within namespaces] ************************
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "pa_in", "dnsmasq", "--interface=pa_in_S1_v1", "--bind-interfaces", "--dhcp-range=172.16.230.2,172.16.230.254,24h", "--except-interface=lo"], "delta": "0:00:00.014085", "end": "2024-04-26 02:46:47.426668", "msg": "", "rc": 0, "start": "2024-04-26 02:46:47.412583", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Fetch IP address for the interface based on location] ********************
+[0;32mok: [192.168.38.8] => {"changed": false, "cmd": "ip netns exec pa_in ip -o -4 addr show pa_in_veth1 | awk '{print $4}' | cut -d/ -f1\n", "delta": "0:00:00.022357", "end": "2024-04-26 02:46:47.994776", "msg": "", "rc": 0, "start": "2024-04-26 02:46:47.972419", "stderr": "", "stderr_lines": [], "stdout": "192.168.100.186", "stdout_lines": ["192.168.100.186"]}[0m
+
+TASK [Set vpc_veth1_ip variable] ***********************************************
+[0;32mok: [192.168.38.8] => {"ansible_facts": {"vpc_veth1_ip": "192.168.100.186"}, "changed": false}[0m
+
+TASK [Debug vpc_v1_ip] *********************************************************
+[0;32mok: [192.168.38.8] => {[0m
+[0;32m    "vpc_v1_ip": "VARIABLE IS NOT DEFINED!: 'vpc_v1_ip' is undefined. 'vpc_v1_ip' is undefined"[0m
+[0;32m}[0m
+
+TASK [Add route in root namespace to reach VPC subnet via vpc_veth1 IP] ********
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "route", "add", "172.16.230.0/24", "via", "192.168.100.186"], "delta": "0:00:00.012729", "end": "2024-04-26 02:46:48.629540", "msg": "", "rc": 0, "start": "2024-04-26 02:46:48.616811", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Set up forwarding rules for each subnet interface within the VPC] ********
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "pa_in", "iptables", "-A", "FORWARD", "-i", "pa_in_veth1", "-o", "pa_in_S1_v1", "-m", "state", "--state", "RELATED,ESTABLISHED", "-j", "ACCEPT"], "delta": "0:00:00.012786", "end": "2024-04-26 02:46:49.177989", "msg": "", "rc": 0, "start": "2024-04-26 02:46:49.165203", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Set up forwarding rules for traffic from subnet interfaces to the VPC's external interface] ***
+[0;33mchanged: [192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "pa_in", "iptables", "-A", "FORWARD", "-i", "pa_in_S1_v1", "-o", "pa_in_veth1", "-j", "ACCEPT"], "delta": "0:00:00.012649", "end": "2024-04-26 02:46:49.755046", "msg": "", "rc": 0, "start": "2024-04-26 02:46:49.742397", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;33m192.168.38.8[0m               : [0;32mok=17  [0m [0;33mchanged=12  [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

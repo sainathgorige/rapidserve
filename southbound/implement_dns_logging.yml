@@ -1,0 +1,20 @@
+---
+- name: Setup DNS logging script and cron job
+  hosts: all
+  become: yes  # Assuming root privileges are required
+
+  tasks:
+    - name: Copy DNS logging script to remote hosts
+      copy:
+        src: ./dns_logging1.sh
+        dest: /tmp/dns_logging1.sh
+        owner: vmadm
+        group: vmadm
+        mode: '0755'
+
+    - name: Ensure cron job is present to run the DNS logging script every 5 minutes
+      cron:
+        name: "Run DNS logging script"
+        minute: "*/5"
+        job: "/bin/bash /tmp/dns_logging1.sh >> /var/log/dns_logging1.log 2>&1"
+        user: vmadm

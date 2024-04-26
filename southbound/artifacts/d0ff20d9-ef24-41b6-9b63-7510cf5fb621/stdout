@@ -1,0 +1,118 @@
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+
+PLAY [Deploy subnet Infrastructure with bridges and Veth Pairs] ****************
+
+TASK [Parse retrieved data] ****************************************************
+[0;32mok: [localhost][0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[0;32mok: [localhost] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "netflix": {[0m
+[0;32m            "VMs": [[0m
+[0;32m                {[0m
+[0;32m                    "CPUs": "2",[0m
+[0;32m                    "RAM_size": "2048",[0m
+[0;32m                    "VM_state": "requested",[0m
+[0;32m                    "disk_size": "12G",[0m
+[0;32m                    "model": "ubuntu",[0m
+[0;32m                    "name": "NF_US_VM1",[0m
+[0;32m                    "subnets": [[0m
+[0;32m                        "NF_US_S1"[0m
+[0;32m                    ][0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "CPUs": "2",[0m
+[0;32m                    "RAM_size": "2048",[0m
+[0;32m                    "VM_state": "requested",[0m
+[0;32m                    "disk_size": "12G",[0m
+[0;32m                    "model": "ubuntu",[0m
+[0;32m                    "name": "NF_US_VM2",[0m
+[0;32m                    "subnets": [[0m
+[0;32m                        "NF_US_S2"[0m
+[0;32m                    ][0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "name": "netflix",[0m
+[0;32m            "numberOfVpcs": "2",[0m
+[0;32m            "state": "requested",[0m
+[0;32m            "subnets": [[0m
+[0;32m                {[0m
+[0;32m                    "CIDR": "192.168.1.0/30",[0m
+[0;32m                    "dhcp_end": "192.168.1.2",[0m
+[0;32m                    "dhcp_start": "192.168.1.2",[0m
+[0;32m                    "ip": "192.168.1.1",[0m
+[0;32m                    "name": "NF_US_S1",[0m
+[0;32m                    "subnet_state": "requested",[0m
+[0;32m                    "vpc": "NF_US"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "CIDR": "192.168.2.0/24",[0m
+[0;32m                    "dhcp_end": "192.168.2.254",[0m
+[0;32m                    "dhcp_start": "192.168.2.2",[0m
+[0;32m                    "ip": "192.168.2.1",[0m
+[0;32m                    "name": "NF_US_S2",[0m
+[0;32m                    "subnet_state": "requested",[0m
+[0;32m                    "vpc": "NF_US"[0m
+[0;32m                }[0m
+[0;32m            ],[0m
+[0;32m            "vpcs": [[0m
+[0;32m                {[0m
+[0;32m                    "name": "NF_US",[0m
+[0;32m                    "numberOfSubnets": "2",[0m
+[0;32m                    "vpc_state": "active"[0m
+[0;32m                },[0m
+[0;32m                {[0m
+[0;32m                    "name": "NF_JP",[0m
+[0;32m                    "numberOfSubnets": "2",[0m
+[0;32m                    "vpc_state": "active"[0m
+[0;32m                }[0m
+[0;32m            ][0m
+[0;32m        }[0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create bridges for each subnet] ******************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Activate bridges for each subnet] ****************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Create veth pair for each subnet] ****************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Bring up veth0 interface in the root namespace] **************************
+[0;33mchanged: [localhost][0m
+
+TASK [Move one end of the veth pair (veth1) to the corresponding namespace] ****
+[0;33mchanged: [localhost][0m
+
+TASK [Bring up veth1 interface in its respective namespace] ********************
+[0;33mchanged: [localhost][0m
+
+TASK [Attach veth0 to the bridge in default namespace] *************************
+[0;33mchanged: [localhost][0m
+
+TASK [Assign IP addresses to veth1 interfaces within namespaces] ***************
+[0;33mchanged: [localhost][0m
+
+TASK [Setup DHCP on veth1 interfaces within namespaces] ************************
+[0;33mchanged: [localhost][0m
+
+TASK [Fetch IP address for the interface based on location] ********************
+[0;33mchanged: [localhost][0m
+
+TASK [Add route in root namespace to reach VPC subnet via vpc_veth1 IP] ********
+[0;31mfatal: [localhost]: FAILED! => {"changed": true, "cmd": ["ip", "route", "add", "192.168.1.0/30", "via", "{changed:", "True,", "stdout:", "192.168.100.94,", "stderr:", ",", "rc:", "0,", "cmd:", "ip netns exec NF_US ip -o -4 addr show NF_US_veth1 | awk '{print $4}' | cut -d/ -f1\\n,", "start:", "2024-04-18 22:22:51.058670,", "end:", "2024-04-18 22:22:51.080751,", "delta:", "0:00:00.022081,", "msg:", ",", "stdout_lines:", "[192.168.100.94],", "stderr_lines:", "[],", "failed:", "False}"], "delta": "0:00:00.008730", "end": "2024-04-18 22:22:51.528908", "msg": "non-zero return code", "rc": 1, "start": "2024-04-18 22:22:51.520178", "stderr": "Error: inet address is expected rather than \"{changed:\".", "stderr_lines": ["Error: inet address is expected rather than \"{changed:\"."], "stdout": "", "stdout_lines": []}[0m
+[0;36m...ignoring[0m
+
+TASK [Set up forwarding rules for each subnet interface within the VPC] ********
+[0;33mchanged: [localhost][0m
+
+TASK [Set up forwarding rules for traffic from subnet interfaces to the VPC's external interface] ***
+[0;33mchanged: [localhost][0m
+
+PLAY RECAP *********************************************************************
+[0;33mlocalhost[0m                  : [0;32mok=15  [0m [0;33mchanged=13  [0m unreachable=0    failed=0    skipped=0    rescued=0    [1;35mignored=1   [0m

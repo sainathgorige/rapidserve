@@ -1,0 +1,29 @@
+---
+- name: Setup dynamic IP and cron job for file synchronization
+  hosts: localhost
+  become: yes
+  vars_prompt:
+    - name: tenant_prefix
+      prompt: "Enter the tenant_prefix"
+      private: no
+
+  tasks:
+    - name: Fetch local IP address
+      shell: 'ip addr | grep ''192.168.38'' | grep -oP ''inet \K[\d.]+(?=/)'''
+      register: ip_result
+      changed_when: false
+
+    - name: Determine destination IP address
+      set_fact:
+        destination_ip: "{{ '192.168.38.9' if ip_result.stdout == '192.168.38.8' else '192.168.38.8' }}"
+
+    - name: Setup cron job to sync HTML file every 10 minutes
+      cron:
+        name: "Sync HTML file for {{ tenant_prefix }}"
+        minute: "*"
+        hour: "*"
+        day: "*"
+        month: "*"
+        weekday: "*"
+        job: "rsync -avz -e ssh /tmp/{{ tenant_prefix }}-index.html vmadm@{{ destination_ip }}:/tmp/{{ tenant_prefix }}-index.html"
+        user: vmadm

@@ -1,0 +1,88 @@
+tenants:
+  - name: 'netflix' #Org name
+    numberOfVpcs: '2'
+    state: 'requested'
+
+    vpcs:
+      - name: 'NF_US'
+        numberOfSubnets: '2'
+        vpc_state: 'requested' 
+
+      - name: 'NF_JP'
+        numberOfSubnets: '2'
+        vpc_state: 'requested'
+
+    subnets:
+      - name: 'NF_US_S1'
+        CIDR: '192.168.1.0/30'
+        vpc: 'NF_US'
+        subnet_state: 'requested'
+
+      - name: 'NF_US_S2'
+        CIDR: '192.168.2.0/24'
+        vpc: 'NF_US'
+        subnet_state: 'requested'
+
+      - name: 'NF_JP_S1'
+        CIDR: '192.168.3.0/24'
+        vpc: 'NF_JP'
+        subnet_state: 'requested'
+
+      - name: 'NF_JP_S2'
+        CIDR: '192.168.4.0/24'
+        vpc: 'NF_JP'
+        subnet_state: 'requested'
+        
+    containers:
+      - number: '1'
+        vpc: 'NF_US'
+        origin_VM_IP: '192.168.5.2'
+        subnets: ['NF_US_S1']
+        container_state: 'requested'
+    
+    VMs:
+      - name: 'NF_US_VM1'
+        VM_state: 'requested'
+        subnets: ['NF_US_S1']
+        model: 'ubuntu'
+        RAM_size: '2048'
+        CPUs: '2'
+        disk_size: '12G'
+    
+      - name: 'NF_US_VM2'
+        VM_state: 'requested'
+        subnets: ['NF_US_S2']
+        model: 'ubuntu'
+        RAM_size: '2048'
+        CPUs: '2'
+        disk_size: '12G'
+
+      - name: 'NF_JP_VM1'
+        VM_state: 'requested'
+        subnets: ['NF_JP_S1']
+        model: 'ubuntu'
+        RAM_size: '2048'
+        CPUs: '2'
+        disk_size: '12G'
+
+      - name: 'NF_JP_VM2'
+        VM_state: 'requested'
+        subnets: ['NF_JP_S2']
+        model: 'ubuntu'
+        RAM_size: '2048'
+        CPUs: '2'
+        disk_size: '12G'
+
+    cdn: 
+      state: 'requested'
+      domainName: 'netflix.cdn.com'
+      location: ['JP', 'US']
+      cdn_vpcs:
+        origin_vpc:
+          - name: origin_vpc
+            CIDR: 192.168.5.0/24
+            public_subnet: 172.16.1.0/30
+        dns_vpc:
+          - name: dns_vpc
+            CIDR: 192.168.6.0/24
+            public_subnet: 172.16.2.0/30 

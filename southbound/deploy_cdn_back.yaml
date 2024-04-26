@@ -1,0 +1,117 @@
+- name: Deploy Origin Server with Network Setup
+  hosts: localhost
+  gather_facts: no
+  become: true
+
+  vars:
+    tenant_name: ["netflix"]
+
+    bridge_name: "origin"
+
+    veth_ns_to_root: "origin_ns"
+    veth_root_to_ns: "origin_root"
+    veth_ns_to_bridge: "origin_nsbr"
+    veth_bridge_to_ns: "origin_brins"
+
+  tasks:
+    - name: Retrieve data from etcd
+      command: python3 retrive_etcd.py {{ item }}
+      register: etcd_data
+      loop: "{{ tenant_name }}"
+
+    - name: Parse retrieved data
+      set_fact:
+        etcd_data_parsed: "{{ etcd_data.results[0].stdout.split('\n')[1] | from_yaml }}"
+
+    - name: Extract CDN VPC configurations
+      set_fact:
+        origin_vpc: "{{ etcd_data_parsed[tenant_name[0]]['cdn']['cdn_vpcs']['origin_vpc'][0] }}"
+        dns_vpc: "{{ etcd_data_parsed[tenant_name[0]]['cdn']['cdn_vpcs']['dns_vpc'][0] }}"
+        bridge_subnet: "{{ etcd_data_parsed[tenant_name[0]]['cdn']['cdn_vpcs']['origin_vpc'][0]['CIDR'] }}"
+
+    - name: Calculate IP addresses
+      set_fact:
+        root_ip: "{{ origin_vpc['public_subnet'] | ipaddr('network') | ipmath(1) }}/30"
+        ns_ip: "{{ origin_vpc['public_subnet'] | ipaddr('broadcast') | ipmath(-1) }}/30"
+        ns_bridge_ip: "{{ origin_vpc['CIDR'] | ipaddr('network') | ipmath(1) }}/30"
+        vm_ip: "{{ origin_vpc['CIDR'] | ipaddr('network') | ipmath(2) }}"
+        vpc_name: "{{ origin_vpc.name }}"
+
+    - name: Create network namespace
+      command: ip netns add {{ vpc_name }}
+
+    - name: Create bridge in root namespace
+      command: ip link add name {{ bridge_name }}_br type bridge
+
+    - name: Set bridge up
+      command: ip link set {{ bridge_name }}_br up
+
+    - name: Create veth pair for NS to root connectivity
+      command: ip link add {{ veth_root_to_ns }} type veth peer name {{ veth_ns_to_root }}
+
+    - name: Attach one end of veth to the network namespace
+      command: ip link set {{ veth_ns_to_root }} netns {{ vpc_name }}
+
+    - name: Assign IP to veth in root namespace
+      command: ip addr add {{ root_ip }} dev {{ veth_root_to_ns }}
+
+    - name: Bring up veth in root namespace
+      command: ip link set {{ veth_root_to_ns }} up
+
+    - name: Assign IP to veth in network namespace
+      command: ip netns exec {{ vpc_name }} ip addr add {{ ns_ip }} dev {{ veth_ns_to_root }}
+
+    - name: Bring up veth in network namespace
+      command: ip netns exec {{ vpc_name }} ip link set {{ veth_ns_to_root }} up
+
+    - name: Create veth pair for NS to bridge connectivity
+      command: ip link add {{ veth_ns_to_bridge }} type veth peer name {{ veth_bridge_to_ns }}
+
+    - name: Attach one end of the veth pair to the network namespace
+      command: ip link set {{ veth_ns_to_bridge }} netns {{ vpc_name }}
+
+    - name: Connect the other end to the bridge
+      command: ip link set {{ veth_bridge_to_ns }} master {{ bridge_name }}_br
+
+    - name: Assign IP to veth in network namespace for bridge connection
+      command: ip netns exec {{ vpc_name }} ip addr add {{ ns_bridge_ip }} dev {{ veth_ns_to_bridge }}
+
+    - name: Bring up the veth in network namespace for bridge connection
+      command: ip netns exec {{ vpc_name }} ip link set {{ veth_ns_to_bridge }} up
+
+    - name: Bring up the veth on the bridge side
+      command: ip link set {{ veth_bridge_to_ns }} up
+
+    - name: Setup DHCP on origin_nsbridge within the origin_ns namespace
+      command: >
+        ip netns exec {{ vpc_name }} dnsmasq
+        --interface={{ veth_ns_to_bridge }}
+        --bind-interfaces
+        --dhcp-range={{vm_ip}},{{vm_ip}},24h
+    
+    - name: Activate loopback interface in the network namespace
+      command: ip netns exec {{ vpc_name }} ip link set lo up
+
+    - name: Enable IP forwarding in the root namespace
+      command: sysctl -w net.ipv4.ip_forward=1
+
+    - name: Setup NAT and IP masquerading for packets leaving origin_ns
+      command: ip netns exec {{ vpc_name }} iptables -t nat -A POSTROUTING -o {{ veth_ns_to_root }} -j MASQUERADE
+
+    - name: Allow forwarding from origin_ns to the bridge interface
+      command: ip netns exec {{ vpc_name }} iptables -A FORWARD -i {{ veth_ns_to_bridge }} -o {{ veth_ns_to_root }} -j ACCEPT
+
+    - name: Allow established and related connections back to the namespace
+      command: ip netns exec {{ vpc_name }} iptables -A FORWARD -i {{ veth_ns_to_root }} -o {{ veth_ns_to_bridge }} -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+    - name: Add default route in origin_ns namespace
+      command: ip netns exec {{ vpc_name }} ip route add default via {{ root_ip | ipaddr('address') }}
+
+    - name: Add route in root namespace to reach 10.10.20.0/24 subnet
+      command: ip route add {{ bridge_subnet }} via {{ ns_ip | ipaddr('address') }}
+
+    - name: Create containers
+      command: ansible-playbook -vvv deploy_con.yaml --extra-vars 'tenant_name={{ tenant_name[0] }} server_type=origin container_ip={{ vm_ip }} vpc_name=origin subnets=["{{ bridge_name }}"] wantlist=True'
+
+
+

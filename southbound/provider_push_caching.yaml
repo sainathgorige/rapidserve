@@ -1,0 +1,33 @@
+---
+- name: Reload Nginx in Docker containers with specific prefix in VM1
+  hosts: host1
+  gather_facts: no
+  vars:
+    container_prefix: "{{ container_prefix }}"  # This variable needs to be passed during playbook execution
+
+  tasks:
+    - name: List all Docker containers starting with specified prefix
+      command: "docker ps --filter 'name={{ container_prefix }}*' --format '{{ '{{.Names}}' }}'"
+      register: docker_list
+
+    - name: Reload Nginx in the filtered containers
+      command: "docker exec {{ item }} nginx -s reload"
+      loop: "{{ docker_list.stdout_lines }}"
+      when: docker_list.stdout_lines is defined and docker_list.stdout_lines | length > 0
+
+
+- name: Reload Nginx in Docker containers with specific prefix in VM2
+  hosts: host2
+  gather_facts: no
+  vars:
+    container_prefix: "{{ container_prefix }}"  # This variable needs to be passed during playbook execution
+
+  tasks:
+    - name: List all Docker containers starting with specified prefix
+      command: "docker ps --filter 'name={{ container_prefix }}*' --format '{{ '{{.Names}}' }}'"
+      register: docker_list
+
+    - name: Reload Nginx in the filtered containers
+      command: "docker exec {{ item }} nginx -s reload"
+      loop: "{{ docker_list.stdout_lines }}"
+      when: docker_list.stdout_lines is defined and docker_list.stdout_lines | length > 0

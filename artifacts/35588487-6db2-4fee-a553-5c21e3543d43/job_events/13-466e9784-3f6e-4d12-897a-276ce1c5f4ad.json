@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "466e9784-3f6e-4d12-897a-276ce1c5f4ad", "counter": 13, "stdout": "\u001b[0;34mscript declined parsing /etc/ansible/hosts as it did not pass its verify_file() method\u001b[0m", "start_line": 12, "end_line": 13, "runner_ident": "35588487-6db2-4fee-a553-5c21e3543d43", "created": "2024-04-21T06:40:09.417759"}

@@ -1,0 +1,21 @@
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+
+PLAY [Deploy Infrastructure with Docker Containers for Edge and Origin Servers] ***
+
+TASK [Check if network namespace exists] ***************************************
+[0;33mchanged: [192.168.38.8] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["ip", "netns", "list", "|", "grep", "-w", "ta_ja"], "delta": "0:00:00.006470", "end": "2024-04-22 03:23:00.248451", "failed_when_result": false, "msg": "", "rc": 0, "start": "2024-04-22 03:23:00.241981", "stderr": "", "stderr_lines": [], "stdout": "ta_ja (id: 1)\nta_ja_container1\nta_in_container1\nta_in (id: 0)", "stdout_lines": ["ta_ja (id: 1)", "ta_ja_container1", "ta_in_container1", "ta_in (id: 0)"]}[0m
+
+TASK [Fail if network namespace does not exist] ********************************
+[0;36mskipping: [192.168.38.8] => {"changed": false, "skip_reason": "Conditional result was False"}[0m
+
+TASK [Create NGINX configuration file from template for edge servers] **********
+[0;32mok: [192.168.38.8] => {"changed": false, "checksum": "217e957230bc6320243f911928353ae3042916be", "dest": "/home/vmadm/demo/RapidServe/southbound/nginx-ta_ja_container1.conf", "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/home/vmadm/demo/RapidServe/southbound/nginx-ta_ja_container1.conf", "size": 532, "state": "file", "uid": 0}[0m
+
+TASK [Conditionally create index.html for origin servers] **********************
+[0;36mskipping: [192.168.38.8] => {"changed": false, "skip_reason": "Conditional result was False"}[0m
+
+TASK [Build Docker image with custom NGINX config] *****************************
+[0;31mfatal: [192.168.38.8]: FAILED! => {"changed": false, "msg": "Error connecting: Error while fetching server API version: ('Connection aborted.', ConnectionRefusedError(111, 'Connection refused'))"}[0m
+
+PLAY RECAP *********************************************************************
+[0;31m192.168.38.8[0m               : [0;32mok=2   [0m [0;33mchanged=1   [0m unreachable=0    [0;31mfailed=1   [0m [0;36mskipped=2   [0m rescued=0    ignored=0   

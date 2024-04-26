@@ -1,0 +1,120 @@
+---
+- name: Configure BIND9 DNS Server for Dynamic Tenant-specific CDN
+  hosts: dns_container1
+  become: false
+  vars:
+    bind_conf_path: "/etc/bind"
+    bind_zones_path: "{{ bind_conf_path }}/zones"
+    subnets:
+      - 192.168.253.1/32
+      - 172.16.2.0/24
+    tenant_abbreviation:
+      netflix: "NF"
+      hotstar: "HS"
+      disney: "D"
+      aha: "AH"
+      tata: "ta"
+      zee: "ze"
+      arista: "ar"
+    regions: 
+      - IN
+      - JA
+      - FR
+      - GE
+    tenant_name: arista
+    domainName: arista.cdn.com
+    origin_vpc_public_subnet_ip: 192.168.100.1 #placeholder: cdn_config[tenant_name]['cdn']['cdn_vpcs']['origin_vpc'][0]['CIDR'] | ipaddr('network') | ipmath(2)
+
+  tasks:
+    - name: Ensure BIND zones directory exists
+      file:
+        path: "{{ bind_zones_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Assign subnets sequentially to each location
+      set_fact:
+        subnet_mapping: "{{ dict(regions | zip(subnets)) }}"
+
+    - name: Comment out named.conf.default-zones include in named.conf
+      lineinfile:
+        path: "{{ bind_conf_path }}/named.conf"
+        regexp: '^include "/etc/bind/named.conf.default-zones";$'
+        line: '#include "/etc/bind/named.conf.default-zones";'
+        state: present
+
+    - name: Setup BIND named.conf with dynamic ACLs for each location
+      blockinfile:
+        path: "{{ bind_conf_path }}/named.conf"
+        block: |
+          acl "{{ location.lower() }}-users" {
+              {{ subnet_mapping[location] }};
+          };
+          view "{{ location }}" {
+              match-clients { {{ location.lower() }}-users; };
+              zone "{{ domainName }}" {
+                  type master;
+                  file "{{ bind_zones_path }}/db.{{ domainName }}.{{ location.lower() }}";
+              };
+          };
+        marker: "# {mark} ANSIBLE MANAGED BLOCK {{ location.upper() }}"
+        insertafter: EOF
+      loop: "{{ regions }}"
+      loop_control:
+        loop_var: location
+
+    # - name: Setup BIND named.conf with dynamic ACLs for each location
+    #   blockinfile:
+    #     path: "{{ bind_conf_path }}/named.conf"
+    #     block: |
+    #       {% for location in regions %}
+    #       acl "{{ location.lower() }}-users" {
+    #           {{ subnet_mapping[location] }};
+    #       };
+    #       view "{{ location }}" {
+    #           match-clients { {{ location.lower() }}-users; };
+    #           zone "{{ domainName }}" {
+    #               type master;
+    #               file "{{ bind_zones_path }}/db.{{ domainName }}.{{ location.lower() }}";
+    #           };
+    #       };
+    #       {% endfor %}
+    #     marker: "# {mark} ANSIBLE MANAGED BLOCK FOR CDN CONFIGURATION"
+    #     insertafter: EOF
+
+    - name: Fetch IP address for the interface based on location
+      shell: >
+        sudo ip netns exec {{tenant_abbreviation[tenant_name]}}_{{location}} ip -o -4 addr show {{tenant_abbreviation[tenant_name]}}_{{location}}_veth1 | 
+        awk '{print $4}' | cut -d/ -f1
+      register: ns_domain_ip_raw
+      loop: "{{ regions }}"
+      loop_control:
+        loop_var: location
+      changed_when: false
+      delegate_to: localhost
+
+    # - name: Print fetched IP addresses
+    #   debug:
+    #     msg: "The IP address for location {{ item.item }} is {{ item.stdout }}"
+    #   loop: "{{ ns_domain_ip_raw.results }}"
+    #   loop_control:
+    #     loop_var: item
+
+    - name: Template DNS zone file for each location
+      template:
+        src: "db.domain.zone.j2"
+        dest: "{{ bind_zones_path }}/db.{{ domainName }}.{{ item.location.lower() }}"
+      loop: "{{ ns_domain_ip_raw.results }}"
+      loop_control:
+        loop_var: item
+      vars:
+        domain_name: "{{ domainName }}"
+        origin_vpc_public_subnet_ip: "{{ origin_vpc_public_subnet_ip }}"
+        ns_domain_ip: "{{ item.stdout }}"
+
+    # - name: Restart BIND9 to apply changes
+    #   command: sudo docker exec dns_container1 kill -HUP `cat /var/run/named/named.pid`
+
+
+
+

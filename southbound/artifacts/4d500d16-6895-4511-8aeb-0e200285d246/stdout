@@ -1,0 +1,60 @@
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+
+PLAY [Configure VXLAN Tunnels between VPCs in namespaces] **********************
+
+TASK [Gathering Facts] *********************************************************
+[0;32mok: [localhost][0m
+
+TASK [Initialize VNI] **********************************************************
+[0;32mok: [localhost] => {"ansible_facts": {"vni_counter": 1058}, "changed": false}[0m
+
+TASK [Create VXLAN Tunnels for each host1_vpc to each host2_vpc] ***************
+[0;36mincluded: /home/vmadm/demo/RapidServe/southbound/create_tunnel.yml for localhost => (item={'name': 'ta_in'})[0m
+[0;36mincluded: /home/vmadm/demo/RapidServe/southbound/create_tunnel.yml for localhost => (item={'name': 'ta_ja'})[0m
+
+TASK [Setup tunnels for each host1_vpc to each host2_vpc] **********************
+[0;36mincluded: /home/vmadm/demo/RapidServe/southbound/configure_tunnel.yml for localhost => (item={'name': 'ta_ge'})[0m
+
+TASK [Get /30 subnet for current VPC pair] *************************************
+[0;33mchanged: [localhost] => {"changed": true, "cmd": ["python3", "subnetting.py", "192.168.4.0/24"], "delta": "0:00:00.044034", "end": "2024-04-22 03:11:10.600358", "msg": "", "rc": 0, "start": "2024-04-22 03:11:10.556324", "stderr": "", "stderr_lines": [], "stdout": "192.168.4.4/30", "stdout_lines": ["192.168.4.4/30"]}[0m
+
+TASK [Debug subnet output] *****************************************************
+[0;32mok: [localhost] => {[0m
+[0;32m    "msg": "Subnet is 192.168.4.4/30"[0m
+[0;32m}[0m
+
+TASK [Fetch IP for veth interface inside ta_in] ********************************
+[0;32mok: [localhost -> 192.168.38.8] => {"changed": false, "cmd": "ip netns exec ta_in ip -o -4 addr show ta_in_veth1 | awk '{print $4}' | cut -d/ -f1", "delta": "0:00:00.018336", "end": "2024-04-22 03:11:11.380405", "msg": "", "rc": 0, "start": "2024-04-22 03:11:11.362069", "stderr": "", "stderr_lines": [], "stdout": "192.168.100.18", "stdout_lines": ["192.168.100.18"]}[0m
+
+TASK [Set IP for ta_in] ********************************************************
+[0;32mok: [localhost] => {"ansible_facts": {"host1_vpc_ip": "192.168.100.18"}, "changed": false}[0m
+
+TASK [Fetch IP for veth interface inside host2_vpc] ****************************
+[0;32mok: [localhost -> 192.168.38.9] => {"changed": false, "cmd": "ip netns exec ta_ge ip -o -4 addr show ta_ge_veth1 | awk '{print $4}' | cut -d/ -f1", "delta": "0:00:00.019111", "end": "2024-04-22 03:11:12.970301", "msg": "", "rc": 0, "start": "2024-04-22 03:11:12.951190", "stderr": "", "stderr_lines": [], "stdout": "192.168.100.14", "stdout_lines": ["192.168.100.14"]}[0m
+
+TASK [Set IP for host2_vpc] ****************************************************
+[0;32mok: [localhost] => {"ansible_facts": {"host2_vpc_ip": "192.168.100.14"}, "changed": false}[0m
+
+TASK [Create tunnel interface inside host1_vpc] ********************************
+[0;33mchanged: [localhost -> 192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "ta_in", "ip", "link", "add", "name", "vxlan1058", "type", "vxlan", "id", "1058", "local", "192.168.100.18", "remote", "192.168.100.14", "dstport", "4789"], "delta": "0:00:00.017640", "end": "2024-04-22 03:11:13.751961", "msg": "", "rc": 0, "start": "2024-04-22 03:11:13.734321", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Assign IP to the tunnel interface inside host1_vpc] **********************
+[0;33mchanged: [localhost -> 192.168.38.8] => {"changed": true, "cmd": ["ip", "netns", "exec", "ta_in", "ip", "addr", "add", "192.168.4.5/30", "dev", "vxlan1058"], "delta": "0:00:00.014925", "end": "2024-04-22 03:11:14.461181", "msg": "", "rc": 0, "start": "2024-04-22 03:11:14.446256", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Create tunnel interface inside host2_vpc] ********************************
+[0;33mchanged: [localhost -> 192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "ta_ge", "ip", "link", "add", "name", "vxlan1058", "type", "vxlan", "id", "1058", "local", "192.168.100.14", "remote", "192.168.100.18", "dstport", "4789"], "delta": "0:00:00.017118", "end": "2024-04-22 03:11:15.040033", "msg": "", "rc": 0, "start": "2024-04-22 03:11:15.022915", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Assign IP to the tunnel interface inside host2_vpc] **********************
+[0;33mchanged: [localhost -> 192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "ta_ge", "ip", "addr", "add", "192.168.4.6/30", "dev", "vxlan1058"], "delta": "0:00:00.015716", "end": "2024-04-22 03:11:15.759584", "msg": "", "rc": 0, "start": "2024-04-22 03:11:15.743868", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Add route for local tunnel endpoint IP to veth1 interface IP on host1] ***
+[0;33mchanged: [localhost -> 192.168.38.8] => {"changed": true, "cmd": ["ip", "route", "add", "192.168.4.5/32", "via", "192.168.100.18"], "delta": "0:00:00.006932", "end": "2024-04-22 03:11:16.516146", "msg": "", "rc": 0, "start": "2024-04-22 03:11:16.509214", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Add route for local tunnel endpoint IP to veth1 interface IP on host2] ***
+[0;33mchanged: [localhost -> 192.168.38.9] => {"changed": true, "cmd": ["ip", "route", "add", "192.168.4.6/32", "via", "192.168.100.14"], "delta": "0:00:00.010200", "end": "2024-04-22 03:11:17.169873", "msg": "", "rc": 0, "start": "2024-04-22 03:11:17.159673", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Add route for remote tunnel endpoint IP to GRE tunnel next hop on host1] ***
+[0;31mfatal: [localhost -> 192.168.38.8]: FAILED! => {"changed": true, "cmd": ["ip", "route", "add", "192.168.4.6/32", "via", "192.168.4.2"], "delta": "0:00:00.010270", "end": "2024-04-22 03:11:17.907682", "msg": "non-zero return code", "rc": 2, "start": "2024-04-22 03:11:17.897412", "stderr": "Error: Nexthop has invalid gateway.", "stderr_lines": ["Error: Nexthop has invalid gateway."], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;31mlocalhost[0m                  : [0;32mok=17  [0m [0;33mchanged=7   [0m unreachable=0    [0;31mfailed=1   [0m skipped=0    rescued=0    ignored=0   

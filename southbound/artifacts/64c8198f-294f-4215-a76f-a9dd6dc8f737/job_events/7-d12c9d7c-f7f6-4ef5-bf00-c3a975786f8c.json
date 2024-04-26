@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "d12c9d7c-f7f6-4ef5-bf00-c3a975786f8c", "counter": 7, "stdout": "\u001b[0;34m  python version = 3.11.4 (main, Dec  7 2023, 15:43:41) [GCC 12.3.0] (/usr/bin/python3)\u001b[0m", "start_line": 6, "end_line": 7, "runner_ident": "64c8198f-294f-4215-a76f-a9dd6dc8f737", "created": "2024-04-21T05:28:28.627594"}

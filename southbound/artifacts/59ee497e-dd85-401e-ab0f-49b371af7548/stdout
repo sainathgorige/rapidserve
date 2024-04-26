@@ -1,0 +1,148 @@
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+
+PLAY [Deploy VPC Infrastructure with network namespace] ************************
+
+TASK [Parse retrieved data] ****************************************************
+[0;32mok: [localhost][0m
+
+TASK [Debug tenant_data_parsed] ************************************************
+[0;32mok: [localhost] => {[0m
+[0;32m    "tenant_data_parsed": {[0m
+[0;32m        "containers": [[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "NE_JA_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "NE_JA_S1",[0m
+[0;32m                    "NE_JA_S2"[0m
+[0;32m                ][0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "container_state": "requested",[0m
+[0;32m                "name": "NE_IN_container1",[0m
+[0;32m                "subnets": [[0m
+[0;32m                    "NE_IN_S1",[0m
+[0;32m                    "NE_IN_S2"[0m
+[0;32m                ][0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "name": "netflix",[0m
+[0;32m        "numberOfVpcs": "2",[0m
+[0;32m        "state": "requested",[0m
+[0;32m        "subnets": [[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.1.0/24",[0m
+[0;32m                "dhcp_end": "172.16.1.254",[0m
+[0;32m                "dhcp_start": "172.16.1.2",[0m
+[0;32m                "ip": "172.16.1.1",[0m
+[0;32m                "name": "NE_JA_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "NE_JA"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.2.0/24",[0m
+[0;32m                "dhcp_end": "172.16.2.254",[0m
+[0;32m                "dhcp_start": "172.16.2.2",[0m
+[0;32m                "ip": "172.16.2.1",[0m
+[0;32m                "name": "NE_JA_S2",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "NE_JA"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.3.0/24",[0m
+[0;32m                "dhcp_end": "172.16.3.254",[0m
+[0;32m                "dhcp_start": "172.16.3.2",[0m
+[0;32m                "ip": "172.16.3.1",[0m
+[0;32m                "name": "NE_IN_S1",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "NE_IN"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "CIDR": "172.16.4.0/24",[0m
+[0;32m                "dhcp_end": "172.16.4.254",[0m
+[0;32m                "dhcp_start": "172.16.4.2",[0m
+[0;32m                "ip": "172.16.4.1",[0m
+[0;32m                "name": "NE_IN_S2",[0m
+[0;32m                "subnet_state": "requested",[0m
+[0;32m                "vpc": "NE_IN"[0m
+[0;32m            }[0m
+[0;32m        ],[0m
+[0;32m        "vpcs": [[0m
+[0;32m            {[0m
+[0;32m                "name": "NE_JA",[0m
+[0;32m                "vpc_state": "requested"[0m
+[0;32m            },[0m
+[0;32m            {[0m
+[0;32m                "name": "NE_IN",[0m
+[0;32m                "vpc_state": "requested"[0m
+[0;32m            }[0m
+[0;32m        ][0m
+[0;32m    }[0m
+[0;32m}[0m
+
+TASK [Create namespaces for each VPC] ******************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Get /30 subnet for current VPC] ******************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Debug vpc subnet output] *************************************************
+[0;32mok: [localhost] => {[0m
+[0;32m    "msg": "Subnet for NE_JA: 192.168.100.200/30"[0m
+[0;32m}[0m
+
+TASK [Create veth pair for current VPC] ****************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Activate veth0 in default namespace] *************************************
+[0;33mchanged: [localhost][0m
+
+TASK [Assign IP to veth0 in the default namespace] *****************************
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipmath' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipaddr' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;33mchanged: [localhost][0m
+
+TASK [Move one end of the veth pair (veth1) to the corresponding namespace] ****
+[0;33mchanged: [localhost][0m
+
+TASK [Assign IP to veth1 in the corresponding namespace] ***********************
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipmath' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipaddr' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;33mchanged: [localhost][0m
+
+TASK [Activate veth1 in corresponding namespace] *******************************
+[0;33mchanged: [localhost][0m
+
+TASK [Activate loopback interface in the network namespace] ********************
+[0;33mchanged: [localhost][0m
+
+TASK [Add default route in VPC namespace via vpc_veth0 IP] *********************
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipmath' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipaddr' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;33mchanged: [localhost][0m
+
+TASK [Set up NAT for the VPC's external interface] *****************************
+[0;33mchanged: [localhost][0m
+
+PLAY RECAP *********************************************************************
+[0;33mlocalhost[0m                  : [0;32mok=14  [0m [0;33mchanged=11  [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

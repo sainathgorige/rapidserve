@@ -1,0 +1,75 @@
+---
+- name: Configure VXLAN Tunnels between VPCs in namespaces
+  hosts: localhost
+  become: yes
+  vars:
+    host1_vpcs:
+      - name: "NF_US"
+      - name: "NF_JP"
+    host2_vpcs:
+      - name: "AH_FR"
+    base_vni: 1000
+    gre_host1_ip: "192.168.4.1"
+    gre_host2_ip: "192.168.4.2"
+
+  tasks:
+    - name: Initialize VNI
+      set_fact:
+        vni_counter: "{{ base_vni }}"
+
+    - name: Create VXLAN Tunnels for each host1_vpc to each host2_vpc
+      include_tasks: create_tunnel.yml
+      loop: "{{ host1_vpcs }}"
+      loop_control:
+        loop_var: host1_vpc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # - name: Test calculation of IPs and VNIs without using loop directly
+    #   debug:
+    #     msg: "{{ tunnel_subnets[0] | ansible.utils.ipaddr('1') }} and VNI {{ base_vni + 0 }}"
+
+    # - name: Calculate tunnel endpoint IPs and VNIs
+    #   set_fact:
+    #     tunnel_ip1: "{{ item | ansible.utils.ipaddr('1') }}"
+    #     tunnel_ip2: "{{ item | ansible.utils.ipaddr('2') }}"
+    #     vni: "{{ base_vni + loop.index0 }}"
+    #   loop: "{{ tunnel_subnets }}"
+    #   when: inventory_hostname in ['192.168.38.8', '192.168.38.9']
+    #   register: tunnel_settings
+
+    # - name: Debug tunnel settings
+    #   debug:
+    #     msg: "{{ tunnel_settings.results }}"
+
+    # - name: Configure VxLAN interfaces for Host 1
+    #   include_tasks: create_vxlan_interface.yml
+    #   loop: "{{ host1_vpcs }}"
+    #   loop_control:
+    #     loop_var: host1_vpc
+    #   vars:
+    #     peer_host: '192.168.38.9'
+    #   when: inventory_hostname == '192.168.38.8'
+
+    # - name: Configure VxLAN interfaces for Host 2
+    #   include_tasks: create_vxlan_interface.yml
+    #   loop: "{{ host2_vpcs }}"
+    #   loop_control:
+    #     loop_var: host2_vpc
+    #   vars:
+    #     tunnel_data: "{{ tunnel_settings.results }}"
+    #     peer_host: '192.168.38.8'
+    #   when: inventory_hostname == '192.168.38.9'
+

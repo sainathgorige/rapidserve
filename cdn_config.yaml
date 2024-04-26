@@ -1,0 +1,335 @@
+tenants:
+- name: ganesha
+  numberOfVpcs: '4'
+  tunnel_state: requested
+  vpcs:
+  - name: rs_gr
+    vpc_state: active
+  - name: rs_ir
+    vpc_state: active
+  - name: rs_ba
+    vpc_state: active
+  - name: rs_th
+    vpc_state: active
+  subnets:
+  - name: rs_ga_gr_S1
+    CIDR: 172.16.160.0/24
+    vpc: rs_gr
+    subnet_state: active
+    ip: 172.16.160.1
+    dhcp_start: 172.16.160.2
+    dhcp_end: 172.16.160.254
+  - name: rs_ga_gr_S2
+    CIDR: 172.16.161.0/24
+    vpc: rs_gr
+    subnet_state: active
+    ip: 172.16.161.1
+    dhcp_start: 172.16.161.2
+    dhcp_end: 172.16.161.254
+  - name: rs_ga_ir_S1
+    CIDR: 172.16.162.0/24
+    vpc: rs_ir
+    subnet_state: active
+    ip: 172.16.162.1
+    dhcp_start: 172.16.162.2
+    dhcp_end: 172.16.162.254
+  - name: rs_ga_ba_S1
+    CIDR: 172.16.163.0/24
+    vpc: rs_ba
+    subnet_state: active
+    ip: 172.16.163.1
+    dhcp_start: 172.16.163.2
+    dhcp_end: 172.16.163.254
+  - name: rs_ga_th_S1
+    CIDR: 172.16.164.0/24
+    vpc: rs_th
+    subnet_state: active
+    ip: 172.16.164.1
+    dhcp_start: 172.16.164.2
+    dhcp_end: 172.16.164.254
+  containers:
+  - name: rs_ga_gr_container1
+    vpc: rs_gr
+    subnets:
+    - rs_ga_gr_S1
+    container_state: active
+  - name: rs_ga_gr_container2
+    vpc: rs_gr
+    subnets:
+    - rs_ga_gr_S2
+    container_state: active
+  - name: rs_ga_ir_container1
+    vpc: rs_ir
+    subnets:
+    - rs_ga_ir_S1
+    container_state: active
+  - name: rs_ga_ba_container1
+    vpc: rs_ba
+    subnets:
+    - rs_ga_ba_S1
+    container_state: active
+  - name: rs_ga_th_container1
+    vpc: rs_th
+    subnets:
+    - rs_ga_th_S1
+    container_state: active
+  origin_ip: 172.16.54.235
+  domain_name: ganesha.cdn.com
+  existing_containers:
+  - region: germany
+    public_ips: 172.16.53.14
+  - region: france
+    public_ips: 172.16.52.154
+  origin_replication_region: ireland
+- name: shiva
+  numberOfVpcs: '4'
+  tunnel_state: requested
+  vpcs:
+  - name: rs_gr
+    vpc_state: active
+  - name: rs_ir
+    vpc_state: active
+  - name: rs_ba
+    vpc_state: active
+  - name: rs_th
+    vpc_state: active
+  subnets:
+  - name: rs_sh_gr_S1
+    CIDR: 172.16.100.0/24
+    vpc: rs_gr
+    subnet_state: active
+    ip: 172.16.100.1
+    dhcp_start: 172.16.100.2
+    dhcp_end: 172.16.100.254
+  - name: rs_sh_ir_S1
+    CIDR: 172.16.101.0/24
+    vpc: rs_ir
+    subnet_state: active
+    ip: 172.16.101.1
+    dhcp_start: 172.16.101.2
+    dhcp_end: 172.16.101.254
+  - name: rs_sh_ba_S1
+    CIDR: 172.16.102.0/24
+    vpc: rs_ba
+    subnet_state: active
+    ip: 172.16.102.1
+    dhcp_start: 172.16.102.2
+    dhcp_end: 172.16.102.254
+  - name: rs_sh_th_S1
+    CIDR: 172.16.103.0/24
+    vpc: rs_th
+    subnet_state: active
+    ip: 172.16.103.1
+    dhcp_start: 172.16.103.2
+    dhcp_end: 172.16.103.254
+  containers:
+  - name: rs_sh_gr_container1
+    vpc: rs_gr
+    subnets:
+    - rs_sh_gr_S1
+    container_state: active
+  - name: rs_sh_ir_container1
+    vpc: rs_ir
+    subnets:
+    - rs_sh_ir_S1
+    container_state: active
+  - name: rs_sh_ba_container1
+    vpc: rs_ba
+    subnets:
+    - rs_sh_ba_S1
+    container_state: active
+  - name: rs_sh_th_container1
+    vpc: rs_th
+    subnets:
+    - rs_sh_th_S1
+    container_state: active
+  origin_ip: 2.2.2.2
+  domain_name: shiva.cdn.com
+  existing_containers:
+  - region: japan
+    public_ips: 172.16.91.64
+  origin_replication_region: ireland
+- name: lakshmi
+  numberOfVpcs: '4'
+  tunnel_state: requested
+  vpcs:
+  - name: rs_gr
+    vpc_state: active
+  - name: rs_ir
+    vpc_state: active
+  - name: rs_ba
+    vpc_state: active
+  - name: rs_th
+    vpc_state: active
+  subnets:
+  - name: rs_la_gr_S1
+    CIDR: 172.16.180.0/24
+    vpc: rs_gr
+    subnet_state: active
+    ip: 172.16.180.1
+    dhcp_start: 172.16.180.2
+    dhcp_end: 172.16.180.254
+  - name: rs_la_ir_S1
+    CIDR: 172.16.181.0/24
+    vpc: rs_ir
+    subnet_state: active
+    ip: 172.16.181.1
+    dhcp_start: 172.16.181.2
+    dhcp_end: 172.16.181.254
+  - name: rs_la_ba_S1
+    CIDR: 172.16.182.0/24
+    vpc: rs_ba
+    subnet_state: active
+    ip: 172.16.182.1
+    dhcp_start: 172.16.182.2
+    dhcp_end: 172.16.182.254
+  - name: rs_la_th_S1
+    CIDR: 172.16.183.0/24
+    vpc: rs_th
+    subnet_state: active
+    ip: 172.16.183.1
+    dhcp_start: 172.16.183.2
+    dhcp_end: 172.16.183.254
+  containers:
+  - name: rs_la_gr_container1
+    vpc: rs_gr
+    subnets:
+    - rs_la_gr_S1
+    container_state: active
+  - name: rs_la_ir_container1
+    vpc: rs_ir
+    subnets:
+    - rs_la_ir_S1
+    container_state: active
+  - name: rs_la_ba_container1
+    vpc: rs_ba
+    subnets:
+    - rs_la_ba_S1
+    container_state: active
+  - name: rs_la_th_container1
+    vpc: rs_th
+    subnets:
+    - rs_la_th_S1
+    container_state: active
+  origin_ip: 2.2.2.2
+  domain_name: lakshmi.cdn.com
+  existing_containers:
+  - region: india
+    public_ips: 172.16.170.112
+  origin_replication_region: ireland
+- name: qwerty
+  numberOfVpcs: '4'
+  tunnel_state: requested
+  vpcs:
+  - name: rs_gr
+    vpc_state: active
+  - name: rs_ir
+    vpc_state: active
+  - name: rs_ba
+    vpc_state: active
+  - name: rs_th
+    vpc_state: active
+  subnets:
+  - name: rs_qw_gr_S1
+    CIDR: 172.16.130.0/24
+    vpc: rs_gr
+    subnet_state: active
+    ip: 172.16.130.1
+    dhcp_start: 172.16.130.2
+    dhcp_end: 172.16.130.254
+  - name: rs_qw_gr_S2
+    CIDR: 172.16.131.0/24
+    vpc: rs_gr
+    subnet_state: active
+    ip: 172.16.131.1
+    dhcp_start: 172.16.131.2
+    dhcp_end: 172.16.131.254
+  - name: rs_qw_ir_S1
+    CIDR: 172.16.132.0/24
+    vpc: rs_ir
+    subnet_state: active
+    ip: 172.16.132.1
+    dhcp_start: 172.16.132.2
+    dhcp_end: 172.16.132.254
+  - name: rs_qw_ba_S1
+    CIDR: 172.16.133.0/24
+    vpc: rs_ba
+    subnet_state: active
+    ip: 172.16.133.1
+    dhcp_start: 172.16.133.2
+    dhcp_end: 172.16.133.254
+  - name: rs_qw_th_S1
+    CIDR: 172.16.134.0/24
+    vpc: rs_th
+    subnet_state: active
+    ip: 172.16.134.1
+    dhcp_start: 172.16.134.2
+    dhcp_end: 172.16.134.254
+  containers:
+  - name: rs_qw_gr_container1
+    vpc: rs_gr
+    subnets:
+    - rs_qw_gr_S1
+    container_state: active
+  - name: rs_qw_gr_container2
+    vpc: rs_gr
+    subnets:
+    - rs_qw_gr_S2
+    container_state: active
+  - name: rs_qw_ir_container1
+    vpc: rs_ir
+    subnets:
+    - rs_qw_ir_S1
+    container_state: active
+  - name: rs_qw_ba_container1
+    vpc: rs_ba
+    subnets:
+    - rs_qw_ba_S1
+    container_state: active
+  - name: rs_qw_th_container1
+    vpc: rs_th
+    subnets:
+    - rs_qw_th_S1
+    container_state: active
+  origin_ip: 2.2.2.2
+  domain_name: qwerty.cdn.com
+  existing_containers:
+  - region: india
+    public_ips: 192.168.100.100
+  origin_replication_region: ireland
+- name: tesla
+  numberOfVpcs: '4'
+  tunnel_state: requested
+  vpcs:
+  - name: rs_gr
+    vpc_state: active
+  - name: rs_ir
+    vpc_state: active
+  - name: rs_ba
+    vpc_state: active
+  - name: rs_th
+    vpc_state: active
+  subnets:
+  - name: rs_te_gr_S1
+    CIDR: '2'
+    vpc: rs_gr
+    subnet_state: requested
+  - name: rs_te_ir_S1
+    CIDR: '2'
+    vpc: rs_ir
+    subnet_state: requested
+  containers:
+  - name: rs_te_gr_container1
+    vpc: rs_gr
+    subnets:
+    - rs_te_gr_S1
+    container_state: requested
+  - name: rs_te_ir_container1
+    vpc: rs_ir
+    subnets:
+    - rs_te_ir_S1
+    container_state: requested
+  origin_ip: 1.1.1.1.
+  domain_name: telsa.cdn/com
+  existing_containers: []
+  origin_replication_region: ireland

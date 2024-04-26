@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "3284794b-b62d-4709-9c30-36beb17c8463", "counter": 6, "stdout": "\u001b[0;34m  executable location = /usr/bin/ansible-playbook\u001b[0m", "start_line": 5, "end_line": 6, "runner_ident": "5469aa1c-6a28-476d-90a4-233fd5da9024", "created": "2024-04-21T09:19:37.978687"}

@@ -1,0 +1,68 @@
+[0;34mUsing /etc/ansible/ansible.cfg as config file[0m
+
+PLAY [Deploy VPC Infrastructure with network namespace] ************************
+
+TASK [Create namespaces for each VPC] ******************************************
+[0;33mchanged: [192.168.38.9] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["ip", "netns", "add", "nv_fr"], "delta": "0:00:00.012163", "end": "2024-04-22 04:25:29.366360", "msg": "", "rc": 0, "start": "2024-04-22 04:25:29.354197", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Get /30 subnet for current VPC] ******************************************
+[0;33mchanged: [192.168.38.9 -> localhost] => {"changed": true, "cmd": ["python3", "subnetting.py", "192.168.100.0/24"], "delta": "0:00:00.040208", "end": "2024-04-22 04:25:29.751685", "msg": "", "rc": 0, "start": "2024-04-22 04:25:29.711477", "stderr": "", "stderr_lines": [], "stdout": "192.168.100.88/30", "stdout_lines": ["192.168.100.88/30"]}[0m
+
+TASK [Debug vpc subnet output] *************************************************
+[0;32mok: [192.168.38.9] => {[0m
+[0;32m    "msg": "Subnet for nv_fr: 192.168.100.88/30"[0m
+[0;32m}[0m
+
+TASK [Create veth pair for current VPC] ****************************************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "link", "add", "nv_fr_veth0", "type", "veth", "peer", "name", "nv_fr_veth1"], "delta": "0:00:00.018096", "end": "2024-04-22 04:25:30.266253", "msg": "", "rc": 0, "start": "2024-04-22 04:25:30.248157", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Activate veth0 in default namespace] *************************************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "link", "set", "nv_fr_veth0", "up"], "delta": "0:00:00.013454", "end": "2024-04-22 04:25:30.735683", "msg": "", "rc": 0, "start": "2024-04-22 04:25:30.722229", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Assign IP to veth0 in the default namespace] *****************************
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipmath' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipaddr' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "addr", "add", "192.168.100.89/30", "dev", "nv_fr_veth0"], "delta": "0:00:00.013254", "end": "2024-04-22 04:25:31.287895", "msg": "", "rc": 0, "start": "2024-04-22 04:25:31.274641", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Move one end of the veth pair (veth1) to the corresponding namespace] ****
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "link", "set", "nv_fr_veth1", "netns", "nv_fr"], "delta": "0:00:00.058295", "end": "2024-04-22 04:25:31.853002", "msg": "", "rc": 0, "start": "2024-04-22 04:25:31.794707", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Assign IP to veth1 in the corresponding namespace] ***********************
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipmath' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipaddr' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "nv_fr", "ip", "addr", "add", "192.168.100.90/30", "dev", "nv_fr_veth1"], "delta": "0:00:00.013115", "end": "2024-04-22 04:25:32.409180", "msg": "", "rc": 0, "start": "2024-04-22 04:25:32.396065", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Activate veth1 in corresponding namespace] *******************************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "nv_fr", "ip", "link", "set", "nv_fr_veth1", "up"], "delta": "0:00:00.018831", "end": "2024-04-22 04:25:32.905366", "msg": "", "rc": 0, "start": "2024-04-22 04:25:32.886535", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Activate loopback interface in the network namespace] ********************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "nv_fr", "ip", "link", "set", "lo", "up"], "delta": "0:00:00.017513", "end": "2024-04-22 04:25:33.375252", "msg": "", "rc": 0, "start": "2024-04-22 04:25:33.357739", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Add default route in VPC namespace via vpc_veth0 IP] *********************
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipmath' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;35m[DEPRECATION WARNING]: Use 'ansible.utils.ipaddr' module instead. This feature [0m
+[0;35mwill be removed from ansible.netcommon in a release after 2024-01-01. [0m
+[0;35mDeprecation warnings can be disabled by setting deprecation_warnings=False in [0m
+[0;35mansible.cfg.[0m
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "nv_fr", "ip", "route", "add", "default", "via", "192.168.100.89"], "delta": "0:00:00.014726", "end": "2024-04-22 04:25:33.933868", "msg": "", "rc": 0, "start": "2024-04-22 04:25:33.919142", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+TASK [Set up NAT for the VPC's external interface] *****************************
+[0;33mchanged: [192.168.38.9] => {"changed": true, "cmd": ["ip", "netns", "exec", "nv_fr", "iptables", "-t", "nat", "-A", "POSTROUTING", "-o", "nv_fr_veth1", "-j", "MASQUERADE"], "delta": "0:00:00.017321", "end": "2024-04-22 04:25:34.438006", "msg": "", "rc": 0, "start": "2024-04-22 04:25:34.420685", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}[0m
+
+PLAY RECAP *********************************************************************
+[0;33m192.168.38.9[0m               : [0;32mok=12  [0m [0;33mchanged=11  [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

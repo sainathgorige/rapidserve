@@ -1,0 +1,311 @@
+[0;34mansible-playbook [core 2.14.2][0m
+[0;34m  config file = None[0m
+[0;34m  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules'][0m
+[0;34m  ansible python module location = /usr/lib/python3/dist-packages/ansible[0m
+[0;34m  ansible collection location = /root/.ansible/collections:/usr/share/ansible/collections[0m
+[0;34m  executable location = /usr/bin/ansible-playbook[0m
+[0;34m  python version = 3.11.4 (main, Dec  7 2023, 15:43:41) [GCC 12.3.0] (/usr/bin/python3)[0m
+[0;34m  jinja version = 3.1.2[0m
+[0;34m  libyaml = True[0m
+[0;34mNo config file found; using defaults[0m
+[0;34mhost_list declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mscript declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mauto declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34myaml declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mini declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[0;34mSkipping due to inventory source not existing or not being readable by the current user[0m
+[0;34mtoml declined parsing /etc/ansible/hosts as it did not pass its verify_file() method[0m
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+[0;34mSkipping callback 'awx_display', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'default', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'minimal', as we already have a stdout callback.[0m
+[0;34mSkipping callback 'oneline', as we already have a stdout callback.[0m
+
+PLAYBOOK: deploy_con.yaml ******************************************************
+[0;34m1 plays in deploy_con.yaml[0m
+
+PLAY [Deploy Infrastructure with Docker Containers for Edge and Origin Servers] ***
+
+TASK [Check if network namespace exists] ***************************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:19[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: root[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~root && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /root/.ansible/tmp `"&& mkdir "` echo /root/.ansible/tmp/ansible-tmp-1713668232.647659-3374939-160062938922685 `" && echo ansible-tmp-1713668232.647659-3374939-160062938922685="` echo /root/.ansible/tmp/ansible-tmp-1713668232.647659-3374939-160062938922685 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/command.py[0m
+[0;34m<127.0.0.1> PUT /root/.ansible/tmp/ansible-local-33749200nlhr0rh/tmp7rg6xv4i TO /root/.ansible/tmp/ansible-tmp-1713668232.647659-3374939-160062938922685/AnsiballZ_command.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /root/.ansible/tmp/ansible-tmp-1713668232.647659-3374939-160062938922685/ /root/.ansible/tmp/ansible-tmp-1713668232.647659-3374939-160062938922685/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python3 /root/.ansible/tmp/ansible-tmp-1713668232.647659-3374939-160062938922685/AnsiballZ_command.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /root/.ansible/tmp/ansible-tmp-1713668232.647659-3374939-160062938922685/ > /dev/null 2>&1 && sleep 0'[0m
+[0;33mchanged: [localhost] => {[0m
+[0;33m    "changed": true,[0m
+[0;33m    "cmd": [[0m
+[0;33m        "ip",[0m
+[0;33m        "netns",[0m
+[0;33m        "list",[0m
+[0;33m        "|",[0m
+[0;33m        "grep",[0m
+[0;33m        "-w",[0m
+[0;33m        "NE_JA"[0m
+[0;33m    ],[0m
+[0;33m    "delta": "0:00:00.011859",[0m
+[0;33m    "end": "2024-04-21 02:57:13.144814",[0m
+[0;33m    "failed_when_result": false,[0m
+[0;33m    "invocation": {[0m
+[0;33m        "module_args": {[0m
+[0;33m            "_raw_params": "ip netns list | grep -w NE_JA",[0m
+[0;33m            "_uses_shell": false,[0m
+[0;33m            "argv": null,[0m
+[0;33m            "chdir": null,[0m
+[0;33m            "creates": null,[0m
+[0;33m            "executable": null,[0m
+[0;33m            "removes": null,[0m
+[0;33m            "stdin": null,[0m
+[0;33m            "stdin_add_newline": true,[0m
+[0;33m            "strip_empty_ends": true[0m
+[0;33m        }[0m
+[0;33m    },[0m
+[0;33m    "msg": "",[0m
+[0;33m    "rc": 0,[0m
+[0;33m    "start": "2024-04-21 02:57:13.132955",[0m
+[0;33m    "stderr": "",[0m
+[0;33m    "stderr_lines": [],[0m
+[0;33m    "stdout": "nf_in_edge_1\nNE_IN (id: 33)\nNE_JA (id: 32)\nAH_FR (id: 31)\nAH_JA (id: 30)\nAH_IN (id: 28)\ndns_vpc (id: 21)\norigin_vpc (id: 20)\nNSTransit (id: 6)\nNS3 (id: 5)\nNS2 (id: 4)\nNS1 (id: 3)\nblue (id: 1)\nred (id: 0)\nproviderns (id: 2)\nmynamespace",[0m
+[0;33m    "stdout_lines": [[0m
+[0;33m        "nf_in_edge_1",[0m
+[0;33m        "NE_IN (id: 33)",[0m
+[0;33m        "NE_JA (id: 32)",[0m
+[0;33m        "AH_FR (id: 31)",[0m
+[0;33m        "AH_JA (id: 30)",[0m
+[0;33m        "AH_IN (id: 28)",[0m
+[0;33m        "dns_vpc (id: 21)",[0m
+[0;33m        "origin_vpc (id: 20)",[0m
+[0;33m        "NSTransit (id: 6)",[0m
+[0;33m        "NS3 (id: 5)",[0m
+[0;33m        "NS2 (id: 4)",[0m
+[0;33m        "NS1 (id: 3)",[0m
+[0;33m        "blue (id: 1)",[0m
+[0;33m        "red (id: 0)",[0m
+[0;33m        "providerns (id: 2)",[0m
+[0;33m        "mynamespace"[0m
+[0;33m    ][0m
+[0;33m}[0m
+
+TASK [Fail if network namespace does not exist] ********************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:24[0m
+[0;36mskipping: [localhost] => {[0m
+[0;36m    "changed": false,[0m
+[0;36m    "skip_reason": "Conditional result was False"[0m
+[0;36m}[0m
+
+TASK [Create NGINX configuration file from template for edge servers] **********
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:29[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: root[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~root && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /root/.ansible/tmp `"&& mkdir "` echo /root/.ansible/tmp/ansible-tmp-1713668233.3169932-3375000-133322173229411 `" && echo ansible-tmp-1713668233.3169932-3375000-133322173229411="` echo /root/.ansible/tmp/ansible-tmp-1713668233.3169932-3375000-133322173229411 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/stat.py[0m
+[0;34m<127.0.0.1> PUT /root/.ansible/tmp/ansible-local-33749200nlhr0rh/tmpfp4ta4y8 TO /root/.ansible/tmp/ansible-tmp-1713668233.3169932-3375000-133322173229411/AnsiballZ_stat.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /root/.ansible/tmp/ansible-tmp-1713668233.3169932-3375000-133322173229411/ /root/.ansible/tmp/ansible-tmp-1713668233.3169932-3375000-133322173229411/AnsiballZ_stat.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python3 /root/.ansible/tmp/ansible-tmp-1713668233.3169932-3375000-133322173229411/AnsiballZ_stat.py && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible/modules/file.py[0m
+[0;34m<127.0.0.1> PUT /root/.ansible/tmp/ansible-local-33749200nlhr0rh/tmpfd1u_n5h TO /root/.ansible/tmp/ansible-tmp-1713668233.3169932-3375000-133322173229411/AnsiballZ_file.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /root/.ansible/tmp/ansible-tmp-1713668233.3169932-3375000-133322173229411/ /root/.ansible/tmp/ansible-tmp-1713668233.3169932-3375000-133322173229411/AnsiballZ_file.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python3 /root/.ansible/tmp/ansible-tmp-1713668233.3169932-3375000-133322173229411/AnsiballZ_file.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /root/.ansible/tmp/ansible-tmp-1713668233.3169932-3375000-133322173229411/ > /dev/null 2>&1 && sleep 0'[0m
+[0;32mok: [localhost] => {[0m
+[0;32m    "changed": false,[0m
+[0;32m    "checksum": "217e957230bc6320243f911928353ae3042916be",[0m
+[0;32m    "dest": "/home/vmadm/demo/RapidServe/southbound/nginx-NE_JA_container1.conf",[0m
+[0;32m    "diff": {[0m
+[0;32m        "after": {[0m
+[0;32m            "path": "/home/vmadm/demo/RapidServe/southbound/nginx-NE_JA_container1.conf"[0m
+[0;32m        },[0m
+[0;32m        "before": {[0m
+[0;32m            "path": "/home/vmadm/demo/RapidServe/southbound/nginx-NE_JA_container1.conf"[0m
+[0;32m        }[0m
+[0;32m    },[0m
+[0;32m    "gid": 0,[0m
+[0;32m    "group": "root",[0m
+[0;32m    "invocation": {[0m
+[0;32m        "module_args": {[0m
+[0;32m            "_diff_peek": null,[0m
+[0;32m            "_original_basename": "nginx.conf.j2",[0m
+[0;32m            "access_time": null,[0m
+[0;32m            "access_time_format": "%Y%m%d%H%M.%S",[0m
+[0;32m            "attributes": null,[0m
+[0;32m            "dest": "/home/vmadm/demo/RapidServe/southbound/nginx-NE_JA_container1.conf",[0m
+[0;32m            "follow": true,[0m
+[0;32m            "force": false,[0m
+[0;32m            "group": null,[0m
+[0;32m            "mode": null,[0m
+[0;32m            "modification_time": null,[0m
+[0;32m            "modification_time_format": "%Y%m%d%H%M.%S",[0m
+[0;32m            "owner": null,[0m
+[0;32m            "path": "/home/vmadm/demo/RapidServe/southbound/nginx-NE_JA_container1.conf",[0m
+[0;32m            "recurse": false,[0m
+[0;32m            "selevel": null,[0m
+[0;32m            "serole": null,[0m
+[0;32m            "setype": null,[0m
+[0;32m            "seuser": null,[0m
+[0;32m            "src": null,[0m
+[0;32m            "state": "file",[0m
+[0;32m            "unsafe_writes": false[0m
+[0;32m        }[0m
+[0;32m    },[0m
+[0;32m    "mode": "0644",[0m
+[0;32m    "owner": "root",[0m
+[0;32m    "path": "/home/vmadm/demo/RapidServe/southbound/nginx-NE_JA_container1.conf",[0m
+[0;32m    "size": 532,[0m
+[0;32m    "state": "file",[0m
+[0;32m    "uid": 0[0m
+[0;32m}[0m
+
+TASK [Conditionally create index.html for origin servers] **********************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:35[0m
+[0;36mskipping: [localhost] => {[0m
+[0;36m    "changed": false,[0m
+[0;36m    "skip_reason": "Conditional result was False"[0m
+[0;36m}[0m
+
+TASK [Build Docker image with custom NGINX config] *****************************
+[1;30mtask path: /home/vmadm/demo/RapidServe/southbound/deploy_con.yaml:41[0m
+[0;34m<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: root[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'echo ~root && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /root/.ansible/tmp `"&& mkdir "` echo /root/.ansible/tmp/ansible-tmp-1713668234.650224-3375053-234017465751173 `" && echo ansible-tmp-1713668234.650224-3375053-234017465751173="` echo /root/.ansible/tmp/ansible-tmp-1713668234.650224-3375053-234017465751173 `" ) && sleep 0'[0m
+[0;34mUsing module file /usr/lib/python3/dist-packages/ansible_collections/community/docker/plugins/modules/docker_image.py[0m
+[0;34m<127.0.0.1> PUT /root/.ansible/tmp/ansible-local-33749200nlhr0rh/tmp4h265vy9 TO /root/.ansible/tmp/ansible-tmp-1713668234.650224-3375053-234017465751173/AnsiballZ_docker_image.py[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /root/.ansible/tmp/ansible-tmp-1713668234.650224-3375053-234017465751173/ /root/.ansible/tmp/ansible-tmp-1713668234.650224-3375053-234017465751173/AnsiballZ_docker_image.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python3 /root/.ansible/tmp/ansible-tmp-1713668234.650224-3375053-234017465751173/AnsiballZ_docker_image.py && sleep 0'[0m
+[0;34m<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /root/.ansible/tmp/ansible-tmp-1713668234.650224-3375053-234017465751173/ > /dev/null 2>&1 && sleep 0'[0m
+[0;31mThe full traceback is:[0m
+[0;31mTraceback (most recent call last):[0m
+[0;31m  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 705, in urlopen[0m
+[0;31m    httplib_response = self._make_request([0m
+[0;31m                       ^^^^^^^^^^^^^^^^^^^[0m
+[0;31m  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 400, in _make_request[0m
+[0;31m    conn.request(method, url, **httplib_request_kw)[0m
+[0;31m  File "/usr/lib/python3.11/http/client.py", line 1286, in request[0m
+[0;31m    self._send_request(method, url, body, headers, encode_chunked)[0m
+[0;31m  File "/usr/lib/python3.11/http/client.py", line 1332, in _send_request[0m
+[0;31m    self.endheaders(body, encode_chunked=encode_chunked)[0m
+[0;31m  File "/usr/lib/python3.11/http/client.py", line 1281, in endheaders[0m
+[0;31m    self._send_output(message_body, encode_chunked=encode_chunked)[0m
+[0;31m  File "/usr/lib/python3.11/http/client.py", line 1080, in _send_output[0m
+[0;31m    self.send(chunk)[0m
+[0;31m  File "/usr/lib/python3.11/http/client.py", line 1002, in send[0m
+[0;31m    self.sock.sendall(data)[0m
+[0;31mConnectionResetError: [Errno 104] Connection reset by peer[0m
+[0;31m[0m
+[0;31mDuring handling of the above exception, another exception occurred:[0m
+[0;31m[0m
+[0;31mTraceback (most recent call last):[0m
+[0;31m  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 489, in send[0m
+[0;31m    resp = conn.urlopen([0m
+[0;31m           ^^^^^^^^^^^^^[0m
+[0;31m  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 789, in urlopen[0m
+[0;31m    retries = retries.increment([0m
+[0;31m              ^^^^^^^^^^^^^^^^^^[0m
+[0;31m  File "/usr/lib/python3/dist-packages/urllib3/util/retry.py", line 550, in increment[0m
+[0;31m    raise six.reraise(type(error), error, _stacktrace)[0m
+[0;31m          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[0;31m  File "/usr/lib/python3/dist-packages/six.py", line 718, in reraise[0m
+[0;31m    raise value.with_traceback(tb)[0m
+[0;31m  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 705, in urlopen[0m
+[0;31m    httplib_response = self._make_request([0m
+[0;31m                       ^^^^^^^^^^^^^^^^^^^[0m
+[0;31m  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 400, in _make_request[0m
+[0;31m    conn.request(method, url, **httplib_request_kw)[0m
+[0;31m  File "/usr/lib/python3.11/http/client.py", line 1286, in request[0m
+[0;31m    self._send_request(method, url, body, headers, encode_chunked)[0m
+[0;31m  File "/usr/lib/python3.11/http/client.py", line 1332, in _send_request[0m
+[0;31m    self.endheaders(body, encode_chunked=encode_chunked)[0m
+[0;31m  File "/usr/lib/python3.11/http/client.py", line 1281, in endheaders[0m
+[0;31m    self._send_output(message_body, encode_chunked=encode_chunked)[0m
+[0;31m  File "/usr/lib/python3.11/http/client.py", line 1080, in _send_output[0m
+[0;31m    self.send(chunk)[0m
+[0;31m  File "/usr/lib/python3.11/http/client.py", line 1002, in send[0m
+[0;31m    self.sock.sendall(data)[0m
+[0;31murllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))[0m
+[0;31m[0m
+[0;31mDuring handling of the above exception, another exception occurred:[0m
+[0;31m[0m
+[0;31mTraceback (most recent call last):[0m
+[0;31m  File "/tmp/ansible_community.docker.docker_image_payload_n_w_c2_d/ansible_community.docker.docker_image_payload.zip/ansible_collections/community/docker/plugins/modules/docker_image.py", line 1022, in main[0m
+[0;31m  File "/tmp/ansible_community.docker.docker_image_payload_n_w_c2_d/ansible_community.docker.docker_image_payload.zip/ansible_collections/community/docker/plugins/modules/docker_image.py", line 442, in __init__[0m
+[0;31m  File "/tmp/ansible_community.docker.docker_image_payload_n_w_c2_d/ansible_community.docker.docker_image_payload.zip/ansible_collections/community/docker/plugins/modules/docker_image.py", line 476, in present[0m
+[0;31m  File "/tmp/ansible_community.docker.docker_image_payload_n_w_c2_d/ansible_community.docker.docker_image_payload.zip/ansible_collections/community/docker/plugins/modules/docker_image.py", line 833, in build_image[0m
+[0;31m  File "/tmp/ansible_community.docker.docker_image_payload_n_w_c2_d/ansible_community.docker.docker_image_payload.zip/ansible_collections/community/docker/plugins/module_utils/_api/utils/decorators.py", line 58, in inner[0m
+[0;31m    return f(self, *args, **kwargs)[0m
+[0;31m           ^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[0;31m  File "/tmp/ansible_community.docker.docker_image_payload_n_w_c2_d/ansible_community.docker.docker_image_payload.zip/ansible_collections/community/docker/plugins/module_utils/_api/api/client.py", line 224, in _post[0m
+[0;31m    return self.post(url, **self._set_request_timeout(kwargs))[0m
+[0;31m           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[0;31m  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 637, in post[0m
+[0;31m    return self.request("POST", url, data=data, json=json, **kwargs)[0m
+[0;31m           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[0;31m  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 589, in request[0m
+[0;31m    resp = self.send(prep, **send_kwargs)[0m
+[0;31m           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[0;31m  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 703, in send[0m
+[0;31m    r = adapter.send(request, **kwargs)[0m
+[0;31m        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[0;31m  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 547, in send[0m
+[0;31m    raise ConnectionError(err, request=request)[0m
+[0;31mrequests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))[0m
+[0;31mfatal: [localhost]: FAILED! => {[0m
+[0;31m    "changed": false,[0m
+[0;31m    "invocation": {[0m
+[0;31m        "module_args": {[0m
+[0;31m            "api_version": "auto",[0m
+[0;31m            "archive_path": null,[0m
+[0;31m            "build": {[0m
+[0;31m                "args": {[0m
+[0;31m                    "NGINX_CONF": "nginx-NE_JA_container1.conf"[0m
+[0;31m                },[0m
+[0;31m                "cache_from": null,[0m
+[0;31m                "container_limits": null,[0m
+[0;31m                "dockerfile": "Dockerfile-edge",[0m
+[0;31m                "etc_hosts": null,[0m
+[0;31m                "http_timeout": null,[0m
+[0;31m                "network": null,[0m
+[0;31m                "nocache": true,[0m
+[0;31m                "path": "/home/vmadm/demo/RapidServe/southbound",[0m
+[0;31m                "platform": null,[0m
+[0;31m                "pull": false,[0m
+[0;31m                "rm": true,[0m
+[0;31m                "target": null,[0m
+[0;31m                "use_config_proxy": null[0m
+[0;31m            },[0m
+[0;31m            "ca_cert": null,[0m
+[0;31m            "client_cert": null,[0m
+[0;31m            "client_key": null,[0m
+[0;31m            "debug": false,[0m
+[0;31m            "docker_host": "unix://var/run/docker.sock",[0m
+[0;31m            "force_absent": false,[0m
+[0;31m            "force_source": false,[0m
+[0;31m            "force_tag": false,[0m
+[0;31m            "load_path": null,[0m
+[0;31m            "name": "NE_JA_container1",[0m
+[0;31m            "pull": null,[0m
+[0;31m            "push": false,[0m
+[0;31m            "repository": null,[0m
+[0;31m            "source": "build",[0m
+[0;31m            "ssl_version": null,[0m
+[0;31m            "state": "present",[0m
+[0;31m            "tag": "latest",[0m
+[0;31m            "timeout": 60,[0m
+[0;31m            "tls": false,[0m
+[0;31m            "tls_hostname": null,[0m
+[0;31m            "use_ssh_client": false,[0m
+[0;31m            "validate_certs": false[0m
+[0;31m        }[0m
+[0;31m    },[0m
+[0;31m    "msg": "An unexpected requests error occurred when trying to talk to the Docker daemon: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"[0m
+[0;31m}[0m
+
+PLAY RECAP *********************************************************************
+[0;31mlocalhost[0m                  : [0;32mok=2   [0m [0;33mchanged=1   [0m unreachable=0    [0;31mfailed=1   [0m [0;36mskipped=2   [0m rescued=0    ignored=0   

@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "be7f84e3-f758-4114-93b4-ade23afbd945", "counter": 19, "stdout": "\u001b[0;34mSkipping due to inventory source not existing or not being readable by the current user\u001b[0m", "start_line": 18, "end_line": 19, "runner_ident": "be884b71-6f30-4a9c-adc9-597eaedb4357", "created": "2024-04-21T03:55:32.153751"}

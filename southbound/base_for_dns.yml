@@ -1,0 +1,59 @@
+- name: Deploy VPC Infrastructure with network namespace
+  hosts: localhost
+  gather_facts: no
+  become: true
+  vars:
+    vpc_name: dns_ns
+
+  tasks:
+    - name: Create namespaces for each VPC
+      command: ip netns add {{ vpc_name }}
+      delegate_to: "192.168.38.9"
+
+    - name: Get /30 subnet for current VPC
+      command: python3 subnetting.py 192.168.100.0/24
+      register: vpc_subnet_output
+
+    - name: Debug vpc subnet output
+      debug:
+        msg: "Subnet for {{ vpc_name }}: {{ vpc_subnet_output.stdout }}"
+
+    - name: Create veth pair for current VPC
+      command: >
+        ip link add {{ vpc_name }}_veth0 type veth peer name {{ vpc_name }}_veth1
+      delegate_to: "192.168.38.9"
+
+    - name: Activate veth0 in default namespace
+      command: "ip link set {{ vpc_name }}_veth0 up"
+      delegate_to: "192.168.38.9"      
+
+    - name: Assign IP to veth0 in the default namespace
+      command: >
+        ip addr add {{ vpc_subnet_output.stdout | ipaddr('network') | ipmath(1) }}/30 dev {{ vpc_name }}_veth0
+      delegate_to: "192.168.38.9"
+
+    - name: Move one end of the veth pair (veth1) to the corresponding namespace
+      command: ip link set {{ vpc_name }}_veth1 netns {{ vpc_name }}
+      delegate_to: "192.168.38.9"
+
+    - name: Assign IP to veth1 in the corresponding namespace
+      command: >
+        ip netns exec {{ vpc_name }} ip addr add {{ vpc_subnet_output.stdout | ipaddr('network') | ipmath(2) }}/30 dev {{ vpc_name }}_veth1
+      delegate_to: "192.168.38.9"
+
+    - name: Activate veth1 in corresponding namespace
+      command: "ip netns exec {{ vpc_name }} ip link set {{ vpc_name }}_veth1 up"
+      delegate_to: "192.168.38.9"
+
+    - name: Activate loopback interface in the network namespace
+      command: ip netns exec {{ vpc_name }} ip link set lo up
+      delegate_to: "192.168.38.9"
+
+    - name: Add default route in VPC namespace via vpc_veth0 IP
+      command: >
+        ip netns exec {{ vpc_name }} ip route add default via {{ vpc_subnet_output.stdout | ipaddr('network') | ipmath(1) }}
+      delegate_to: "192.168.38.9"
+
+    - name: Set up NAT for the VPC's external interface
+      command: ip netns exec {{ vpc_name }} iptables -t nat -A POSTROUTING -o {{ vpc_name }}_veth1 -j MASQUERADE
+      delegate_to: "192.168.38.9"

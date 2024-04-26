@@ -1,0 +1,9 @@
+---
+- name: Setup tunnels for each host1_vpc to each host2_vpc
+  include_tasks: configure_tunnel.yml
+  vars:
+    host1_vpc_name: "{{ host1_vpc.name }}"
+  loop: "{{ host2_vpcs }}"
+  loop_control:
+    loop_var: host2_vpc
+
